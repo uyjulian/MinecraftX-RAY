@@ -1,27 +1,25 @@
-package net.minecraft.block;
+package net.minecraft.src;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.Random;
-import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 public class BlockSnow extends Block
 {
-    protected BlockSnow(int par1, int par2)
+    protected BlockSnow(int par1)
     {
-        super(par1, par2, Material.snow);
+        super(par1, Material.snow);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F);
         this.setTickRandomly(true);
         this.setCreativeTab(CreativeTabs.tabDecorations);
+        this.setBlockBoundsForSnowDepth(0);
+    }
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        this.blockIcon = par1IconRegister.registerIcon("snow");
     }
 
     /**
@@ -31,7 +29,8 @@ public class BlockSnow extends Block
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         int var5 = par1World.getBlockMetadata(par2, par3, par4) & 7;
-        return var5 >= 3 ? AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)par2 + this.minX, (double)par3 + this.minY, (double)par4 + this.minZ, (double)par2 + this.maxX, (double)((float)par3 + 0.5F), (double)par4 + this.maxZ) : null;
+        float var6 = 0.125F;
+        return AxisAlignedBB.getAABBPool().getAABB((double)par2 + this.minX, (double)par3 + this.minY, (double)par4 + this.minZ, (double)par2 + this.maxX, (double)((float)par3 + (float)var5 * var6), (double)par4 + this.maxZ);
     }
 
     /**
@@ -52,13 +51,29 @@ public class BlockSnow extends Block
     }
 
     /**
+     * Sets the block's bounds for rendering it as an item
+     */
+    public void setBlockBoundsForItemRender()
+    {
+        this.setBlockBoundsForSnowDepth(0);
+    }
+
+    /**
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
-        int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 7;
-        float var6 = (float)(2 * (1 + var5)) / 16.0F;
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, var6, 1.0F);
+        this.setBlockBoundsForSnowDepth(par1IBlockAccess.getBlockMetadata(par2, par3, par4));
+    }
+
+    /**
+     * calls setBlockBounds based on the depth of the snow. Int is any values 0x0-0x7, usually this blocks metadata.
+     */
+    protected void setBlockBoundsForSnowDepth(int par1)
+    {
+        int var2 = par1 & 7;
+        float var3 = (float)(2 * (1 + var2)) / 16.0F;
+        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, var3, 1.0F);
     }
 
     /**
@@ -67,7 +82,7 @@ public class BlockSnow extends Block
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         int var5 = par1World.getBlockId(par2, par3 - 1, par4);
-        return var5 != 0 && (var5 == Block.leaves.blockID || Block.blocksList[var5].isOpaqueCube()) ? par1World.getBlockMaterial(par2, par3 - 1, par4).blocksMovement() : false;
+        return var5 == 0 ? false : (var5 == this.blockID && (par1World.getBlockMetadata(par2, par3 - 1, par4) & 7) == 7 ? true : (var5 != Block.leaves.blockID && !Block.blocksList[var5].isOpaqueCube() ? false : par1World.getBlockMaterial(par2, par3 - 1, par4).blocksMovement()));
     }
 
     /**
@@ -87,7 +102,7 @@ public class BlockSnow extends Block
         if (!this.canPlaceBlockAt(par1World, par2, par3, par4))
         {
             this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-            par1World.setBlockWithNotify(par2, par3, par4, 0);
+            par1World.setBlockToAir(par2, par3, par4);
             return false;
         }
         else
@@ -103,8 +118,9 @@ public class BlockSnow extends Block
     public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6)
     {
         int var7 = Item.snowball.itemID;
-        this.dropBlockAsItem_do(par1World, par3, par4, par5, new ItemStack(var7, 1, 0));
-        par1World.setBlockWithNotify(par3, par4, par5, 0);
+        int var8 = par6 & 7;
+        this.dropBlockAsItem_do(par1World, par3, par4, par5, new ItemStack(var7, var8 + 1, 0));
+        par1World.setBlockToAir(par3, par4, par5);
         par2EntityPlayer.addStat(StatList.mineBlockStatArray[this.blockID], 1);
     }
 
@@ -132,11 +148,9 @@ public class BlockSnow extends Block
         if (par1World.getSavedLightValue(EnumSkyBlock.Block, par2, par3, par4) > 11)
         {
             this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-            par1World.setBlockWithNotify(par2, par3, par4, 0);
+            par1World.setBlockToAir(par2, par3, par4);
         }
     }
-
-    @SideOnly(Side.CLIENT)
 
     /**
      * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given

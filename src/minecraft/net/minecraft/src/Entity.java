@@ -1,37 +1,11 @@
-package net.minecraft.entity;
+package net.minecraft.src;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
-import julialy.xray.mod_xray;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockFluid;
-import net.minecraft.block.StepSound;
-import net.minecraft.block.material.Material;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.crash.CrashReportCategory;
-import net.minecraft.enchantment.EnchantmentProtection;
-import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagDouble;
-import net.minecraft.nbt.NBTTagFloat;
-import net.minecraft.nbt.NBTTagList;
+import julialy.xray.main.XrayMain;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ReportedException;
-import net.minecraft.util.StatCollector;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 
 public abstract class Entity
 {
@@ -50,6 +24,7 @@ public abstract class Entity
 
     /** The entity we are currently riding */
     public Entity ridingEntity;
+    public boolean field_98038_p;
 
     /** Reference to the World object. */
     public World worldObj;
@@ -122,7 +97,7 @@ public abstract class Entity
 
     /** The distance walked multiplied by 0.6 */
     public float distanceWalkedModified;
-    public float field_82151_R;
+    public float distanceWalkedOnStepModified;
     public float fallDistance;
 
     /**
@@ -182,11 +157,9 @@ public abstract class Entity
      */
     public int hurtResistantTime;
     private boolean firstUpdate;
-    @SideOnly(Side.CLIENT)
 
     /** downloadable location of player's skin */
     public String skinUrl;
-    @SideOnly(Side.CLIENT)
 
     /** downloadable location of player's cloak */
     public String cloakUrl;
@@ -200,11 +173,8 @@ public abstract class Entity
     public int chunkCoordX;
     public int chunkCoordY;
     public int chunkCoordZ;
-    @SideOnly(Side.CLIENT)
     public int serverPosX;
-    @SideOnly(Side.CLIENT)
     public int serverPosY;
-    @SideOnly(Side.CLIENT)
     public int serverPosZ;
 
     /**
@@ -221,8 +191,9 @@ public abstract class Entity
 
     /** Which dimension the player is in (-1 = the Nether, 0 = normal world) */
     public int dimension;
-    protected int field_82152_aq;
+    protected int teleportDirection;
     private boolean invulnerable;
+    private UUID entityUniqueID;
     public EnumEntitySize myEntitySize;
 
     public Entity(World par1World)
@@ -241,7 +212,7 @@ public abstract class Entity
         this.height = 1.8F;
         this.prevDistanceWalkedModified = 0.0F;
         this.distanceWalkedModified = 0.0F;
-        this.field_82151_R = 0.0F;
+        this.distanceWalkedOnStepModified = 0.0F;
         this.fallDistance = 0.0F;
         this.nextStepDistance = 1;
         this.ySize = 0.0F;
@@ -258,8 +229,9 @@ public abstract class Entity
         this.isImmuneToFire = false;
         this.dataWatcher = new DataWatcher();
         this.addedToChunk = false;
-        this.field_82152_aq = 0;
+        this.teleportDirection = 0;
         this.invulnerable = false;
+        this.entityUniqueID = UUID.randomUUID();
         this.myEntitySize = EnumEntitySize.SIZE_2;
         this.worldObj = par1World;
         this.setPosition(0.0D, 0.0D, 0.0D);
@@ -290,8 +262,6 @@ public abstract class Entity
     {
         return this.entityId;
     }
-
-    @SideOnly(Side.CLIENT)
 
     /**
      * Keeps moving the entity up so it isn't colliding with blocks and other requirements for this entity to be spawned
@@ -331,8 +301,15 @@ public abstract class Entity
      */
     protected void setSize(float par1, float par2)
     {
-        this.width = par1;
-        this.height = par2;
+        if (par1 != this.width || par2 != this.height)
+        {
+            this.width = par1;
+            this.height = par2;
+            this.boundingBox.maxX = this.boundingBox.minX + (double)this.width;
+            this.boundingBox.maxZ = this.boundingBox.minZ + (double)this.width;
+            this.boundingBox.maxY = this.boundingBox.minY + (double)this.height;
+        }
+
         float var3 = par1 % 2.0F;
 
         if ((double)var3 < 0.375D)
@@ -382,8 +359,6 @@ public abstract class Entity
         float var8 = this.height;
         this.boundingBox.setBounds(par1 - (double)var7, par3 - (double)this.yOffset + (double)this.ySize, par5 - (double)var7, par1 + (double)var7, par3 - (double)this.yOffset + (double)this.ySize + (double)var8, par5 + (double)var7);
     }
-
-    @SideOnly(Side.CLIENT)
 
     /**
      * Adds par1*0.15 to the entity's yaw, and *subtracts* par2*0.15 from the pitch. Clamps pitch from -90 to 90. Both
@@ -578,7 +553,7 @@ public abstract class Entity
     public void setFire(int par1)
     {
         int var2 = par1 * 20;
-        var2 = EnchantmentProtection.func_92041_a(this, var2);
+        var2 = EnchantmentProtection.func_92093_a(this, var2);
 
         if (this.fire < var2)
         {
@@ -849,15 +824,6 @@ public abstract class Entity
                     par5 = var27;
                     this.boundingBox.setBB(var29);
                 }
-                else
-                {
-                    double var40 = this.boundingBox.minY - (double)((int)this.boundingBox.minY);
-
-                    if (var40 > 0.0D)
-                    {
-                        this.ySize = (float)((double)this.ySize + var40 + 0.01D);
-                    }
-                }
             }
 
             this.worldObj.theProfiler.endSection();
@@ -899,7 +865,7 @@ public abstract class Entity
 
                 if (var32 == 0)
                 {
-                    int var33 = this.worldObj.func_85175_e(var37, var30 - 1, var31);
+                    int var33 = this.worldObj.blockGetRenderType(var37, var30 - 1, var31);
 
                     if (var33 == 11 || var33 == 32 || var33 == 21)
                     {
@@ -913,11 +879,11 @@ public abstract class Entity
                 }
 
                 this.distanceWalkedModified = (float)((double)this.distanceWalkedModified + (double)MathHelper.sqrt_double(var36 * var36 + var27 * var27) * 0.6D);
-                this.field_82151_R = (float)((double)this.field_82151_R + (double)MathHelper.sqrt_double(var36 * var36 + var25 * var25 + var27 * var27) * 0.6D);
+                this.distanceWalkedOnStepModified = (float)((double)this.distanceWalkedOnStepModified + (double)MathHelper.sqrt_double(var36 * var36 + var25 * var25 + var27 * var27) * 0.6D);
 
-                if (this.field_82151_R > (float)this.nextStepDistance && var32 > 0)
+                if (this.distanceWalkedOnStepModified > (float)this.nextStepDistance && var32 > 0)
                 {
-                    this.nextStepDistance = (int)this.field_82151_R + 1;
+                    this.nextStepDistance = (int)this.distanceWalkedOnStepModified + 1;
 
                     if (this.isInWater())
                     {
@@ -1216,17 +1182,14 @@ public abstract class Entity
         }
     }
 
-    @SideOnly(Side.CLIENT)
     public int getBrightnessForRender(float par1)
     {
-    	
     	//>>X-RAY>>//
-        if (mod_xray.on && !(mod_xray.lightmode <= 0) && mod_xray.cavefinder)
+        if (XrayMain.on && !(XrayMain.lightmode <= 0) && XrayMain.cavefinder)
         {
         	return 1000;
         }
         //<<X-RAY<<//
-        
         int var2 = MathHelper.floor_double(this.posX);
         int var3 = MathHelper.floor_double(this.posZ);
 
@@ -1452,9 +1415,37 @@ public abstract class Entity
     public void addToPlayerScore(Entity par1Entity, int par2) {}
 
     /**
-     * adds the ID of this entity to the NBT given
+     * Checks using a Vec3d to determine if this entity is within range of that vector to be rendered. Args: vec3D
      */
-    public boolean addEntityID(NBTTagCompound par1NBTTagCompound)
+    public boolean isInRangeToRenderVec3D(Vec3 par1Vec3)
+    {
+        double var2 = this.posX - par1Vec3.xCoord;
+        double var4 = this.posY - par1Vec3.yCoord;
+        double var6 = this.posZ - par1Vec3.zCoord;
+        double var8 = var2 * var2 + var4 * var4 + var6 * var6;
+        return this.isInRangeToRenderDist(var8);
+    }
+
+    /**
+     * Checks if the entity is in range to render by using the past in distance and comparing it to its average edge
+     * length * 64 * renderDistanceWeight Args: distance
+     */
+    public boolean isInRangeToRenderDist(double par1)
+    {
+        double var3 = this.boundingBox.getAverageEdgeLength();
+        var3 *= 64.0D * this.renderDistanceWeight;
+        return par1 < var3 * var3;
+    }
+
+    /**
+     * Returns the texture's file path as a String.
+     */
+    public String getTexture()
+    {
+        return null;
+    }
+
+    public boolean addNotRiddenEntityID(NBTTagCompound par1NBTTagCompound)
     {
         String var2 = this.getEntityString();
 
@@ -1470,41 +1461,23 @@ public abstract class Entity
         }
     }
 
-    @SideOnly(Side.CLIENT)
-
     /**
-     * Checks using a Vec3d to determine if this entity is within range of that vector to be rendered. Args: vec3D
+     * adds the ID of this entity to the NBT given
      */
-    public boolean isInRangeToRenderVec3D(Vec3 par1Vec3)
+    public boolean addEntityID(NBTTagCompound par1NBTTagCompound)
     {
-        double var2 = this.posX - par1Vec3.xCoord;
-        double var4 = this.posY - par1Vec3.yCoord;
-        double var6 = this.posZ - par1Vec3.zCoord;
-        double var8 = var2 * var2 + var4 * var4 + var6 * var6;
-        return this.isInRangeToRenderDist(var8);
-    }
+        String var2 = this.getEntityString();
 
-    @SideOnly(Side.CLIENT)
-
-    /**
-     * Checks if the entity is in range to render by using the past in distance and comparing it to its average edge
-     * length * 64 * renderDistanceWeight Args: distance
-     */
-    public boolean isInRangeToRenderDist(double par1)
-    {
-        double var3 = this.boundingBox.getAverageEdgeLength();
-        var3 *= 64.0D * this.renderDistanceWeight;
-        return par1 < var3 * var3;
-    }
-
-    @SideOnly(Side.CLIENT)
-
-    /**
-     * Returns the texture's file path as a String.
-     */
-    public String getTexture()
-    {
-        return null;
+        if (!this.isDead && var2 != null && this.riddenByEntity == null)
+        {
+            par1NBTTagCompound.setString("id", var2);
+            this.writeToNBT(par1NBTTagCompound);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     /**
@@ -1524,7 +1497,19 @@ public abstract class Entity
             par1NBTTagCompound.setInteger("Dimension", this.dimension);
             par1NBTTagCompound.setBoolean("Invulnerable", this.invulnerable);
             par1NBTTagCompound.setInteger("PortalCooldown", this.timeUntilPortal);
+            par1NBTTagCompound.setLong("UUIDMost", this.entityUniqueID.getMostSignificantBits());
+            par1NBTTagCompound.setLong("UUIDLeast", this.entityUniqueID.getLeastSignificantBits());
             this.writeEntityToNBT(par1NBTTagCompound);
+
+            if (this.ridingEntity != null)
+            {
+                NBTTagCompound var2 = new NBTTagCompound("Riding");
+
+                if (this.ridingEntity.addNotRiddenEntityID(var2))
+                {
+                    par1NBTTagCompound.setTag("Riding", var2);
+                }
+            }
         }
         catch (Throwable var5)
         {
@@ -1576,6 +1561,12 @@ public abstract class Entity
             this.dimension = par1NBTTagCompound.getInteger("Dimension");
             this.invulnerable = par1NBTTagCompound.getBoolean("Invulnerable");
             this.timeUntilPortal = par1NBTTagCompound.getInteger("PortalCooldown");
+
+            if (par1NBTTagCompound.hasKey("UUIDMost") && par1NBTTagCompound.hasKey("UUIDLeast"))
+            {
+                this.entityUniqueID = new UUID(par1NBTTagCompound.getLong("UUIDMost"), par1NBTTagCompound.getLong("UUIDLeast"));
+            }
+
             this.setPosition(this.posX, this.posY, this.posZ);
             this.setRotation(this.rotationYaw, this.rotationPitch);
             this.readEntityFromNBT(par1NBTTagCompound);
@@ -1643,7 +1634,6 @@ public abstract class Entity
         return var2;
     }
 
-    @SideOnly(Side.CLIENT)
     public float getShadowSize()
     {
         return this.height / 2.0F;
@@ -1799,14 +1789,17 @@ public abstract class Entity
 
     public void updateRiderPosition()
     {
-        if (!(this.riddenByEntity instanceof EntityPlayer) || !((EntityPlayer)this.riddenByEntity).func_71066_bF())
+        if (this.riddenByEntity != null)
         {
-            this.riddenByEntity.lastTickPosX = this.lastTickPosX;
-            this.riddenByEntity.lastTickPosY = this.lastTickPosY + this.getMountedYOffset() + this.riddenByEntity.getYOffset();
-            this.riddenByEntity.lastTickPosZ = this.lastTickPosZ;
-        }
+            if (!(this.riddenByEntity instanceof EntityPlayer) || !((EntityPlayer)this.riddenByEntity).func_71066_bF())
+            {
+                this.riddenByEntity.lastTickPosX = this.lastTickPosX;
+                this.riddenByEntity.lastTickPosY = this.lastTickPosY + this.getMountedYOffset() + this.riddenByEntity.getYOffset();
+                this.riddenByEntity.lastTickPosZ = this.lastTickPosZ;
+            }
 
-        this.riddenByEntity.setPosition(this.posX, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ);
+            this.riddenByEntity.setPosition(this.posX, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ);
+        }
     }
 
     /**
@@ -1843,22 +1836,11 @@ public abstract class Entity
 
             this.ridingEntity = null;
         }
-        else if (this.ridingEntity == par1Entity)
-        {
-            this.unmountEntity(par1Entity);
-            this.ridingEntity.riddenByEntity = null;
-            this.ridingEntity = null;
-        }
         else
         {
             if (this.ridingEntity != null)
             {
                 this.ridingEntity.riddenByEntity = null;
-            }
-
-            if (par1Entity.riddenByEntity != null)
-            {
-                par1Entity.riddenByEntity.ridingEntity = null;
             }
 
             this.ridingEntity = par1Entity;
@@ -1871,9 +1853,16 @@ public abstract class Entity
      */
     public void unmountEntity(Entity par1Entity)
     {
-        double var3 = par1Entity.posX;
-        double var5 = par1Entity.boundingBox.minY + (double)par1Entity.height;
-        double var7 = par1Entity.posZ;
+        double var3 = this.posX;
+        double var5 = this.posY;
+        double var7 = this.posZ;
+
+        if (par1Entity != null)
+        {
+            var3 = par1Entity.posX;
+            var5 = par1Entity.boundingBox.minY + (double)par1Entity.height;
+            var7 = par1Entity.posZ;
+        }
 
         for (double var9 = -1.5D; var9 < 2.0D; ++var9)
         {
@@ -1885,7 +1874,7 @@ public abstract class Entity
                     int var14 = (int)(this.posZ + var11);
                     AxisAlignedBB var2 = this.boundingBox.getOffsetBoundingBox(var9, 1.0D, var11);
 
-                    if (this.worldObj.getAllCollidingBoundingBoxes(var2).isEmpty())
+                    if (this.worldObj.getCollidingBlockBounds(var2).isEmpty())
                     {
                         if (this.worldObj.doesBlockHaveSolidTopSurface(var13, (int)this.posY, var14))
                         {
@@ -1906,8 +1895,6 @@ public abstract class Entity
 
         this.setLocationAndAngles(var3, var5, var7, this.rotationYaw, this.rotationPitch);
     }
-
-    @SideOnly(Side.CLIENT)
 
     /**
      * Sets the position and rotation. Only difference from the other one is no bounding on the rotation. Args: posX,
@@ -1967,7 +1954,7 @@ public abstract class Entity
 
             if (!this.worldObj.isRemote && !this.inPortal)
             {
-                this.field_82152_aq = Direction.func_82372_a(var1, var3);
+                this.teleportDirection = Direction.getMovementDirection(var1, var3);
             }
 
             this.inPortal = true;
@@ -1982,8 +1969,6 @@ public abstract class Entity
         return 900;
     }
 
-    @SideOnly(Side.CLIENT)
-
     /**
      * Sets the velocity to the args. Args: x, y, z
      */
@@ -1994,17 +1979,13 @@ public abstract class Entity
         this.motionZ = par5;
     }
 
-    @SideOnly(Side.CLIENT)
     public void handleHealthUpdate(byte par1) {}
-
-    @SideOnly(Side.CLIENT)
 
     /**
      * Setups the entity to do the hurt animation. Only used by packets in multiplayer.
      */
     public void performHurtAnimation() {}
 
-    @SideOnly(Side.CLIENT)
     public void updateCloak() {}
 
     public ItemStack[] getLastActiveItems()
@@ -2066,17 +2047,21 @@ public abstract class Entity
         this.setFlag(3, par1);
     }
 
-    public boolean getHasActivePotion()
+    public boolean isInvisible()
     {
         return this.getFlag(5);
     }
 
-    public void setHasActivePotion(boolean par1)
+    public boolean func_98034_c(EntityPlayer par1EntityPlayer)
+    {
+        return this.isInvisible();
+    }
+
+    public void setInvisible(boolean par1)
     {
         this.setFlag(5, par1);
     }
 
-    @SideOnly(Side.CLIENT)
     public boolean isEating()
     {
         return this.getFlag(4);
@@ -2153,7 +2138,7 @@ public abstract class Entity
         double var10 = par1 - (double)var7;
         double var12 = par3 - (double)var8;
         double var14 = par5 - (double)var9;
-        List var16 = this.worldObj.getAllCollidingBoundingBoxes(this.boundingBox);
+        List var16 = this.worldObj.getCollidingBlockBounds(this.boundingBox);
 
         if (var16.isEmpty() && !this.worldObj.func_85174_u(var7, var8, var9))
         {
@@ -2276,17 +2261,15 @@ public abstract class Entity
         return this == par1Entity;
     }
 
-    public float setRotationYawHead()
+    public float getRotationYawHead()
     {
         return 0.0F;
     }
 
-    @SideOnly(Side.CLIENT)
-
     /**
      * Sets the head's yaw rotation of the entity.
      */
-    public void setHeadRotationYaw(float par1) {}
+    public void setRotationYawHead(float par1) {}
 
     /**
      * If returns false, the item will not inflict any damage against entities.
@@ -2330,7 +2313,7 @@ public abstract class Entity
         par1Entity.writeToNBT(var3);
         this.readFromNBT(var3);
         this.timeUntilPortal = par1Entity.timeUntilPortal;
-        this.field_82152_aq = par1Entity.field_82152_aq;
+        this.teleportDirection = par1Entity.teleportDirection;
     }
 
     /**
@@ -2346,7 +2329,7 @@ public abstract class Entity
             WorldServer var4 = var2.worldServerForDimension(var3);
             WorldServer var5 = var2.worldServerForDimension(par1);
             this.dimension = par1;
-            this.worldObj.setEntityDead(this);
+            this.worldObj.removeEntity(this);
             this.isDead = false;
             this.worldObj.theProfiler.startSection("reposition");
             var2.getConfigurationManager().transferEntityToWorld(this, var3, var4, var5);
@@ -2367,9 +2350,14 @@ public abstract class Entity
         }
     }
 
-    public float func_82146_a(Explosion par1Explosion, Block par2Block, int par3, int par4, int par5)
+    public float func_82146_a(Explosion par1Explosion, World par2World, int par3, int par4, int par5, Block par6Block)
     {
-        return par2Block.getExplosionResistance(this);
+        return par6Block.getExplosionResistance(this);
+    }
+
+    public boolean func_96091_a(Explosion par1Explosion, World par2World, int par3, int par4, int par5, int par6, float par7)
+    {
+        return true;
     }
 
     public int func_82143_as()
@@ -2377,9 +2365,9 @@ public abstract class Entity
         return 3;
     }
 
-    public int func_82148_at()
+    public int getTeleportDirection()
     {
-        return this.field_82152_aq;
+        return this.teleportDirection;
     }
 
     /**
@@ -2394,13 +2382,11 @@ public abstract class Entity
     {
         par1CrashReportCategory.addCrashSectionCallable("Entity Type", new CallableEntityType(this));
         par1CrashReportCategory.addCrashSection("Entity ID", Integer.valueOf(this.entityId));
-        par1CrashReportCategory.addCrashSection("Name", this.getEntityName());
-        par1CrashReportCategory.addCrashSection("Exact location", String.format("%.2f, %.2f, %.2f", new Object[] {Double.valueOf(this.posX), Double.valueOf(this.posY), Double.valueOf(this.posZ)}));
-        par1CrashReportCategory.addCrashSection("Block location", CrashReportCategory.func_85071_a(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)));
-        par1CrashReportCategory.addCrashSection("Momentum", String.format("%.2f, %.2f, %.2f", new Object[] {Double.valueOf(this.motionX), Double.valueOf(this.motionY), Double.valueOf(this.motionZ)}));
+        par1CrashReportCategory.addCrashSectionCallable("Entity Name", new CallableEntityName(this));
+        par1CrashReportCategory.addCrashSection("Entity\'s Exact location", String.format("%.2f, %.2f, %.2f", new Object[] {Double.valueOf(this.posX), Double.valueOf(this.posY), Double.valueOf(this.posZ)}));
+        par1CrashReportCategory.addCrashSection("Entity\'s Block location", CrashReportCategory.getLocationInfo(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)));
+        par1CrashReportCategory.addCrashSection("Entity\'s Momentum", String.format("%.2f, %.2f, %.2f", new Object[] {Double.valueOf(this.motionX), Double.valueOf(this.motionY), Double.valueOf(this.motionZ)}));
     }
-
-    @SideOnly(Side.CLIENT)
 
     /**
      * Return whether this entity should be rendered as on fire.
@@ -2408,5 +2394,18 @@ public abstract class Entity
     public boolean canRenderOnFire()
     {
         return this.isBurning();
+    }
+
+    public boolean func_96092_aw()
+    {
+        return true;
+    }
+
+    /**
+     * Returns the translated name of the entity.
+     */
+    public String getTranslatedEntityName()
+    {
+        return this.getEntityName();
     }
 }

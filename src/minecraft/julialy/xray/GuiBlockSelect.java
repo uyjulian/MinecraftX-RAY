@@ -3,10 +3,11 @@ package julialy.xray;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.src.ModLoader;
+import julialy.xray.main.XrayMain;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.*;
+
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -17,7 +18,7 @@ public class GuiBlockSelect extends GuiScreen
     List fullList = new ArrayList();
     List invisible = new ArrayList();
     int listpos = 0;
-    String nazwa = "xrayProfile1.txt";
+    //String nazwa = "xrayProfile1.txt";
 
     public GuiBlockSelect()
     {
@@ -35,9 +36,9 @@ public class GuiBlockSelect extends GuiScreen
      */
     public void initGui()
     {
-        for (int var1 = 0; var1 < mod_xray.blackList.length; ++var1)
+        for (int var1 = 0; var1 < XrayMain.getXrayInstance().blackList.length; ++var1)
         {
-            this.invisible.add(Integer.valueOf(mod_xray.blackList[var1]));
+            this.invisible.add(Integer.valueOf(XrayMain.getXrayInstance().blackList[var1]));
         }
 
         Keyboard.enableRepeatEvents(true);
@@ -111,15 +112,19 @@ public class GuiBlockSelect extends GuiScreen
             {
                 this.invisible.add(new Integer(((Integer)this.fullList.get(this.listpos)).intValue()));
             }
+            else 
+            {
+            	java.awt.Toolkit.getDefaultToolkit().beep(); //Beep!
+            }
         }
         else
         {
             Object var3 = null;
-            ModLoader.getMinecraftInstance().displayGuiScreen((GuiScreen)var3);
+            Minecraft.getMinecraft().displayGuiScreen((GuiScreen)var3);
 
-            if (mod_xray.on)
+            if (XrayMain.getXrayInstance().on)
             {
-                this.mc.renderGlobal.loadRenderers();
+            	XrayMain.getXrayInstance().rerendereverything(true);
             }
         }
     }
@@ -129,14 +134,14 @@ public class GuiBlockSelect extends GuiScreen
      */
     public void onGuiClosed()
     {
-        mod_xray.blackList = new int[this.invisible.size()];
+    	XrayMain.getXrayInstance().blackList = new int[this.invisible.size()];
 
         for (int var1 = 0; var1 < this.invisible.size(); ++var1)
         {
-            mod_xray.blackList[var1] = Integer.valueOf(((Integer)this.invisible.get(var1)).intValue()).intValue();
+        	XrayMain.getXrayInstance().blackList[var1] = Integer.valueOf(((Integer)this.invisible.get(var1)).intValue()).intValue();
         }
 
-        mod_xray.saveBlackList(mod_xray.nazwa);
+        XrayMain.getXrayInstance().saveBlackList(XrayMain.getXrayInstance().nazwa);
     }
 
     /**
@@ -160,7 +165,7 @@ public class GuiBlockSelect extends GuiScreen
                 }
 
                 this.drawString(this.fontRenderer, var7 + 1 + ": ", this.width / 2 - 66, var6 - 60 + 7 + var8 * 24, 16777215);
-                String var9 = Block.blocksList[((Integer)this.fullList.get(var7)).intValue()].getBlockName();
+                String var9 = Block.blocksList[((Integer)this.fullList.get(var7)).intValue()].getLocalizedName();
 
                 if (var9 == null)
                 {
@@ -168,19 +173,24 @@ public class GuiBlockSelect extends GuiScreen
                 }
                 else
                 {
-                    var9 = var9.substring(5);
+                    //var9 = var9.substring(5);
                 }
 
                 this.drawCenteredString(this.fontRenderer, var9, this.width / 2, var6 - 60 + 7 + var8 * 24, 16777215);
+                
+                //TODO: fix icons
+                
+                /*
                 int var10 = Block.blocksList[((Integer)this.fullList.get(var7)).intValue()].blockIndexInTexture;
 
                 if (var10 >= 0)
                 {
                     GL11.glPushMatrix();
-                    this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture("/terrain.png"));
+                    this.mc.renderEngine.bindTexture("/terrain.png");
                     this.drawTexturedModalRect(this.width / 2 - 97, var6 - 60 + 4 + var8 * 24, var10 % 16 * 16, var10 / 16 * 16, 16, 16);
                     GL11.glPopMatrix();
                 }
+                */
             }
 
             ++var7;
