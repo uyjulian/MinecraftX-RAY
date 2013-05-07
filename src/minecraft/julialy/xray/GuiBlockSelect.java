@@ -119,8 +119,8 @@ public class GuiBlockSelect extends GuiScreen
         }
         else
         {
-            Object var3 = null;
-            Minecraft.getMinecraft().displayGuiScreen((GuiScreen)var3);
+
+            Minecraft.getMinecraft().displayGuiScreen(null);
 
             if (XrayMain.getXrayInstance().on)
             {
@@ -141,7 +141,7 @@ public class GuiBlockSelect extends GuiScreen
         	XrayMain.getXrayInstance().blackList[var1] = Integer.valueOf(((Integer)this.invisible.get(var1)).intValue()).intValue();
         }
 
-        XrayMain.getXrayInstance().saveBlackList(XrayMain.getXrayInstance().nazwa);
+        XrayMain.getXrayInstance().saveCurrentBlackList();
     }
 
     /**

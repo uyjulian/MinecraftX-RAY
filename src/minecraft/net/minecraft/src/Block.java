@@ -512,21 +512,6 @@ public class Block
             }
         }
 
-        if (XrayMain.cavefinder)
-        {
-            var6 = XrayMain.blackList;
-            var7 = XrayMain.blackList.length;
-
-            for (var8 = 0; var8 < var7; ++var8)
-            {
-                var9 = var6[var8];
-
-                if (var9 != 1 && var9 == this.blockID)
-                {
-                    return false;
-                }
-            }
-        }
         //<<X-RAY<<//
         return par5 == 0 && this.minY > 0.0D ? true : (par5 == 1 && this.maxY < 1.0D ? true : (par5 == 2 && this.minZ > 0.0D ? true : (par5 == 3 && this.maxZ < 1.0D ? true : (par5 == 4 && this.minX > 0.0D ? true : (par5 == 5 && this.maxX < 1.0D ? true : !par1IBlockAccess.isBlockOpaqueCube(par2, par3, par4))))));
     }

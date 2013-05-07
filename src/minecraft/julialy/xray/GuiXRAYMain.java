@@ -52,6 +52,7 @@ this.buttonList.add(new GuiButton(2, this.width / 2 - 100, this.height / 4 + 175
     {
       if (var1.id == 1)
      {
+    		XrayMain.getXrayInstance().loadBlackListName(this.chatBufferTextField.getText());
         this.mc.displayGuiScreen(new GuiBlockSelect());
       }
      else if (var1.id == 0)
