@@ -150,53 +150,11 @@ public abstract class BlockFluid extends Block
      * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
      * coordinates.  Args: blockAccess, x, y, z, side
      */
-    public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-    {
-        //>>X-RAY>>//
-        int[] var66;
-        int var7;
-        int var8;
-        int var9;
-  
-        if (XrayMain.on)
+        public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
         {
-            var66 = XrayMain.blackList;
-            var7 = var66.length;
-
-            for (var8 = 0; var8 < var7; ++var8)
-            {
-                var9 = var66[var8];
-
-                if (var9 == this.blockID)
-                {
-                    return false;
-                }
-            }
-
-            if (XrayMain.blackList.length != 0)
-            {
-                return true;
-            }
+                Material var6 = par1IBlockAccess.getBlockMaterial(par2, par3, par4);
+                return var6 == this.blockMaterial ? false : (par5 == 1 ? true : (var6 == Material.ice ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5)));
         }
-        else if (XrayMain.cavefinder)
-        {
-            var66 = XrayMain.blackList;
-            var7 = var66.length;
-
-            for (var8 = 0; var8 < var7; ++var8)
-            {
-                var9 = var66[var8];
-
-                if (var9 != 1 && var9 == this.blockID)
-                {
-                    return false;
-                }
-            }
-        }
-        //<<X-RAY<<//
-        Material var6 = par1IBlockAccess.getBlockMaterial(par2, par3, par4);
-        return var6 == this.blockMaterial ? false : (par5 == 1 ? true : (var6 == Material.ice ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5)));
-    }
 
     /**
      * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
