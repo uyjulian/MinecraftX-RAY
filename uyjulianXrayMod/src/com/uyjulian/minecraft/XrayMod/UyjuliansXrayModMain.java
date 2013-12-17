@@ -150,11 +150,11 @@ public class UyjuliansXrayModMain {
 	 * NOTE: Do not change this into lowercase boolean, or this will not work! (Will error on returning null)
 	 * 
 	 * Confused on what this means?
-	 * false means the side is not going to be rendered.
-	 * true means the side is going to be rendered.
-	 * null means the side will be processed by normal means.
+	 * b means the side is not going to be rendered.
+	 * a means the side is going to be rendered.
+	 * c means the side will be processed by normal means.
 	 */
-	public Boolean shouldBlockSideBeRendered(int blockID) {
+	public char shouldBlockSideBeRendered(int blockID) {
 		if (this.toggleXRay || this.toggleCaveFinder) {
 			int[] blockListBuffer = blockList;
 			int blockListLength = blockList.length;
@@ -164,21 +164,21 @@ public class UyjuliansXrayModMain {
 				if (currentID == blockID) {
 					if (this.toggleCaveFinder) {
 						if (currentID != 1) {
-							return new Boolean(false);
+							return 'b';
 						}
 					}
 					else {
-						return new Boolean(false);
+						return 'b';
 					}
 				}
 			}
 			if (!this.toggleCaveFinder) {
 				if (blockListLength != 0) {
-					return new Boolean(true);
+					return 'a';
 				}
 			}
 		}
-		return null;
+		return 'c';
 	}
 	
 	// Misc stuff

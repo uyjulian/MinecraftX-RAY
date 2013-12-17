@@ -9,6 +9,8 @@ import com.mumfrey.liteloader.LiteMod;
 import com.mumfrey.liteloader.core.LiteLoader;
 
 public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
+	
+	public UyjuliansXrayModMain modInstance;
 
 	@Override
 	public String getName() {
@@ -22,7 +24,7 @@ public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
 
 	@Override
 	public void init(File configPath) {
-		UyjuliansXrayModMain.getModInstance();
+		modInstance = UyjuliansXrayModMain.getModInstance();
 	}
 
 	@Override
@@ -31,7 +33,7 @@ public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
 
 	@Override
 	public void onTick(Minecraft minecraft, float partialTicks, boolean inGame, boolean clock) {
-		UyjuliansXrayModMain.getModInstance().onTick(inGame);
+		modInstance.onTick(inGame);
 	}
 
 	@Override
