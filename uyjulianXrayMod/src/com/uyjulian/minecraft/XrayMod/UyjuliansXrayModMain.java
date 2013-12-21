@@ -14,6 +14,10 @@ import com.mumfrey.liteloader.util.ModUtilities;
 
 import net.minecraft.src.*;
 
+/*
+ * Feel free to mess around with the source.
+ */
+
 public class UyjuliansXrayModMain {
 	public static UyjuliansXrayModMain currentModInstance;
 	public Minecraft minecraftInstance;
