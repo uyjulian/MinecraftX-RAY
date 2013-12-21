@@ -147,7 +147,7 @@ public class UyjuliansXrayModMain {
 	// Check then render blocks stuff
 	
 	/*
-	 * NOTE: Do not change this into lowercase boolean, or this will not work! (Will error on returning null)
+	 * NOTE: Boolean (the object) throws an exception on null.
 	 * 
 	 * Confused on what this means?
 	 * b means the side is not going to be rendered.
