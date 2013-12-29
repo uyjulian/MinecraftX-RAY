@@ -26,10 +26,10 @@
     <property name="litemodversion" value="1.6.4" />
 
     <!-- Your name, this gets written into the mod metadata and jar metadata -->
-    <property name="author"         value="Mumfrey" />
+    <property name="author"         value="uyjulian" />
 
     <!-- The name of the eclipse project to build, for upstream dependencies see the targets below -->
-    <property name="project"        value="ExampleMod" />
+    <property name="project"        value="uyjulianXrayMod" />
 
     <!-- The upstream MD5 set to use when outputting your mod classes, usually liteloader -->
     <property name="md5set"         value="liteloader" />

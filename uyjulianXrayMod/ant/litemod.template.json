@@ -1,0 +1,7 @@
+{
+    "name": "${ant.project.name}",
+    "mcversion": "${litemodversion}",
+    "revision": "${build.number}",
+    "author": "${author}",
+    "description": "This is an example liteloader mod which draws a clock."
+}
