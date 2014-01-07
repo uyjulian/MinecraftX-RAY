@@ -3,5 +3,6 @@
     "mcversion": "${litemodversion}",
     "revision": "${build.number}",
     "author": "${author}",
-    "description": "This is an example liteloader mod which draws a clock."
+    "description": "This mod lets you see through blocks.",
+    "classTransformerClasses": "com.uyjulian.minecraft.XrayMod.XrayModClassTransformer"
 }

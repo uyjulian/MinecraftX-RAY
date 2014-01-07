@@ -2,7 +2,7 @@ package com.uyjulian.minecraft.XrayMod;
 
 import java.io.File;
 
-import net.minecraft.src.Minecraft;
+import net.minecraft.client.Minecraft;
 
 import com.mumfrey.liteloader.InitCompleteListener;
 import com.mumfrey.liteloader.LiteMod;

@@ -12,7 +12,9 @@ import org.lwjgl.input.Keyboard;
 
 import com.mumfrey.liteloader.util.ModUtilities;
 
-import net.minecraft.src.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.world.IBlockAccess;
 
 /*
  * Feel free to mess around with the source.
@@ -33,8 +35,8 @@ public class UyjuliansXrayModMain {
 			minecraftInstance = Minecraft.getMinecraft();
 			loadBlockList(currentBlocklistName);
 			// Keybinding setup
-			this.keyBinds.add(new KeyBinding("[Uyjulian's X-ray Mod] Toggle X-ray",Keyboard.KEY_X));
-			this.keyBinds.add(new KeyBinding("[Uyjulian's X-ray Mod] Toggle Cave Finder",Keyboard.KEY_V));
+			this.keyBinds.add(new KeyBinding("[Uyjulian's X-ray Mod] Toggle X-ray",Keyboard.KEY_X, null));
+			this.keyBinds.add(new KeyBinding("[Uyjulian's X-ray Mod] Toggle Cave Finder",Keyboard.KEY_V, null));
 			for (KeyBinding currentKey : this.keyBinds) {
 				if (currentKey != null) {
 					ModUtilities.registerKey(currentKey);
@@ -158,31 +160,43 @@ public class UyjuliansXrayModMain {
 	 * a means the side is going to be rendered.
 	 * c means the side will be processed by normal means.
 	 */
-	public char shouldBlockSideBeRendered(int blockID) {
-		if (this.toggleXRay || this.toggleCaveFinder) {
+	public static boolean shouldBlockSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5, Block currentBlock, int blockID) {
+		if (toggleXRay || toggleCaveFinder) {
 			int[] blockListBuffer = blockList;
 			int blockListLength = blockList.length;
 			int i, currentID;
 			for (i = 0; i < blockListLength; ++i) {
 				currentID = blockListBuffer[blockListLength];
 				if (currentID == blockID) {
-					if (this.toggleCaveFinder) {
+					if (toggleCaveFinder) {
 						if (currentID != 1) {
-							return 'b';
+							return false;
 						}
 					}
 					else {
-						return 'b';
+						return false;
 					}
 				}
 			}
-			if (!this.toggleCaveFinder) {
+			if (!toggleCaveFinder) {
 				if (blockListLength != 0) {
-					return 'a';
+					return true;
 				}
 			}
 		}
-		return 'c';
+		// Yay, these long things are fun!
+		return par5 == 0 && currentBlock.getBlockBoundsMinY() > 0.0D ? true : 
+			(par5 == 1 && currentBlock.getBlockBoundsMaxY() < 1.0D ? true : 
+				(par5 == 2 && currentBlock.getBlockBoundsMinZ() > 0.0D ? true : 
+					(par5 == 3 && currentBlock.getBlockBoundsMaxZ() < 1.0D ? true : 
+						(par5 == 4 && currentBlock.getBlockBoundsMinX() > 0.0D ? true : 
+							(par5 == 5 && currentBlock.getBlockBoundsMaxX() < 1.0D ? true : 
+								!par1IBlockAccess.isBlockOpaqueCube(par2, par3, par4)
+							)
+						)
+					)
+				)
+			);
 	}
 	
 	// Misc stuff

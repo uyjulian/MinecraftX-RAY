@@ -2,7 +2,10 @@ package com.uyjulian.minecraft.XrayMod;
 
 import org.lwjgl.input.Keyboard;
 
-import net.minecraft.src.*;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.settings.GameSettings;
 
 public class XrayModMainGui extends GuiScreen {
 	private GuiScreen parentScreen;

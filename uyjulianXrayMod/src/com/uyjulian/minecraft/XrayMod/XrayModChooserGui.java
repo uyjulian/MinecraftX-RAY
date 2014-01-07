@@ -7,7 +7,10 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.src.*;
+import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+
 
 public class XrayModChooserGui extends GuiScreen {
 	UyjuliansXrayModMain modInstance = UyjuliansXrayModMain.getModInstance();
