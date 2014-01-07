@@ -12,6 +12,7 @@ import org.lwjgl.input.Keyboard;
 
 import com.mumfrey.liteloader.util.ModUtilities;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.world.IBlockAccess;
