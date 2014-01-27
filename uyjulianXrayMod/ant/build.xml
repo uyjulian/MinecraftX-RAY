@@ -5,23 +5,23 @@
 <project name="uyjulianXrayMod" basedir="." default="main">
 	
 	<!-- Change this into the directory of the MCP folder. -->
-	<property name="mcp.dir"        location="../../../../Documents/mcmodding/xray164" />
+	<property name="mcp.dir"        location="../../../../Documents/mcmodding/mcp903" />
 	<!-- Path to the python executable used by MCP, change if using a non-windows OS -->
 	<property name="python"         location="/usr/bin/python" />
 
-    <property name="version"        value="0.0.0" />
-    <property name="mcversion"      value="1.6.4" />
-    <property name="litemodversion" value="1.6.4" />
+    <property name="version"        value="0.1" />
+    <property name="mcversion"      value="1.7.2" />
+    <property name="litemodversion" value="1.7.2_02" />
     <property name="author"         value="uyjulian" />
     <property name="project"        value="uyjulianXrayMod" />
     <property name="md5set"         value="liteloader" />
 	
     <property name="eclipse.dir"    location="${mcp.dir}/eclipse" />
-    <property name="target.dir"     location="${mcp.dir}/src/minecraft" />
-    <property name="mc.src.dir"     location="${mcp.dir}/src/mcp" />
+    <property name="mc.src.dir"     location="${mcp.dir}/src/minecraft" />
     <property name="temp.dir"       location="${mcp.dir}/temp" />
     <property name="md5.dir"        location="${mcp.dir}/md5" />
     <property name="build.dir"      location="${mcp.dir}/build" />
+    <property name="target.dir"     location="${build.dir}/src" />
     <property name="dist.dir"       location="${build.dir}/dist" />
     <property name="stage.dir"      location="${build.dir}/stage/${ant.project.name}/${version}" />
     <property name="file.prefix"    value="mod" />
@@ -31,26 +31,11 @@
 
     <!-- Main target -->
     <target name="main" description="Perform all tasks for a build">
-        <!-- Init sets up the environment ready for the build, cleaning the old staging paths    -->
-        <!-- and creating new clean ones that we will use for output. Also copies all the        -->
-        <!-- required source files to the target source directory ready for MCP to build them.   -->
         <antcall target="init" />
-
-        <!-- Calls the MCP recompile process on the aggregated sources.                          -->
         <antcall target="recompile" />
-
-        <!-- Calls the MCP reobfuscate process, this will output all modified classes not masked -->
-        <!-- by the upstream MD5 set, which should be our mod classes!                           -->
         <antcall target="reobfuscate" />
-
-        <!-- Saves the new MD5's to our own file, for use by downstream projects. If enabled.    -->
         <antcall target="savemd5" />
-
-        <!-- Stages the new class files, and our project resources into the staging directory    -->
-        <!-- ready to be built into the output jar file.                                         -->
         <antcall target="stage" />
-
-        <!-- Builds the output jar file and writes it as a .litemod file to the build directory. -->
         <antcall target="litemod" />
     </target>
 
@@ -127,6 +112,7 @@
             <fileset dir="${eclipse.dir}/${lib}/java" />
             <!-- Maven default -->
             <fileset dir="${eclipse.dir}/${lib}/src/main/java" />
+            <fileset dir="/Users/julian/git/uyjulianXrayMod/${lib}/src" />
         </copy>
     </target>
 
@@ -162,10 +148,12 @@
     <!-- MCP recompilation task -->
     <target name="recompile" description="MCP recompile">
         <echo level="info" message="Compiling projects" />
-
+    	<echo append="false" file="${temp.dir}/build.cfg" message="[OUTPUT]&#x0A;SrcClient  = build/src" />
         <exec executable="${python}" dir="${mcp.dir}">
             <arg value="runtime/recompile.py" />
             <arg value="--client" />
+            <arg value="--config" />
+            <arg value="${temp.dir}/build.cfg" />
             <arg value="%*" />
         </exec>
     </target>
