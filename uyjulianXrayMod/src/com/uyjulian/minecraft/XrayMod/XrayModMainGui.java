@@ -21,7 +21,7 @@ public class XrayModMainGui extends GuiScreen {
 	public void initGui() {
 		Keyboard.enableRepeatEvents(true);
 		this.buttonList.clear();
-		this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 50 + 12, I18n.format("gui.done", (Object[])null)));
+		this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 50 + 12, I18n.format("gui.done", new Object[0])));
 		this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 75 + 12, "Select blocks"));
 		this.buttonList.add(new GuiButton(2, this.width / 2 - 100, this.height / 4 + 100 + 12, "Switch to the profile in the textbox"));
 		this.profileNameTextBox = new GuiTextField(this.fontRendererObj, this.width / 2 - 100, this.height / 4 + 125 + 12, 200, 20);

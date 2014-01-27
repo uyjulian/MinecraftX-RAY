@@ -14,12 +14,12 @@ public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
 
 	@Override
 	public String getName() {
-		return "!X-RAY";
+		return "Uyjulian's X-ray Mod";
 	}
 
 	@Override
 	public String getVersion() {
-		return "1.6.4";
+		return "1.7.2";
 	}
 
 	@Override
