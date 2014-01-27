@@ -161,8 +161,9 @@ public class UyjuliansXrayModMain {
 	 * a means the side is going to be rendered.
 	 * c means the side will be processed by normal means.
 	 */
-	public static boolean shouldBlockSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5, Block currentBlock, int blockID) {
+	public static boolean shouldBlockSideBeRendered(boolean returnValue, int ref, Block currentBlock, IBlockAccess par1BlockAccess, int par2, int par3, int par4, int par5) {
 		if (toggleXRay || toggleCaveFinder) {
+			int blockID = Block.getIdFromBlock(currentBlock);
 			int[] blockListBuffer = blockList;
 			int blockListLength = blockList.length;
 			int i, currentID;
@@ -185,8 +186,7 @@ public class UyjuliansXrayModMain {
 				}
 			}
 		}
-		// Yay, these long things are fun!
-		return false; //nothing e_e
+		return returnValue;
 	}
 	
 	// Misc stuff

@@ -1,0 +1,5 @@
+{
+    "name": "LitemodStub",
+    "mcversion": "1.7.2_02",
+    "classTransformerClasses": "com.uyjulian.minecraft.XrayMod.XrayModClassTransformer"
+}
