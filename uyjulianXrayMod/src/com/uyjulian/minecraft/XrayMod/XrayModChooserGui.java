@@ -1,6 +1,7 @@
 package com.uyjulian.minecraft.XrayMod;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.lwjgl.input.Mouse;
@@ -8,6 +9,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSlab;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 
@@ -19,11 +22,14 @@ public class XrayModChooserGui extends GuiScreen {
 	int listPos = 0;
 
 	public XrayModChooserGui() {
-		for (int i = 0; i < Block.blocksList.length; ++i) {
-			if (Block.blocksList[i] != null) {
-				this.idList.add(i);
-			}
-		}
+        @SuppressWarnings("unchecked")
+		Iterator<Block> blockIterator = Block.blockRegistry.iterator();
+
+        while (blockIterator.hasNext())
+        {
+        	Block currentBlock = blockIterator.next();
+        	this.idList.add(Block.getIdFromBlock(currentBlock));
+        }
 	}
 	
 	@Override
@@ -115,12 +121,12 @@ public class XrayModChooserGui extends GuiScreen {
 				if (this.invisibleIdList.indexOf((this.idList.get(renderPosition)).intValue()) >= 0) {
 					drawRect(widthPlus100, heightCalc + 10 - 48 + i * 24, widthMinus100, heightCalc - 10 - 48 + i * 24, -65536);
 				}
-				drawString(this.fontRenderer, renderPosition + 1 + ": ", this.width / 2 - 66, heightCalc - 60 + 7 + i * 24, 16777215);
-				String currentBlockName = Block.blocksList[this.idList.get(renderPosition).intValue()].getLocalizedName();
+				drawString(this.fontRendererObj, renderPosition + 1 + ": ", this.width / 2 - 66, heightCalc - 60 + 7 + i * 24, 16777215);
+				String currentBlockName = Block.getBlockById(this.idList.get(renderPosition).intValue()).getLocalizedName();
 				if (currentBlockName == null) {
 					currentBlockName = "No Name";
 				}
-				drawCenteredString(this.fontRenderer, currentBlockName, this.width / 2, heightCalc - 60 + 7 + i * 24, 16777215);
+				drawCenteredString(this.fontRendererObj, currentBlockName, this.width / 2, heightCalc - 60 + 7 + i * 24, 16777215);
 			}
 			++renderPosition;
 		}

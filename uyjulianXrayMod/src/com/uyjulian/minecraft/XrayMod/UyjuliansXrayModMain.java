@@ -186,18 +186,7 @@ public class UyjuliansXrayModMain {
 			}
 		}
 		// Yay, these long things are fun!
-		return par5 == 0 && currentBlock.getBlockBoundsMinY() > 0.0D ? true : 
-			(par5 == 1 && currentBlock.getBlockBoundsMaxY() < 1.0D ? true : 
-				(par5 == 2 && currentBlock.getBlockBoundsMinZ() > 0.0D ? true : 
-					(par5 == 3 && currentBlock.getBlockBoundsMaxZ() < 1.0D ? true : 
-						(par5 == 4 && currentBlock.getBlockBoundsMinX() > 0.0D ? true : 
-							(par5 == 5 && currentBlock.getBlockBoundsMaxX() < 1.0D ? true : 
-								!par1IBlockAccess.isBlockOpaqueCube(par2, par3, par4)
-							)
-						)
-					)
-				)
-			);
+		return false; //nothing e_e
 	}
 	
 	// Misc stuff
