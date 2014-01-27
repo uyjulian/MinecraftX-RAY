@@ -15,9 +15,9 @@ public class XrayModClassTransformer extends CallbackInjectionTransformer {
 	@Override
 	protected void addMappings() {
 		// TODO Auto-generated method stub
-		this.addCallbackMapping("net.minecraft.block.Block", "shouldSideBeRendered", "(Lnet/minecraft/world/IBlockAccess;IIII)Z", CallBackType.RETURN, new Callback("shouldSideBeRendered", "com.uyjulian.minecraft.UyjuliansXrayModMain", true));
-		this.addCallbackMapping("net.minecraft.block.Block", "func_149646_a", "(Lnet/minecraft/world/IBlockAccess;IIII)Z", CallBackType.RETURN, new Callback("shouldSideBeRendered", "com.uyjulian.minecraft.UyjuliansXrayModMain", true));
-		this.addCallbackMapping("ahu", "a", "(Lafx;IIII)Z", CallBackType.RETURN, new Callback("shouldSideBeRendered", "com.uyjulian.minecraft.UyjuliansXrayModMain", true));
+		this.addCallbackMapping("net.minecraft.block.Block", "shouldSideBeRendered", "(Lnet/minecraft/world/IBlockAccess;IIII)Z", CallBackType.RETURN, new Callback("shouldSideBeRendered", "com.uyjulian.minecraft.XrayMod.UyjuliansXrayModMain", true));
+		this.addCallbackMapping("net.minecraft.block.Block", "func_149646_a", "(Lnet/minecraft/world/IBlockAccess;IIII)Z", CallBackType.RETURN, new Callback("shouldSideBeRendered", "com.uyjulian.minecraft.XrayMod.UyjuliansXrayModMain", true));
+		this.addCallbackMapping("ahu", "a", "(Lafx;IIII)Z", CallBackType.RETURN, new Callback("shouldSideBeRendered", "com.uyjulian.minecraft.XrayMod.UyjuliansXrayModMain", true));
 	}
 	
 //	//TODO Obf 1.6.4
