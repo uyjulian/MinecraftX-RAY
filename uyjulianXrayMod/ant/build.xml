@@ -112,7 +112,7 @@
             <fileset dir="${eclipse.dir}/${lib}/java" />
             <!-- Maven default -->
             <fileset dir="${eclipse.dir}/${lib}/src/main/java" />
-            <fileset dir="/Users/julian/git/uyjulianXrayMod/${lib}/src" />
+            <fileset dir="/Users/julian/git/${lib}/${lib}/src" />
         </copy>
     </target>
 
