@@ -63,7 +63,7 @@ public class UyjuliansXrayModMain {
 	public void onTick(boolean inGame) {
 		if ((minecraftInstance.inGameHasFocus) && (inGame)) {
 			if (this.keyBinds.get(0).isPressed()) {
-				if (!Keyboard.isKeyDown(29) && !Keyboard.isKeyDown(157)) {
+				if (!Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && !Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
 					UyjuliansXrayModMain.printLineInLog("Toggling X-ray...");
 					toggleXRay = !toggleXRay;
 					toggleCaveFinder = false;
