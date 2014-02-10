@@ -36,8 +36,8 @@ public class UyjuliansXrayModMain {
 			minecraftInstance = Minecraft.getMinecraft();
 			loadBlockList(currentBlocklistName);
 			// Keybinding setup
-			this.keyBinds.add(new KeyBinding("[Uyjulian's X-ray Mod] Toggle X-ray",Keyboard.KEY_X, null));
-			this.keyBinds.add(new KeyBinding("[Uyjulian's X-ray Mod] Toggle Cave Finder",Keyboard.KEY_V, null));
+			this.keyBinds.add(new KeyBinding("Toggle X-ray",Keyboard.KEY_X, "Uyjulian's X-ray Mod"));
+			this.keyBinds.add(new KeyBinding("Toggle Cave Finder",Keyboard.KEY_V, "Uyjulian's X-ray Mod"));
 			for (KeyBinding currentKey : this.keyBinds) {
 				if (currentKey != null) {
 					ModUtilities.registerKey(currentKey);
