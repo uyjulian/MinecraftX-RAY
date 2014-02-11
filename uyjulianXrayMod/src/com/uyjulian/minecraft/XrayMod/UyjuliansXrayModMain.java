@@ -12,7 +12,7 @@ import org.lwjgl.input.Keyboard;
 
 import com.mumfrey.liteloader.util.ModUtilities;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.world.IBlockAccess;
@@ -187,6 +187,27 @@ public class UyjuliansXrayModMain {
 			}
 		}
 		return returnValue;
+	}
+	
+	// This is going to get spammy really fast...
+	public static boolean shouldSideBeRendered(boolean returnValue, int ref, BlockSlab currentBlock, IBlockAccess par1BlockAccess, int par2, int par3, int par4, int par5) {
+		return shouldSideBeRendered(returnValue, ref, (Block)currentBlock, par1BlockAccess, par2, par3, par4, par5);
+	}
+	
+	public static boolean shouldSideBeRendered(boolean returnValue, int ref, BlockLiquid currentBlock, IBlockAccess par1BlockAccess, int par2, int par3, int par4, int par5) {
+		return shouldSideBeRendered(returnValue, ref, (Block)currentBlock, par1BlockAccess, par2, par3, par4, par5);
+	}
+	
+	public static boolean shouldSideBeRendered(boolean returnValue, int ref, BlockPane currentBlock, IBlockAccess par1BlockAccess, int par2, int par3, int par4, int par5) {
+		return shouldSideBeRendered(returnValue, ref, (Block)currentBlock, par1BlockAccess, par2, par3, par4, par5);
+	}
+	
+	public static boolean shouldSideBeRendered(boolean returnValue, int ref, BlockWall currentBlock, IBlockAccess par1BlockAccess, int par2, int par3, int par4, int par5) {
+		return shouldSideBeRendered(returnValue, ref, (Block)currentBlock, par1BlockAccess, par2, par3, par4, par5);
+	}
+	
+	public static boolean shouldSideBeRendered(boolean returnValue, int ref, BlockSnow currentBlock, IBlockAccess par1BlockAccess, int par2, int par3, int par4, int par5) {
+		return shouldSideBeRendered(returnValue, ref, (Block)currentBlock, par1BlockAccess, par2, par3, par4, par5);
 	}
 	
 	// Misc stuff
