@@ -76,7 +76,7 @@
         <echo level="info" message="Staging resources" />
 
         <!-- Stages the freshly-obfuscated class files into the staging directory. -->
-        <copy todir="${stage.dir}">
+        <copy todir="${stage.dir}" overwrite="true">
             <fileset dir="${mcp.dir}/reobf/minecraft" excludes=".svn/**, *.txt" />
         </copy>
 
