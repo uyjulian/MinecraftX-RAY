@@ -10,8 +10,8 @@
 	<property name="python"             location="/usr/bin/python" />
 
     <property name="version"            value="0.1" />
-    <property name="mcversion"          value="1.7.2" />
-    <property name="litemodversion"     value="1.7.2_02" />
+    <property name="mcversion"          value="1.7.10" />
+    <property name="litemodversion"     value="1.7.10" />
     <property name="author"             value="uyjulian" />
     <property name="project"            value="uyjulianXrayMod" />
     <property name="md5set"             value="liteloader" />
@@ -183,7 +183,7 @@
         <mkdir dir="${dist.dir}" />
         <jar destfile="${dist.dir}/${file.prefix}_${ant.project.name}_${git.revision}_mc${mcversion}.${file.type}" duplicate="preserve" index="true" manifestencoding="UTF-8">
             <manifest>
-                <attribute name="Built-By" value="MCP (http://mcp.ocean-labs.de)" />
+                <attribute name="Built-By" value="uyjulian (uyjulian at gmail dot com)" />
                 <attribute name="Implementation-Vendor" value="${author}" />
                 <attribute name="Implementation-Title" value="${ant.project.name}" />
                 <attribute name="Implementation-Version" value="${version}" />

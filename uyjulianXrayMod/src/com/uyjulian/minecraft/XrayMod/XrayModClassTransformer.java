@@ -27,28 +27,32 @@ public class XrayModClassTransformer extends CallbackInjectionTransformer {
 	
 	private static final Callback methodCallback = new Callback(CallbackType.RETURN, "shouldSideBeRendered", "com.uyjulian.minecraft.XrayMod.UyjuliansXrayModMain");
 	
-	//TODO: Minecraft 1.7.2
+	//TODO: Minecraft 1.7.10
+	//TODO: I should make a script that you feed joined srg and then you get this :-)
+	//TODO: Ask Mumfrey to allow you to for example: use Block in callback instead of BlockSlab BlockLiquid etc
 	private static final String blockClass = "net.minecraft.block.Block";
-	private static final String blockClassObf = "ahu";
+	private static final String blockClassObf = "aji";
 	private static final String blockSlabClass = "net.minecraft.block.BlockSlab";
-	private static final String blockSlabClassObf = "ajv";
+	private static final String blockSlabClassObf = "alj";
 	private static final String blockLiquidClass = "net.minecraft.block.BlockLiquid";
-	private static final String blockLiquidClassObf = "aki";
+	private static final String blockLiquidClassObf = "alw";
 	private static final String blockPaneClass = "net.minecraft.block.BlockPane";
-	private static final String blockPaneClassObf = "amm";
+	private static final String blockPaneClassObf = "aoa";
 	private static final String blockWallClass = "net.minecraft.block.BlockWall";
-	private static final String blockWallClassObf = "amu";
+	private static final String blockWallClassObf = "aoi";
 	private static final String blockSnowClass = "net.minecraft.block.BlockSnow";
-	private static final String blockSnowClassObf = "alz";
+	private static final String blockSnowClassObf = "ann";
+	private static final String iBlockAccessClass = "net/minecraft/world/IBlockAccess"; //you must use / here!
+	private static final String iBlockAccessClassObf = "ahl";
 	private static final String sideRenderMethod = "shouldSideBeRendered";
 	private static final String sideRenderMethodSrg = "func_149646_a";
 	private static final String sideRenderMethodObf = "a";
-	private static final String sideRenderMethodSignature = "(Lnet/minecraft/world/IBlockAccess;IIII)Z";
-	private static final String sideRenderMethodSignatureObf = "(Lafx;IIII)Z";
+	private static final String sideRenderMethodSignature = "(L" + iBlockAccessClass + ";IIII)Z";
+	private static final String sideRenderMethodSignatureObf = "(L" + iBlockAccessClassObf + ";IIII)Z";
 	
 	private void addCallbacksForSideRenderMethod(String currentBlockClass, String currentBlockClassObf) {
-		this.addCallback(currentBlockClass, sideRenderMethod, sideRenderMethodSignature, methodCallback);
-		this.addCallback(currentBlockClass, sideRenderMethodSrg, sideRenderMethodSignature, methodCallback);
+		this.addCallback(currentBlockClass,    sideRenderMethod,    sideRenderMethodSignature,    methodCallback);
+		this.addCallback(currentBlockClass,    sideRenderMethodSrg, sideRenderMethodSignature,    methodCallback);
 		this.addCallback(currentBlockClassObf, sideRenderMethodObf, sideRenderMethodSignatureObf, methodCallback);
 	}
 	

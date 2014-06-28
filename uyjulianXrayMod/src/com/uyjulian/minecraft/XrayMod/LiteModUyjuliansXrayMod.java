@@ -32,7 +32,7 @@ public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
 
 	@Override
 	public String getVersion() {
-		return "1.7.2";
+		return "1.7.10";
 	}
 
 	@Override

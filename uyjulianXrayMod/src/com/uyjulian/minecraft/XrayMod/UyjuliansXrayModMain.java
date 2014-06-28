@@ -43,6 +43,7 @@ public class UyjuliansXrayModMain {
 	public static boolean toggleCaveFinder = false;
 	private Boolean FirstTick = false;
 	
+	@SuppressWarnings("deprecation")
 	public UyjuliansXrayModMain() {
 		if (currentModInstance == null) {
 			currentModInstance = this;
@@ -203,8 +204,8 @@ public class UyjuliansXrayModMain {
 				}
 			}
 			if (!toggleCaveFinder) {
-				if (blockListLength != 0) {
-					return true; //Nothing in the block list? display everything
+				if (blockListLength != 0) { //Nothing in the list, young lads.
+					return true; //Display if detected
 				}
 			}
 		}
@@ -238,6 +239,6 @@ public class UyjuliansXrayModMain {
 		System.out.println("[Uyjulian's X-ray Mod] " + lineToPrint);
 	}
 	public static void putLineInChat(String lineToPrint) {
-		getModInstance().minecraftInstance.thePlayer.addChatMessage((IChatComponent) new ChatComponentText("§l§o§6[Uyjulian's X-ray Mod]§r " + lineToPrint));
+		getModInstance().minecraftInstance.thePlayer.addChatMessage(new ChatComponentText("§l§o§6[Uyjulian's X-ray Mod]§r " + lineToPrint));
 	}
 }

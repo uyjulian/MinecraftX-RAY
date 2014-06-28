@@ -134,7 +134,7 @@ public class XrayModChooserGui extends GuiScreen {
 				if (this.invisibleIdList.indexOf((this.idList.get(renderPosition))) >= 0) {
 					drawRect(widthPlus100, heightCalc + 10 - 48 + i * 24, widthMinus100, heightCalc - 10 - 48 + i * 24, -65536);
 				}
-				String currentBlockName = ((Block) Block.blockRegistry.getObject(this.idList.get(renderPosition))).getLocalizedName();
+				String currentBlockName = (Block.blockRegistry.getObject(this.idList.get(renderPosition))).getLocalizedName();
 				if (currentBlockName == null) {
 					currentBlockName = "No Name";
 				}

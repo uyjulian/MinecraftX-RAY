@@ -9,7 +9,7 @@ import java.net.URL;
 
 public class XrayModUpdateChecker implements Runnable {
 	private final String UpdateURL = "http://pastebin.com/raw.php?i=iFGwDPR6";
-	private final String CurrentVersion = "5";
+	private final String CurrentVersion = "6";
 	@Override
 	public void run() {
 		Boolean foundNewVersion = false;
