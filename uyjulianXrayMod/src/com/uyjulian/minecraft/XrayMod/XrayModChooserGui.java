@@ -30,8 +30,8 @@ import net.minecraft.client.gui.GuiScreen;
 
 public class XrayModChooserGui extends GuiScreen {
 	UyjuliansXrayModMain modInstance = UyjuliansXrayModMain.getModInstance();
-	List<Integer> idList = new ArrayList<Integer>();
-	List<Integer> invisibleIdList = new ArrayList<Integer>();
+	List<String> idList = new ArrayList<String>();
+	List<String> invisibleIdList = new ArrayList<String>();
 	int listPos = 0;
 
 	public XrayModChooserGui() {
@@ -41,7 +41,7 @@ public class XrayModChooserGui extends GuiScreen {
         while (blockIterator.hasNext())
         {
         	Block currentBlock = blockIterator.next();
-        	this.idList.add(Block.getIdFromBlock(currentBlock));
+        	this.idList.add(Block.blockRegistry.getNameForObject(currentBlock));
         }
 	}
 	
@@ -49,7 +49,7 @@ public class XrayModChooserGui extends GuiScreen {
 	public void initGui() {
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		int[] blockListCache = modInstance.blockList;
+		String[] blockListCache = modInstance.blockList;
 		for (int i = 0; i < blockListCache.length; ++i) {
 			this.invisibleIdList.add(blockListCache[i]);
 		}
@@ -59,7 +59,7 @@ public class XrayModChooserGui extends GuiScreen {
 	protected void actionPerformed(GuiButton par1GuiButton) {
 		super.actionPerformed(par1GuiButton);
 		if (par1GuiButton.id != 0) {
-			this.invisibleIdList.add(par1GuiButton.id);
+			this.invisibleIdList.add(this.idList.get(par1GuiButton.id));
 		}
 	}
 	
@@ -76,7 +76,7 @@ public class XrayModChooserGui extends GuiScreen {
 			++this.listPos;
 		}
 		if ((mouseButtonState) && (mouseButtonStatus != -1))  {
-			if ((this.invisibleIdList.indexOf(this.idList.get(this.listPos).intValue()) >= 0)) {
+			if ((this.invisibleIdList.indexOf(this.idList.get(this.listPos)) >= 0)) {
 				this.invisibleIdList.remove(this.idList.get(this.listPos));
 			}
 			else {
@@ -96,7 +96,7 @@ public class XrayModChooserGui extends GuiScreen {
 				++this.listPos;
 			}
 			else if (par2 == 28) {
-				if ((this.invisibleIdList.indexOf(this.idList.get(this.listPos).intValue()) >= 0)) {
+				if ((this.invisibleIdList.indexOf(this.idList.get(this.listPos)) >= 0)) {
 					this.invisibleIdList.remove(this.idList.get(this.listPos));
 				}
 				else {
@@ -113,9 +113,9 @@ public class XrayModChooserGui extends GuiScreen {
 	public void onGuiClosed() {
 		super.onGuiClosed();
 		Keyboard.enableRepeatEvents(true);
-		int[] blockListCache = new int[this.invisibleIdList.size()];
+		String[] blockListCache = new String[this.invisibleIdList.size()];
 		for (int i = 0; i < this.invisibleIdList.size(); ++i) {
-			blockListCache[i] = this.invisibleIdList.get(i).intValue();
+			blockListCache[i] = this.invisibleIdList.get(i);
 		}
 		modInstance.blockList = blockListCache;
 		modInstance.saveBlockList(modInstance.currentBlocklistName);
@@ -131,11 +131,10 @@ public class XrayModChooserGui extends GuiScreen {
 		drawRect(widthPlus100 + 2, heightCalc + 12, widthMinus100 - 2, heightCalc - 12, -4144960);
 		for (int i = 0; i < 7; ++i) {
 			if (renderPosition >= 0 && renderPosition < this.idList.size()) {
-				if (this.invisibleIdList.indexOf((this.idList.get(renderPosition)).intValue()) >= 0) {
+				if (this.invisibleIdList.indexOf((this.idList.get(renderPosition))) >= 0) {
 					drawRect(widthPlus100, heightCalc + 10 - 48 + i * 24, widthMinus100, heightCalc - 10 - 48 + i * 24, -65536);
 				}
-				drawString(this.fontRendererObj, renderPosition + 1 + ": ", this.width / 2 - 66, heightCalc - 60 + 7 + i * 24, 16777215);
-				String currentBlockName = Block.getBlockById(this.idList.get(renderPosition).intValue()).getLocalizedName();
+				String currentBlockName = ((Block) Block.blockRegistry.getObject(this.idList.get(renderPosition))).getLocalizedName();
 				if (currentBlockName == null) {
 					currentBlockName = "No Name";
 				}
