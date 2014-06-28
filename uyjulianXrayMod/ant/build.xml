@@ -5,7 +5,7 @@
 <project name="uyjulianXrayMod" basedir="." default="main">
 	
 	<!-- Change this into the directory of the MCP folder. -->
-	<property name="mcp.dir"            location="../../../../Documents/MinecraftModding/mcp903" />
+	<property name="mcp.dir"            location="../../../../Documents/MinecraftModding/mcp908" />
 	<!-- Path to the python executable -->
 	<property name="python"             location="/usr/bin/python" />
 
