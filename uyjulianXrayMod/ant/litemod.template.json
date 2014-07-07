@@ -4,5 +4,5 @@
     "revision": "${git.revision}",
     "author": "${author}",
     "description": "This mod lets you see through blocks.",
-    "classTransformerClasses": "com.uyjulian.minecraft.XrayMod.XrayModClassTransformer"
+    "classTransformerClasses": "com.uyjulian.minecraft.XrayMod.XrayModEventTransformer"
 }

@@ -9,9 +9,9 @@ import com.mumfrey.liteloader.transformers.event.inject.MethodHead;
 
 public class XrayModEventTransformer extends EventInjectionTransformer {
 	
-	private void addCallback(XrayModObfTable obftable) {
-		Event shouldSideBeRendered = Event.getOrCreate("shouldSideBeRendered", true);
-		MethodInfo mdSideBeRendered =  new MethodInfo(obftable, XrayModObfTable.shouldSideBeRendered, Boolean.TYPE);
+	private void addCallback(int index, XrayModObfTable obftable) {
+		Event shouldSideBeRendered = Event.getOrCreate("shouldSideBeRendered" + index, true);
+		MethodInfo mdSideBeRendered =  new MethodInfo(obftable, XrayModObfTable.shouldSideBeRendered, Boolean.TYPE, XrayModObfTable.IBlockAccess, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE);
 		MethodHead injectionPoint = new MethodHead();
 		this.addEvent(shouldSideBeRendered, mdSideBeRendered, injectionPoint);
 		shouldSideBeRendered.addListener(new MethodInfo("com.uyjulian.minecraft.XrayMod.LiteModUyjuliansXrayMod", "renderSideProcessing"));
@@ -20,7 +20,9 @@ public class XrayModEventTransformer extends EventInjectionTransformer {
 	@Override
 	protected void addEvents() {
 		System.out.println("Transformer is working correctly!");
-		addCallback(XrayModObfTable.Block);
+		for (int i = 0; i < XrayModObfTable.Blocks.length; i++) {
+			addCallback(i, XrayModObfTable.Blocks[i]);
+		}
 	}
 
 }

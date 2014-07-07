@@ -19,13 +19,15 @@ import java.util.List;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 
 public class XrayModChooserGui extends GuiScreen {
@@ -139,6 +141,15 @@ public class XrayModChooserGui extends GuiScreen {
 					currentBlockName = "No Name";
 				}
 				drawCenteredString(this.fontRendererObj, currentBlockName, this.width / 2, heightCalc - 60 + 7 + i * 24, 16777215);
+
+				ItemStack currentIcon = new ItemStack((Block.blockRegistry.getObject(this.idList.get(renderPosition))));
+				if (currentIcon.getItem() != null) {
+					this.zLevel = 200.0F;
+					itemRender.zLevel = 200.0F;
+					itemRender.renderItemIntoGUI(fontRendererObj, this.mc.getTextureManager(), currentIcon, this.width / 2 - 97, heightCalc - 60 + 4 + i * 24);
+					this.zLevel = 0.0F;
+					itemRender.zLevel = 0.0F;
+				}
 			}
 			++renderPosition;
 		}

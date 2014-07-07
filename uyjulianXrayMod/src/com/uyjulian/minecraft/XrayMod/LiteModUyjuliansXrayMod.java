@@ -16,6 +16,7 @@ package com.uyjulian.minecraft.XrayMod;
 import java.io.File;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.block.Block;
 
 import com.mumfrey.liteloader.InitCompleteListener;
@@ -55,10 +56,16 @@ public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
 	public void onInitCompleted(Minecraft minecraft, LiteLoader loader) {
 	}
 	
-	public static void renderSideProcessing(ReturnEventInfo<Block, Boolean> e) {
+	public static void renderSideProcessing(ReturnEventInfo<Block, Boolean> e, IBlockAccess arg1, int arg2, int arg3, int arg4, int arg5) {
 		char currentBoolean = UyjuliansXrayModMain.shouldSideBeRendered(e.getSource());
-		if (currentBoolean != 'c') {try{e.setReturnValue(currentBoolean == 'a');} catch(Exception ex){}}
-		
+		if (currentBoolean != 'c') {
+			try {
+				e.setReturnValue(currentBoolean == 'a');
+			} 
+			catch(Exception ex) {
+				
+			}
+		}
 	}
 
 
