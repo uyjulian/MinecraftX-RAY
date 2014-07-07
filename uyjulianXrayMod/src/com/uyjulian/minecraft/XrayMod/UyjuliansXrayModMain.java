@@ -176,14 +176,16 @@ public class UyjuliansXrayModMain {
 	// Check then render blocks stuff
 	
 	/*
-	 * NOTE: Boolean (the object) throws an exception on null.
+	 * NOTE: Boolean (the object) throws an exception on null. Don't use that!
 	 * 
 	 * Confused on what this means?
-	 * b means the side is not going to be rendered.
-	 * a means the side is going to be rendered.
+	 * b means the side is not going to be rendered. (aka false)
+	 * a means the side is going to be rendered. (aka true)
 	 * c means the side will be processed by normal means.
+	 * 
+	 * Still confused? Too bad.
 	 */
-	public static boolean shouldSideBeRendered(boolean returnValue, int ref, Block currentBlock, IBlockAccess par1BlockAccess, int par2, int par3, int par4, int par5) {
+	public static char shouldSideBeRendered(Block currentBlock) {
 		if (toggleXRay || toggleCaveFinder) {
 			String blockID = Block.blockRegistry.getNameForObject(currentBlock);
 			String[] blockListBuffer = blockList;
@@ -195,42 +197,21 @@ public class UyjuliansXrayModMain {
 				if (currentID.equals(blockID)) { //You must use .equals(), not ==, that screwed me over e_e
 					if (toggleCaveFinder) {
 						if (!(blockID.equals("minecraft:stone"))) { //Only display stone in cave finder mode
-							return false;
+							return 'b';
 						}
 					}
 					else {
-						return false;
+						return 'b';
 					}
 				}
 			}
 			if (!toggleCaveFinder) {
 				if (blockListLength != 0) { //Nothing in the list, young lads.
-					return true; //Display if detected
+					return 'a'; //Display if detected
 				}
 			}
 		}
-		return returnValue;
-	}
-	
-	// This is going to get spammy really fast...
-	public static boolean shouldSideBeRendered(boolean returnValue, int ref, BlockSlab currentBlock, IBlockAccess par1BlockAccess, int par2, int par3, int par4, int par5) {
-		return shouldSideBeRendered(returnValue, ref, (Block)currentBlock, par1BlockAccess, par2, par3, par4, par5);
-	}
-	
-	public static boolean shouldSideBeRendered(boolean returnValue, int ref, BlockLiquid currentBlock, IBlockAccess par1BlockAccess, int par2, int par3, int par4, int par5) {
-		return shouldSideBeRendered(returnValue, ref, (Block)currentBlock, par1BlockAccess, par2, par3, par4, par5);
-	}
-	
-	public static boolean shouldSideBeRendered(boolean returnValue, int ref, BlockPane currentBlock, IBlockAccess par1BlockAccess, int par2, int par3, int par4, int par5) {
-		return shouldSideBeRendered(returnValue, ref, (Block)currentBlock, par1BlockAccess, par2, par3, par4, par5);
-	}
-	
-	public static boolean shouldSideBeRendered(boolean returnValue, int ref, BlockWall currentBlock, IBlockAccess par1BlockAccess, int par2, int par3, int par4, int par5) {
-		return shouldSideBeRendered(returnValue, ref, (Block)currentBlock, par1BlockAccess, par2, par3, par4, par5);
-	}
-	
-	public static boolean shouldSideBeRendered(boolean returnValue, int ref, BlockSnow currentBlock, IBlockAccess par1BlockAccess, int par2, int par3, int par4, int par5) {
-		return shouldSideBeRendered(returnValue, ref, (Block)currentBlock, par1BlockAccess, par2, par3, par4, par5);
+		return 'c';
 	}
 	
 	// Misc stuff

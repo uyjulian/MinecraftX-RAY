@@ -16,10 +16,12 @@ package com.uyjulian.minecraft.XrayMod;
 import java.io.File;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.block.Block;
 
 import com.mumfrey.liteloader.InitCompleteListener;
 import com.mumfrey.liteloader.LiteMod;
 import com.mumfrey.liteloader.core.LiteLoader;
+import com.mumfrey.liteloader.transformers.event.ReturnEventInfo;
 
 public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
 	
@@ -52,5 +54,12 @@ public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
 	@Override
 	public void onInitCompleted(Minecraft minecraft, LiteLoader loader) {
 	}
+	
+	public static void renderSideProcessing(ReturnEventInfo<Block, Boolean> e) {
+		char currentBoolean = UyjuliansXrayModMain.shouldSideBeRendered(e.getSource());
+		if (currentBoolean != 'c') {try{e.setReturnValue(currentBoolean == 'a');} catch(Exception ex){}}
+		
+	}
+
 
 }
