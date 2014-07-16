@@ -197,15 +197,15 @@ public class UyjuliansXrayModMain {
 				if (currentID.equals(blockID)) { //You must use .equals(), not ==, that screwed me over e_e
 					if (toggleCaveFinder) {
 						if (!(blockID.equals("minecraft:stone"))) { //Only display stone in cave finder mode
-							return 'b';
+							return 'b'; //Don't display this side
 						}
 					}
 					else {
-						return 'b';
+						return 'b';//Don't display this side
 					}
 				}
 			}
-			if (!toggleCaveFinder) {
+			if (!toggleCaveFinder) { //We want the normal block logic
 				if (blockListLength != 0) { //Nothing in the list, young lads.
 					return 'a'; //Display if detected
 				}

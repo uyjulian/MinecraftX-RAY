@@ -129,10 +129,16 @@ public class XrayModChooserGui extends GuiScreen {
 		int widthPlus100 = this.width / 2 + 100;
 		int widthMinus100 = this.width / 2 - 100;
 		int heightCalc = this.height / 3;
-		int renderPosition = this.listPos - 2;
-		drawRect(widthPlus100 + 2, heightCalc + 12, widthMinus100 - 2, heightCalc - 12, -4144960);
-		for (int i = 0; i < 7; ++i) {
+		int renderPosition = this.listPos - 4;
+		int currentPos1Calc = heightCalc + 12 + (24 * 2);
+		int currentPos2Calc = currentPos1Calc - 24;
+		drawRect(widthPlus100 + 2, currentPos1Calc, widthMinus100 - 2, currentPos2Calc, -4144960);
+		for (int i = 0; i < 40; ++i) {
 			if (renderPosition >= 0 && renderPosition < this.idList.size()) {
+				ItemStack currentIcon = new ItemStack((Block.blockRegistry.getObject(this.idList.get(renderPosition))));
+				if (currentIcon.getItem() != null) {
+					itemRender.renderItemAndEffectIntoGUI(fontRendererObj, this.mc.getTextureManager(), currentIcon, this.width / 2 - 97, heightCalc - 60 + 4 + i * 24);
+				}
 				if (this.invisibleIdList.indexOf((this.idList.get(renderPosition))) >= 0) {
 					drawRect(widthPlus100, heightCalc + 10 - 48 + i * 24, widthMinus100, heightCalc - 10 - 48 + i * 24, -65536);
 				}
@@ -142,14 +148,7 @@ public class XrayModChooserGui extends GuiScreen {
 				}
 				drawCenteredString(this.fontRendererObj, currentBlockName, this.width / 2, heightCalc - 60 + 7 + i * 24, 16777215);
 
-				ItemStack currentIcon = new ItemStack((Block.blockRegistry.getObject(this.idList.get(renderPosition))));
-				if (currentIcon.getItem() != null) {
-					this.zLevel = 200.0F;
-					itemRender.zLevel = 200.0F;
-					itemRender.renderItemIntoGUI(fontRendererObj, this.mc.getTextureManager(), currentIcon, this.width / 2 - 97, heightCalc - 60 + 4 + i * 24);
-					this.zLevel = 0.0F;
-					itemRender.zLevel = 0.0F;
-				}
+
 			}
 			++renderPosition;
 		}
