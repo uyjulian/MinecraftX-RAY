@@ -25,6 +25,7 @@ import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -136,7 +137,7 @@ public class XrayModChooserGui extends GuiScreen {
 		for (int i = 0; i < 40; ++i) {
 			if (renderPosition >= 0 && renderPosition < this.idList.size()) {
 				ItemStack currentIcon = new ItemStack((Block.blockRegistry.getObject(this.idList.get(renderPosition))));
-				if (currentIcon.getItem() != null) {
+				if ((currentIcon.getItem() != null) && (RenderBlocks.renderItemIn3d(Block.getBlockFromItem(currentIcon.getItem()).getRenderType()))) {
 					itemRender.renderItemAndEffectIntoGUI(fontRendererObj, this.mc.getTextureManager(), currentIcon, this.width / 2 - 97, heightCalc - 60 + 4 + i * 24);
 				}
 				if (this.invisibleIdList.indexOf((this.idList.get(renderPosition))) >= 0) {

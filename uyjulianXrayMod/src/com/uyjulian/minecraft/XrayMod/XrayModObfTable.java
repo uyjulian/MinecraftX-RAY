@@ -17,17 +17,10 @@ import com.mumfrey.liteloader.core.runtime.Obf;
 
 public class XrayModObfTable extends Obf {
 	//TODO: Minecraft 1.7.10
-	public static XrayModObfTable[] Blocks = new XrayModObfTable[] {
-		new XrayModObfTable("net.minecraft.block.Block", "aji"),
-		new XrayModObfTable("net.minecraft.block.BlockSlab", "alj"),
-		new XrayModObfTable("net.minecraft.block.BlockLiquid", "alw"),
-		new XrayModObfTable("net.minecraft.block.BlockPane", "aoa"),
-		new XrayModObfTable("net.minecraft.block.BlockWall", "aoi"),
-		new XrayModObfTable("net.minecraft.block.BlockSnow", "ann"),
-	};
-	public static XrayModObfTable IBlockAccess = new XrayModObfTable("net.minecraft.world.IBlockAccess", "ahl");
-	public static XrayModObfTable shouldSideBeRendered = new XrayModObfTable("func_149646_a", "a", "shouldSideBeRendered");
-
+	public static XrayModObfTable Block = new XrayModObfTable("net.minecraft.block.Block", "aji");
+	public static XrayModObfTable RenderBlocks = new XrayModObfTable("net.minecraft.client.renderer.RenderBlocks", "blm");
+	public static XrayModObfTable RenderBlocks_renderBlockByRenderType = new XrayModObfTable("func_147805_b", "b", "renderBlockByRenderType");
+	
 	protected XrayModObfTable(String seargeName, String obfName) {
 		super(seargeName, obfName);
 	}

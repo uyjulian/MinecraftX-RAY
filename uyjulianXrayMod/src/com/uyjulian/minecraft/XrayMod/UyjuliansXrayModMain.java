@@ -41,6 +41,7 @@ public class UyjuliansXrayModMain {
 	public static String currentBlocklistName = "DefaultBlockList";
 	public static boolean toggleXRay = false;
 	public static boolean toggleCaveFinder = false;
+	public static String currentVersion = "8";
 	private Boolean FirstTick = false;
 	
 	@SuppressWarnings("deprecation")
@@ -84,7 +85,7 @@ public class UyjuliansXrayModMain {
 				FirstTick = true;
 				startUpdateChecker();
 			}
-			if (this.keyBinds.get(0).isPressed()) {
+			if (this.keyBinds.get(0).isPressed()) { //X-ray key
 				if (!Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && !Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
 					UyjuliansXrayModMain.printLineInLog("Toggling X-ray...");
 					toggleXRay = !toggleXRay;
@@ -98,7 +99,7 @@ public class UyjuliansXrayModMain {
 					minecraftInstance.displayGuiScreen(new XrayModMainGui(null, minecraftInstance.gameSettings));
 				}
 			}
-			if (this.keyBinds.get(1).isPressed()) {
+			if (this.keyBinds.get(1).isPressed()) { //Cave finder key
 				UyjuliansXrayModMain.printLineInLog("Toggling Cave Finder...");
 				toggleCaveFinder = !toggleCaveFinder;
 				toggleXRay = false;
@@ -185,7 +186,7 @@ public class UyjuliansXrayModMain {
 	 * 
 	 * Still confused? Too bad.
 	 */
-	public static char shouldSideBeRendered(Block currentBlock) {
+	public static char blockIsInBlockList(Block currentBlock) {
 		if (toggleXRay || toggleCaveFinder) {
 			String blockID = Block.blockRegistry.getNameForObject(currentBlock);
 			String[] blockListBuffer = blockList;
@@ -195,8 +196,8 @@ public class UyjuliansXrayModMain {
 			for (i = 0; i < blockListLength; ++i) {
 				currentID = blockListBuffer[i];
 				if (currentID.equals(blockID)) { //You must use .equals(), not ==, that screwed me over e_e
-					if (toggleCaveFinder) {
-						if (!(blockID.equals("minecraft:stone"))) { //Only display stone in cave finder mode
+					if (toggleCaveFinder) {	//Only display stone in cave finder mode, 
+						if (!(blockID.equals("minecraft:stone"))) {  //Ignore stone, use normal behavior (will be broken in 1.8)
 							return 'b'; //Don't display this side
 						}
 					}
@@ -205,21 +206,21 @@ public class UyjuliansXrayModMain {
 					}
 				}
 			}
-			if (!toggleCaveFinder) { //We want the normal block logic
+			if (!toggleCaveFinder) { //We want the normal behavior on cave finder (will be broken in 1.8)
 				if (blockListLength != 0) { //Nothing in the list, young lads.
 					return 'a'; //Display if detected
 				}
 			}
 		}
-		return 'c';
+		return 'c'; //Normal behavior
 	}
 	
 	// Misc stuff
 	
 	public static void printLineInLog(String lineToPrint) {
-		System.out.println("[Uyjulian's X-ray Mod] " + lineToPrint);
+		System.out.println("[UyjulianXray] " + lineToPrint);
 	}
 	public static void putLineInChat(String lineToPrint) {
-		getModInstance().minecraftInstance.thePlayer.addChatMessage(new ChatComponentText("§l§o§6[Uyjulian's X-ray Mod]§r " + lineToPrint));
+		getModInstance().minecraftInstance.thePlayer.addChatMessage(new ChatComponentText("§l§o§6[UyjulianXray]§r " + lineToPrint));
 	}
 }

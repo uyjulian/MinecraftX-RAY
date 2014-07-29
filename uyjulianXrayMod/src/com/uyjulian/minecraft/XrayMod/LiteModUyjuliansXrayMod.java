@@ -16,6 +16,7 @@ package com.uyjulian.minecraft.XrayMod;
 import java.io.File;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.block.Block;
 
@@ -27,7 +28,7 @@ import com.mumfrey.liteloader.transformers.event.ReturnEventInfo;
 public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
 	
 	public UyjuliansXrayModMain modInstance;
-
+	
 	@Override
 	public String getName() {
 		return "Uyjulian's X-ray Mod";
@@ -35,7 +36,7 @@ public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
 
 	@Override
 	public String getVersion() {
-		return "1.7.10";
+		return UyjuliansXrayModMain.currentVersion;
 	}
 
 	@Override
@@ -44,8 +45,7 @@ public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
 	}
 
 	@Override
-	public void upgradeSettings(String version, File configPath, File oldConfigPath) {
-	}
+	public void upgradeSettings(String version, File configPath, File oldConfigPath) {}
 
 	@Override
 	public void onTick(Minecraft minecraft, float partialTicks, boolean inGame, boolean clock) {
@@ -53,19 +53,28 @@ public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
 	}
 
 	@Override
-	public void onInitCompleted(Minecraft minecraft, LiteLoader loader) {
-	}
+	public void onInitCompleted(Minecraft minecraft, LiteLoader loader) {}
 	
-	public static void renderSideProcessing(ReturnEventInfo<Block, Boolean> e, IBlockAccess arg1, int arg2, int arg3, int arg4, int arg5) {
-		char currentBoolean = UyjuliansXrayModMain.shouldSideBeRendered(e.getSource());
-		if (currentBoolean != 'c') {
+	private static boolean renderBlockProcessingIsActive = false;
+	public static void renderBlockProcessing(ReturnEventInfo<RenderBlocks, Boolean> e, Block arg1, int arg2, int arg3, int arg4) {
+		if (renderBlockProcessingIsActive) return; // To avoid infinite loops
+		renderBlockProcessingIsActive = true;
+		char currentBoolean = UyjuliansXrayModMain.blockIsInBlockList(arg1);
+
+		if ((currentBoolean == 'b')) {
 			try {
-				e.setReturnValue(currentBoolean == 'a');
+				e.setReturnValue(false); // Act like normal behavior...
 			} 
-			catch(Exception ex) {
-				
-			}
+			finally {}
 		}
+		else if (currentBoolean == 'a') {
+			e.getSource().renderBlockAllFaces(arg1, arg2, arg3, arg4);
+			try {
+				e.setReturnValue(true); // Act like normal behavior...
+			} 
+			finally {}
+		}
+		renderBlockProcessingIsActive = false;
 	}
 
 
