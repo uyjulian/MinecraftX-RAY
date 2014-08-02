@@ -30,7 +30,6 @@ public class XrayModUpdateChecker implements Runnable {
 			InputStream currentInputStream = null;
 			ByteArrayOutputStream currentByteArrayOutputStream = null;
 			try {
-				Thread.sleep(4000L);
 				URL currentURL = new URL(UpdateURL);
 				currentInputStream = currentURL.openStream();
 				currentByteArrayOutputStream = new ByteArrayOutputStream();
@@ -50,7 +49,9 @@ public class XrayModUpdateChecker implements Runnable {
 					//UyjuliansXrayModMain.putLineInChat("Current: " + CurrentVersion);
 					//UyjuliansXrayModMain.putLineInChat("Updated: " + NewVersion);
 					foundNewVersion = true;
+					
 				}
+				Thread.sleep((1000 * 60) * 2);
 			}
 			catch (Exception currentException) {
 				currentException.printStackTrace();

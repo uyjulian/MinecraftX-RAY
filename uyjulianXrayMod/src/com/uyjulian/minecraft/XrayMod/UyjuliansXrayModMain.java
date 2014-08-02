@@ -41,7 +41,7 @@ public class UyjuliansXrayModMain {
 	public static String currentBlocklistName = "DefaultBlockList";
 	public static boolean toggleXRay = false;
 	public static boolean toggleCaveFinder = false;
-	public static String currentVersion = "8";
+	public static String currentVersion = "9";
 	private Boolean FirstTick = false;
 	
 	@SuppressWarnings("deprecation")
