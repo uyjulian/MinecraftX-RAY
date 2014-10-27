@@ -16,17 +16,23 @@ package com.uyjulian.minecraft.XrayMod;
 import com.mumfrey.liteloader.core.runtime.Obf;
 
 public class XrayModObfTable extends Obf {
-	//TODO: Minecraft 1.7.10
-	public static XrayModObfTable Block = new XrayModObfTable("net.minecraft.block.Block", "aji");
-	public static XrayModObfTable RenderBlocks = new XrayModObfTable("net.minecraft.client.renderer.RenderBlocks", "blm");
-	public static XrayModObfTable RenderBlocks_renderBlockByRenderType = new XrayModObfTable("func_147805_b", "b", "renderBlockByRenderType");
+	//TODO: Minecraft 1.8
+	public static XrayModObfTable Block = new XrayModObfTable("net/minecraft/block/Block", "atr");
+	public static XrayModObfTable BlockModelRenderer = new XrayModObfTable("net/minecraft/client/renderer/BlockModelRenderer", "cln");
+	public static XrayModObfTable BlockModelRenderer_renderModel = new XrayModObfTable("func_178267_a", "a", "renderModel");
+	
+	public static XrayModObfTable IBlockAccess = new XrayModObfTable("net/minecraft/world/IBlockAccess", "ard");
+	public static XrayModObfTable IBakedModel = new XrayModObfTable("net/minecraft/client/resources/model/IBakedModel", "cxe");
+	public static XrayModObfTable IBlockState = new XrayModObfTable("net/minecraft/block/state/IBlockState", "bec");
+	public static XrayModObfTable BlockPos = new XrayModObfTable("net/minecraft/util/BlockPos", "dt");
+	public static XrayModObfTable WorldRenderer = new XrayModObfTable("net/minecraft/client/renderer/WorldRenderer", "civ");
 	
 	protected XrayModObfTable(String seargeName, String obfName) {
-		super(seargeName, obfName);
+		super(seargeName.replaceAll("/", "."), obfName.replaceAll("/", "."));
 	}
 	
 	protected XrayModObfTable(String seargeName, String obfName, String mcpName) {
-		super(seargeName, obfName, mcpName);
+		super(seargeName.replaceAll("/", "."), obfName.replaceAll("/", "."), mcpName.replaceAll("/", "."));
 	}
 
 }

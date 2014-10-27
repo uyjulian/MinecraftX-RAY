@@ -13,6 +13,7 @@
 
 package com.uyjulian.minecraft.XrayMod;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -43,7 +44,7 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
 		
 		this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 0 + 12,  "Select blocks to see in X-ray view"));
 		this.buttonList.add(new GuiButton(2, this.width / 2 - 100, this.height / 4 + 25 + 12, "Switch to the profile in the textbox"));
-		this.profileNameTextBox = new GuiTextField(this.fontRendererObj, this.width / 2 - 100, this.height / 4 + 50 + 12, 200, 20);
+		this.profileNameTextBox = new GuiTextField(0, this.fontRendererObj, this.width / 2 - 100, this.height / 4 + 50 + 12, 200, 20);
 		this.buttonList.add(new GuiButton(3, this.width / 2 - 100, this.height / 4 + 75 + 12, "Go to MCF topic for support, updates"));
 		this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 100 + 12,"Return to the game"));
 		this.profileNameTextBox.setMaxStringLength(32);
@@ -90,14 +91,24 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
 	@Override
 	protected void mouseClicked(int par1, int par2, int par3) {
 		this.profileNameTextBox.mouseClicked(par1, par2, par3);
-		super.mouseClicked(par1, par2, par3);
+		try {
+			super.mouseClicked(par1, par2, par3);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	protected void keyTyped(char par1, int par2) {
 		this.profileNameTextBox.textboxKeyTyped(par1, par2);
 		((GuiButton)this.buttonList.get(2)).enabled = ((this.profileNameTextBox.getText().length() > 0));
-		super.keyTyped(par1, par2);
+		try {
+			super.keyTyped(par1, par2);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	

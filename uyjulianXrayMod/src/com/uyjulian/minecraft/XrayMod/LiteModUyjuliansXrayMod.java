@@ -16,9 +16,13 @@ package com.uyjulian.minecraft.XrayMod;
 import java.io.File;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.BlockModelRenderer;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 
 import com.mumfrey.liteloader.InitCompleteListener;
 import com.mumfrey.liteloader.LiteMod;
@@ -56,21 +60,21 @@ public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
 	public void onInitCompleted(Minecraft minecraft, LiteLoader loader) {}
 	
 	private static boolean renderBlockProcessingIsActive = false;
-	public static void renderBlockProcessing(ReturnEventInfo<RenderBlocks, Boolean> e, Block arg1, int arg2, int arg3, int arg4) {
+	public static void renderBlockProcessing(ReturnEventInfo<BlockModelRenderer, Boolean> e, IBlockAccess blockAccessIn, IBakedModel modelIn, IBlockState blockStateIn, BlockPos blockPosIn, WorldRenderer worldRendererIn, boolean checkSides) {
 		if (renderBlockProcessingIsActive) return; // To avoid infinite loops
 		renderBlockProcessingIsActive = true;
-		char currentBoolean = UyjuliansXrayModMain.blockIsInBlockList(arg1);
+		char currentBoolean = UyjuliansXrayModMain.blockIsInBlockList(blockStateIn.getBlock());
 
 		if ((currentBoolean == 'b')) {
 			try {
-				e.setReturnValue(false); // Act like normal behavior...
+				e.setReturnValue(true); // Act like normal behavior...
 			} 
 			finally {}
 		}
 		else if (currentBoolean == 'a') {
-			e.getSource().renderBlockAllFaces(arg1, arg2, arg3, arg4);
+			e.getSource().renderModel(blockAccessIn, modelIn, blockStateIn, blockPosIn, worldRendererIn, false);
 			try {
-				e.setReturnValue(true); // Act like normal behavior...
+				e.setReturnValue(false); // Act like normal behavior...
 			} 
 			finally {}
 		}

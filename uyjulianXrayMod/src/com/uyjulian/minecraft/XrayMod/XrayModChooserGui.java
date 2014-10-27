@@ -13,6 +13,7 @@
 
 package com.uyjulian.minecraft.XrayMod;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,7 +26,6 @@ import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -44,7 +44,7 @@ public class XrayModChooserGui extends GuiScreen {
         while (blockIterator.hasNext())
         {
         	Block currentBlock = blockIterator.next();
-        	this.idList.add(Block.blockRegistry.getNameForObject(currentBlock));
+        	this.idList.add(Block.blockRegistry.getNameForObject(currentBlock).toString());
         }
 	}
 	
@@ -60,7 +60,12 @@ public class XrayModChooserGui extends GuiScreen {
 	
 	@Override
 	protected void actionPerformed(GuiButton par1GuiButton) {
-		super.actionPerformed(par1GuiButton);
+		try {
+			super.actionPerformed(par1GuiButton);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (par1GuiButton.id != 0) {
 			this.invisibleIdList.add(this.idList.get(par1GuiButton.id));
 		}
@@ -68,7 +73,12 @@ public class XrayModChooserGui extends GuiScreen {
 	
 	@Override
 	public void handleMouseInput() {
-		super.handleMouseInput();
+		try {
+			super.handleMouseInput();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		int mouseScrollWheelStatus = Mouse.getEventDWheel();
 		int mouseButtonStatus = Mouse.getEventButton();
 		boolean mouseButtonState = Mouse.getEventButtonState();
@@ -90,7 +100,12 @@ public class XrayModChooserGui extends GuiScreen {
 	
 	@Override
 	protected void keyTyped(char par1, int par2) {
-		super.keyTyped(par1, par2);
+		try {
+			super.keyTyped(par1, par2);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (par2 != 1 && par2 != 14 && par2 != 29 && par2 != 157) {
 			if (((par2 == 200) || (par1 == 'w') || (par1 == 'W')) && (this.listPos > 0)) {
 				--this.listPos;
@@ -136,14 +151,14 @@ public class XrayModChooserGui extends GuiScreen {
 		drawRect(widthPlus100 + 2, currentPos1Calc, widthMinus100 - 2, currentPos2Calc, -4144960);
 		for (int i = 0; i < 40; ++i) {
 			if (renderPosition >= 0 && renderPosition < this.idList.size()) {
-				ItemStack currentIcon = new ItemStack((Block.blockRegistry.getObject(this.idList.get(renderPosition))));
-				if ((currentIcon.getItem() != null) && (RenderBlocks.renderItemIn3d(Block.getBlockFromItem(currentIcon.getItem()).getRenderType()))) {
-					itemRender.renderItemAndEffectIntoGUI(fontRendererObj, this.mc.getTextureManager(), currentIcon, this.width / 2 - 97, heightCalc - 60 + 4 + i * 24);
+				ItemStack currentIcon = new ItemStack((Item.getByNameOrId(this.idList.get(renderPosition))));
+				if (currentIcon.getItem() != null) {
+					this.itemRender.renderItemAndEffectIntoGUI(currentIcon, this.width / 2 - 97, heightCalc - 60 + 4 + i * 24);
 				}
 				if (this.invisibleIdList.indexOf((this.idList.get(renderPosition))) >= 0) {
 					drawRect(widthPlus100, heightCalc + 10 - 48 + i * 24, widthMinus100, heightCalc - 10 - 48 + i * 24, -65536);
 				}
-				String currentBlockName = (Block.blockRegistry.getObject(this.idList.get(renderPosition))).getLocalizedName();
+				String currentBlockName = Block.getBlockFromName(this.idList.get(renderPosition)).getLocalizedName();
 				if (currentBlockName == null) {
 					currentBlockName = "No Name";
 				}

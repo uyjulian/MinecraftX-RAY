@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 
+import com.mumfrey.liteloader.core.LiteLoader;
 import com.mumfrey.liteloader.util.ModUtilities;
 
 import net.minecraft.block.*;
@@ -41,21 +42,21 @@ public class UyjuliansXrayModMain {
 	public static String currentBlocklistName = "DefaultBlockList";
 	public static boolean toggleXRay = false;
 	public static boolean toggleCaveFinder = false;
-	public static String currentVersion = "9";
+	public static String currentVersion = "10";
 	private Boolean FirstTick = false;
 	
-	@SuppressWarnings("deprecation")
 	public UyjuliansXrayModMain() {
 		if (currentModInstance == null) {
 			currentModInstance = this;
 			minecraftInstance = Minecraft.getMinecraft();
+			XrayModConfiguration.init(minecraftInstance.mcDataDir.getPath());
 			loadBlockList(currentBlocklistName);
 			// Keybinding setup
 			this.keyBinds.add(new KeyBinding("Toggle X-ray",Keyboard.KEY_X, "Uyjulian's X-ray Mod"));
 			this.keyBinds.add(new KeyBinding("Toggle Cave Finder",Keyboard.KEY_V, "Uyjulian's X-ray Mod"));
 			for (KeyBinding currentKey : this.keyBinds) {
 				if (currentKey != null) {
-					ModUtilities.registerKey(currentKey);
+					LiteLoader.getInput().registerKeyBinding(currentKey);
 				}
 			}
 		}
@@ -113,53 +114,16 @@ public class UyjuliansXrayModMain {
 	
 	public void loadBlockList(String blockListName) {
 		UyjuliansXrayModMain.printLineInLog("Please wait, loading Block List name: " + blockListName);
-		try {
-			currentBlocklistName = blockListName;
-			String[] blockListBuffer = new String[4096];
-			File blockListFile = new File(minecraftInstance.mcDataDir.getPath() + File.separator + "XRayProfiles", blockListName + ".XRayProfileNew");
-			if (blockListFile.exists()) {
-				UyjuliansXrayModMain.printLineInLog("The block list exists! Loading block list...");
-				BufferedReader currentBufferedReader = new BufferedReader(new FileReader(blockListFile));
-				String currentLine;
-				int i;
-				for (i = 0; (currentLine = currentBufferedReader.readLine()) != null; ++i) {
-					blockListBuffer[i] = currentLine;
-				}
-				currentBufferedReader.close();
-				blockList = new String[i];
-				System.arraycopy(blockListBuffer,0,blockList,0,i);
-				UyjuliansXrayModMain.printLineInLog("Read complete!");
-			}
-			else {
-				UyjuliansXrayModMain.printLineInLog("Oh, the block list doesn't exist... Oh well!");
-			}
+		String[] tempBlockList = XrayModConfiguration.getBlockList(blockListName);
+		if (!(tempBlockList == null)) {
+			blockList = tempBlockList; 
 		}
-		catch (Exception currentException) {
-			UyjuliansXrayModMain.printLineInLog("Oops, looks like there was an error reading the block list! Printing stack trace now...");
-			currentException.printStackTrace();
-		}
+		//Otherwise, just leave the existing block list contents
 	}
 	
 	public void saveBlockList(String blockListName) {
 		UyjuliansXrayModMain.printLineInLog("Please wait, saving block list name: " + blockListName);
-		try {
-			currentBlocklistName = blockListName;
-			File blockListFolder = new File(minecraftInstance.mcDataDir, "XRayProfiles");
-			boolean canMakeBlockListFolder = blockListFolder.mkdir();
-			File blockListFile = new File(blockListFolder, blockListName + ".XRayProfileNew");
-			BufferedWriter currentBufferedWriter = new BufferedWriter(new FileWriter(blockListFile));
-			String[] blockListBuffer = blockList;
-			int blockListLength = blockList.length;
-			for (int i = 0; i < blockListLength; ++i) {
-				currentBufferedWriter.write(blockListBuffer[i] + "\r\n");
-			}
-			currentBufferedWriter.close();
-			UyjuliansXrayModMain.printLineInLog("Write complete!");
-		}
-		catch (Exception currentException) {
-			UyjuliansXrayModMain.printLineInLog("Oops, looks like there was an error writing the block list! Printing stack trace now...");
-			currentException.printStackTrace();
-		}
+		XrayModConfiguration.setBlockList(blockListName, blockList);
 	}
 	
 	// Make things bright stuff
@@ -188,7 +152,7 @@ public class UyjuliansXrayModMain {
 	 */
 	public static char blockIsInBlockList(Block currentBlock) {
 		if (toggleXRay || toggleCaveFinder) {
-			String blockID = Block.blockRegistry.getNameForObject(currentBlock);
+			String blockID = Block.blockRegistry.getNameForObject(currentBlock).toString();
 			String[] blockListBuffer = blockList;
 			int blockListLength = blockListBuffer.length;
 			int i; 
