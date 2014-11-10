@@ -72,9 +72,9 @@ public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
 			finally {}
 		}
 		else if (currentBoolean == 'a') {
-			e.getSource().renderModel(blockAccessIn, modelIn, blockStateIn, blockPosIn, worldRendererIn, false);
+			boolean lol = e.getSource().renderModelStandard(blockAccessIn, modelIn, blockStateIn.getBlock(), blockPosIn, worldRendererIn, false);
 			try {
-				e.setReturnValue(false); // Act like normal behavior...
+				e.setReturnValue(lol); // Act like normal behavior...
 			} 
 			finally {}
 		}

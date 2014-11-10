@@ -24,7 +24,6 @@ public class XrayModEventTransformer extends EventInjectionTransformer {
 	
 	@Override
 	protected void addEvents() {
-		System.out.println("[UyjulianXray] dick");
 		this.addEvent(Event.getOrCreate("UyjuliansXrayMod_BlockModelRenderer_renderModel", true), new MethodInfo(XrayModObfTable.BlockModelRenderer, XrayModObfTable.BlockModelRenderer_renderModel, Boolean.TYPE, XrayModObfTable.IBlockAccess, XrayModObfTable.IBakedModel, XrayModObfTable.IBlockState, XrayModObfTable.BlockPos, XrayModObfTable.WorldRenderer, Boolean.TYPE), new MethodHead()).addListener(new MethodInfo("com.uyjulian.minecraft.XrayMod.LiteModUyjuliansXrayMod", "renderBlockProcessing"));
 	}
 
