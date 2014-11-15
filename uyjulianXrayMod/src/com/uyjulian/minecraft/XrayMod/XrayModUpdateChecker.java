@@ -21,7 +21,7 @@ import java.io.OutputStream;
 import java.net.URL;
 
 public class XrayModUpdateChecker implements Runnable {
-	private final String UpdateURL = "http://pastebin.com/raw.php?i=iFGwDPR6";
+	private final String UpdateURL = "http://pastebin.com/raw.php?i=TER4rRdZ";
 	private final String CurrentVersion = UyjuliansXrayModMain.currentVersion;
 	@Override
 	public void run() {
@@ -37,15 +37,15 @@ public class XrayModUpdateChecker implements Runnable {
 				String NewVersion = new String(currentByteArrayOutputStream.toByteArray()).trim();
 				if (!(NewVersion.equals(CurrentVersion)) && (NewVersion.length() <= 40)) {
 					UyjuliansXrayModMain.putLineInChat("§c§lUpdate available!§r");
-					UyjuliansXrayModMain.putLineInChat("To download the update,");
-					UyjuliansXrayModMain.putLineInChat("press CTRL + X to go to the menu, then");
-					UyjuliansXrayModMain.putLineInChat("§lGo to MCF topic for support, updates§r.");
-					UyjuliansXrayModMain.putLineInChat("After that, download the latest version from");
-					UyjuliansXrayModMain.putLineInChat("the big green §adownload§r link located on the");
-					UyjuliansXrayModMain.putLineInChat("webpage, then press §lSkip ad§r.");
-					UyjuliansXrayModMain.putLineInChat("After that, click the green §a§lDOWNLOAD§r");
-					UyjuliansXrayModMain.putLineInChat("button, and then place the litemod into");
-					UyjuliansXrayModMain.putLineInChat("the mods folder.");
+//					UyjuliansXrayModMain.putLineInChat("To download the update,");
+//					UyjuliansXrayModMain.putLineInChat("press CTRL + X to go to the menu, then");
+//					UyjuliansXrayModMain.putLineInChat("§lGo to MCF topic for support, updates§r.");
+//					UyjuliansXrayModMain.putLineInChat("After that, download the latest version from");
+//					UyjuliansXrayModMain.putLineInChat("the big green §adownload§r link located on the");
+//					UyjuliansXrayModMain.putLineInChat("webpage, then press §lSkip ad§r.");
+//					UyjuliansXrayModMain.putLineInChat("After that, click the green §a§lDOWNLOAD§r");
+//					UyjuliansXrayModMain.putLineInChat("button, and then place the litemod into");
+//					UyjuliansXrayModMain.putLineInChat("the mods folder.");
 					//UyjuliansXrayModMain.putLineInChat("Current: " + CurrentVersion);
 					//UyjuliansXrayModMain.putLineInChat("Updated: " + NewVersion);
 					foundNewVersion = true;

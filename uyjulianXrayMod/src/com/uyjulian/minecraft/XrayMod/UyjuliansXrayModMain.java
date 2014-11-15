@@ -42,14 +42,21 @@ public class UyjuliansXrayModMain {
 	public static String currentBlocklistName = "DefaultBlockList";
 	public static boolean toggleXRay = false;
 	public static boolean toggleCaveFinder = false;
-	public static String currentVersion = "10";
+	public static String currentVersion = "1";
 	private Boolean FirstTick = false;
+	public static boolean crashProtection = false;
 	
 	public UyjuliansXrayModMain() {
 		if (currentModInstance == null) {
 			currentModInstance = this;
 			minecraftInstance = Minecraft.getMinecraft();
 			XrayModConfiguration.init(minecraftInstance.mcDataDir.getPath());
+			String crashprotprop = XrayModConfiguration.getProperty("throwagain");
+			if (crashprotprop != null) {
+				if (crashprotprop.equals("false")) {
+					crashProtection = true;
+				}
+			}
 			loadBlockList(currentBlocklistName);
 			// Keybinding setup
 			this.keyBinds.add(new KeyBinding("Toggle X-ray",Keyboard.KEY_X, "Uyjulian's X-ray Mod"));
@@ -84,7 +91,16 @@ public class UyjuliansXrayModMain {
 		if ((minecraftInstance.inGameHasFocus) && (inGame)) {
 			if (FirstTick == false) {
 				FirstTick = true;
-				startUpdateChecker();
+				boolean dontcheckupdate = false;
+				String updatenotify = XrayModConfiguration.getProperty("updatenotify");
+				if (updatenotify != null) {
+					if (updatenotify.equals("false")) {
+						dontcheckupdate = true;
+					}
+				}
+				if (!dontcheckupdate) {
+					startUpdateChecker();
+				}
 			}
 			if (this.keyBinds.get(0).isPressed()) { //X-ray key
 				if (!Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && !Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
