@@ -67,7 +67,7 @@ public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
 
 		if ((currentBoolean == 'b')) {
 			try {
-				e.setReturnValue(true); // Act like normal behavior...
+				e.setReturnValue(false); // Act like normal behavior...
 			} 
 			finally {}
 		}
