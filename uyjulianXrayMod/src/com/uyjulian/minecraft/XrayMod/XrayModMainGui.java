@@ -156,7 +156,8 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
 	@Override
 	public void drawScreen(int par1, int par2, float par3) {
 		drawDefaultBackground();
-		drawCenteredString(this.fontRendererObj, "X-Ray main menu", this.width / 2, this.height / 4 + (-25) + 12, 16777215);
+		drawCenteredString(this.fontRendererObj, "X-Ray main menu", this.width / 2, this.height / 4 + (-25) + 12, 0xFFFFFF);
+		drawCenteredString(this.fontRendererObj, "Commit: " + XrayModVersion.getGitCommit(), this.width / 2, this.height / 4 + (-25) + 24, 0xFFFFFF);
 		if (this.profileNameTextBox != null) {
 			this.profileNameTextBox.drawTextBox();
 		}

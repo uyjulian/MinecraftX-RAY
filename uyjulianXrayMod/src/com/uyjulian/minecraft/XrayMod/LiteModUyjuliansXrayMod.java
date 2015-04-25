@@ -20,6 +20,7 @@ import net.minecraft.client.renderer.BlockModelRenderer;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -35,12 +36,12 @@ public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
 	
 	@Override
 	public String getName() {
-		return "Uyjulian's X-ray Mod";
+		return XrayModVersion.getName();
 	}
 
 	@Override
 	public String getVersion() {
-		return UyjuliansXrayModMain.currentVersion;
+		return XrayModVersion.getVersion();
 	}
 
 	@Override
@@ -59,35 +60,16 @@ public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
 	@Override
 	public void onInitCompleted(Minecraft minecraft, LiteLoader loader) {}
 	
-	private static boolean renderBlockProcessingIsActive = false;
-	public static void renderBlockProcessing(ReturnEventInfo<BlockModelRenderer, Boolean> e, IBlockAccess blockAccessIn, IBakedModel modelIn, IBlockState blockStateIn, BlockPos blockPosIn, WorldRenderer worldRendererIn, boolean checkSides) {
-		if (renderBlockProcessingIsActive) return; // To avoid infinite loops
-		renderBlockProcessingIsActive = true;
-		char currentBoolean = UyjuliansXrayModMain.blockIsInBlockList(blockStateIn.getBlock());
-
-		if ((currentBoolean == 'b')) {
+	public static void renderSideProcessing(ReturnEventInfo<Block, Boolean> e, IBlockAccess arg1, BlockPos arg2, EnumFacing arg3) {
+		char currentBoolean = UyjuliansXrayModMain.blockIsInBlockList(e.getSource());
+		if (currentBoolean != 'c') {
 			try {
-				e.setReturnValue(false); // Act like normal behavior...
+				e.setReturnValue(currentBoolean == 'a');
 			} 
-			finally {}
-		}
-		else if (currentBoolean == 'a') {
-			boolean lol = false;
-			if (UyjuliansXrayModMain.crashProtection) {
-				try {
-					lol = e.getSource().renderModelStandard(blockAccessIn, modelIn, blockStateIn.getBlock(), blockPosIn, worldRendererIn, false);
-				}
-				catch (Throwable lsol) {}
+			catch(Exception ex) {
+				
 			}
-			else {
-				lol = e.getSource().renderModelStandard(blockAccessIn, modelIn, blockStateIn.getBlock(), blockPosIn, worldRendererIn, false);
-			}
-			try {
-				e.setReturnValue(lol); // Act like normal behavior...
-			} 
-			finally {}
 		}
-		renderBlockProcessingIsActive = false;
 	}
 
 

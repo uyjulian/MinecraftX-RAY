@@ -3,6 +3,6 @@
     "mcversion": "${litemodversion}",
     "revision": "${git.revision}",
     "author": "${author}",
-    "description": "This mod lets you see through blocks.",
-    "classTransformerClasses": "com.uyjulian.minecraft.XrayMod.XrayModEventTransformer"
+    "description": "${description}",
+    "classTransformerClasses": "${transformerClasses}"
 }

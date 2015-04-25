@@ -148,7 +148,7 @@ public class XrayModChooserGui extends GuiScreen {
 		int renderPosition = this.listPos - 4;
 		int currentPos1Calc = heightCalc + 12 + (24 * 2);
 		int currentPos2Calc = currentPos1Calc - 24;
-		drawRect(widthPlus100 + 2, currentPos1Calc, widthMinus100 - 2, currentPos2Calc, -4144960);
+		drawRect(widthPlus100 + 2, currentPos1Calc, widthMinus100 - 2, currentPos2Calc, -0x3F3F40);
 		for (int i = 0; i < 40; ++i) {
 			if (renderPosition >= 0 && renderPosition < this.idList.size()) {
 				ItemStack currentIcon = new ItemStack((Item.getByNameOrId(this.idList.get(renderPosition))));
@@ -156,13 +156,13 @@ public class XrayModChooserGui extends GuiScreen {
 					this.itemRender.renderItemAndEffectIntoGUI(currentIcon, this.width / 2 - 97, heightCalc - 60 + 4 + i * 24);
 				}
 				if (this.invisibleIdList.indexOf((this.idList.get(renderPosition))) >= 0) {
-					drawRect(widthPlus100, heightCalc + 10 - 48 + i * 24, widthMinus100, heightCalc - 10 - 48 + i * 24, -65536);
+					drawRect(widthPlus100, heightCalc + 10 - 48 + i * 24, widthMinus100, heightCalc - 10 - 48 + i * 24, -0x010000);
 				}
 				String currentBlockName = Block.getBlockFromName(this.idList.get(renderPosition)).getLocalizedName();
 				if (currentBlockName == null) {
 					currentBlockName = "No Name";
 				}
-				drawCenteredString(this.fontRendererObj, currentBlockName, this.width / 2, heightCalc - 60 + 7 + i * 24, 16777215);
+				drawCenteredString(this.fontRendererObj, currentBlockName, this.width / 2, heightCalc - 60 + 7 + i * 24, 0xFFFFFF);
 
 
 			}

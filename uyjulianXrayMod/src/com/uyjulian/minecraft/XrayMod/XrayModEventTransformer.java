@@ -24,7 +24,7 @@ public class XrayModEventTransformer extends EventInjectionTransformer {
 	
 	@Override
 	protected void addEvents() {
-		this.addEvent(Event.getOrCreate("UyjuliansXrayMod_BlockModelRenderer_renderModel", true), new MethodInfo(XrayModObfTable.BlockModelRenderer, XrayModObfTable.BlockModelRenderer_renderModel, Boolean.TYPE, XrayModObfTable.IBlockAccess, XrayModObfTable.IBakedModel, XrayModObfTable.IBlockState, XrayModObfTable.BlockPos, XrayModObfTable.WorldRenderer, Boolean.TYPE), new MethodHead()).addListener(new MethodInfo("com.uyjulian.minecraft.XrayMod.LiteModUyjuliansXrayMod", "renderBlockProcessing"));
+		this.addEvent(Event.getOrCreate("UyjuliansXrayMod_Block_shouldSideBeRendered", true), new MethodInfo(XrayModObfTable.Block, XrayModObfTable.Block_shouldSideBeRendered, Boolean.TYPE, XrayModObfTable.IBlockAccess, XrayModObfTable.BlockPos, XrayModObfTable.EnumFacing), new MethodHead()).addListener(new MethodInfo("com.uyjulian.minecraft.XrayMod.LiteModUyjuliansXrayMod", "renderSideProcessing"));
 	}
 
 }

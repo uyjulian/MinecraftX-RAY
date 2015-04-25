@@ -17,17 +17,17 @@ import com.mumfrey.liteloader.core.runtime.Obf;
 
 public class XrayModObfTable extends Obf {
 	//TODO: Minecraft 1.8
-	public static XrayModObfTable Block = new XrayModObfTable("net/minecraft/block/Block", "atr");
-	public static XrayModObfTable Block_shouldSideBeRendered = new XrayModObfTable("func_176225_a", "a", "shouldSideBeRendered");
-	public static XrayModObfTable BlockModelRenderer = new XrayModObfTable("net/minecraft/client/renderer/BlockModelRenderer", "cln");
-	public static XrayModObfTable BlockModelRenderer_renderModel = new XrayModObfTable("func_178267_a", "a", "renderModel");
+	public static final XrayModObfTable Block = new XrayModObfTable("net/minecraft/block/Block", "atr");
+	public static final XrayModObfTable Block_shouldSideBeRendered = new XrayModObfTable("func_176225_a", "a", "shouldSideBeRendered");
+	public static final XrayModObfTable BlockModelRenderer = new XrayModObfTable("net/minecraft/client/renderer/BlockModelRenderer", "cln");
+	public static final XrayModObfTable BlockModelRenderer_renderModel = new XrayModObfTable("func_178267_a", "a", "renderModel");
 	
-	public static XrayModObfTable IBlockAccess = new XrayModObfTable("net/minecraft/world/IBlockAccess", "ard");
-	public static XrayModObfTable IBakedModel = new XrayModObfTable("net/minecraft/client/resources/model/IBakedModel", "cxe");
-	public static XrayModObfTable IBlockState = new XrayModObfTable("net/minecraft/block/state/IBlockState", "bec");
-	public static XrayModObfTable BlockPos = new XrayModObfTable("net/minecraft/util/BlockPos", "dt");
-	public static XrayModObfTable WorldRenderer = new XrayModObfTable("net/minecraft/client/renderer/WorldRenderer", "civ");
-	public static XrayModObfTable EnumFacing = new XrayModObfTable("net/minecraft/util/EnumFacing", "ej");
+	public static final XrayModObfTable IBlockAccess = new XrayModObfTable("net/minecraft/world/IBlockAccess", "ard");
+	public static final XrayModObfTable IBakedModel = new XrayModObfTable("net/minecraft/client/resources/model/IBakedModel", "cxe");
+	public static final XrayModObfTable IBlockState = new XrayModObfTable("net/minecraft/block/state/IBlockState", "bec");
+	public static final XrayModObfTable BlockPos = new XrayModObfTable("net/minecraft/util/BlockPos", "dt");
+	public static final XrayModObfTable WorldRenderer = new XrayModObfTable("net/minecraft/client/renderer/WorldRenderer", "civ");
+	public static final XrayModObfTable EnumFacing = new XrayModObfTable("net/minecraft/util/EnumFacing", "ej");
 	
 	protected XrayModObfTable(String seargeName, String obfName) {
 		super(seargeName.replaceAll("/", "."), obfName.replaceAll("/", "."));

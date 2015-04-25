@@ -42,7 +42,7 @@ public class UyjuliansXrayModMain {
 	public static String currentBlocklistName = "DefaultBlockList";
 	public static boolean toggleXRay = false;
 	public static boolean toggleCaveFinder = false;
-	public static String currentVersion = "1";
+	public static String currentVersion = XrayModVersion.getVersion();
 	private Boolean FirstTick = false;
 	public static boolean crashProtection = false;
 	
@@ -59,8 +59,8 @@ public class UyjuliansXrayModMain {
 			}
 			loadBlockList(currentBlocklistName);
 			// Keybinding setup
-			this.keyBinds.add(new KeyBinding("Toggle X-ray",Keyboard.KEY_X, "Uyjulian's X-ray Mod"));
-			this.keyBinds.add(new KeyBinding("Toggle Cave Finder",Keyboard.KEY_V, "Uyjulian's X-ray Mod"));
+			this.keyBinds.add(new KeyBinding("Toggle X-ray",Keyboard.KEY_X, XrayModVersion.getName()));
+			this.keyBinds.add(new KeyBinding("Toggle Cave Finder",Keyboard.KEY_V, XrayModVersion.getName()));
 			for (KeyBinding currentKey : this.keyBinds) {
 				if (currentKey != null) {
 					LiteLoader.getInput().registerKeyBinding(currentKey);
@@ -68,7 +68,7 @@ public class UyjuliansXrayModMain {
 			}
 		}
 		else {
-			printLineInLog("X-ray mod already inited... Looks like there might be a glitch in my mod... This shouldn't happen!");
+			printLineInLog("There seems to be something odd going on...");
 		}
 	}
 	
@@ -85,7 +85,7 @@ public class UyjuliansXrayModMain {
 		new Thread(new XrayModUpdateChecker()).start();
 	}
 	
-	// Tick stuff
+	// Ticking/keys
 	
 	public void onTick(boolean inGame) {
 		if ((minecraftInstance.inGameHasFocus) && (inGame)) {
@@ -104,20 +104,20 @@ public class UyjuliansXrayModMain {
 			}
 			if (this.keyBinds.get(0).isPressed()) { //X-ray key
 				if (!Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && !Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
-					UyjuliansXrayModMain.printLineInLog("Toggling X-ray...");
+					UyjuliansXrayModMain.printLineInLog("Toggle X-ray");
 					toggleXRay = !toggleXRay;
 					toggleCaveFinder = false;
 					// Now refresh the world...
 					minecraftInstance.renderGlobal.loadRenderers();
 				}
 				else {
-					UyjuliansXrayModMain.printLineInLog("Displaying menu...");
+					UyjuliansXrayModMain.printLineInLog("Open menu");
 					// Display GUI...
 					minecraftInstance.displayGuiScreen(new XrayModMainGui(null, minecraftInstance.gameSettings));
 				}
 			}
 			if (this.keyBinds.get(1).isPressed()) { //Cave finder key
-				UyjuliansXrayModMain.printLineInLog("Toggling Cave Finder...");
+				UyjuliansXrayModMain.printLineInLog("Toggle cave finder");
 				toggleCaveFinder = !toggleCaveFinder;
 				toggleXRay = false;
 				// Now refresh the world...
@@ -126,10 +126,10 @@ public class UyjuliansXrayModMain {
 		}
 	}
 	
-	// I/O stuff
+	// Input/Output code
 	
 	public void loadBlockList(String blockListName) {
-		UyjuliansXrayModMain.printLineInLog("Please wait, loading Block List name: " + blockListName);
+		UyjuliansXrayModMain.printLineInLog("Loading Block List name: " + blockListName);
 		String[] tempBlockList = XrayModConfiguration.getBlockList(blockListName);
 		if (!(tempBlockList == null)) {
 			blockList = tempBlockList; 
@@ -138,33 +138,19 @@ public class UyjuliansXrayModMain {
 	}
 	
 	public void saveBlockList(String blockListName) {
-		UyjuliansXrayModMain.printLineInLog("Please wait, saving block list name: " + blockListName);
+		UyjuliansXrayModMain.printLineInLog("Saving block list name: " + blockListName);
 		XrayModConfiguration.setBlockList(blockListName, blockList);
 	}
 	
-	// Make things bright stuff
-	
-	public void disableBrightLight() {
-		//minecraftInstance.thePlayer.removePotionEffect( 16 );
-		//minecraftInstance.gameSettings.gammaSetting = 0.2F;
-	}
-	
-	public void enableBrightLight() {
-		//minecraftInstance.thePlayer.addPotionEffect( new PotionEffect( 16, 99999999, 255, true ) );
-		//minecraftInstance.gameSettings.gammaSetting = 782;
-	}
-	
-	// Check then render blocks stuff
+	// Code for
 	
 	/*
-	 * NOTE: Boolean (the object) throws an exception on null. Don't use that!
-	 * 
 	 * Confused on what this means?
 	 * b means the side is not going to be rendered. (aka false)
 	 * a means the side is going to be rendered. (aka true)
 	 * c means the side will be processed by normal means.
 	 * 
-	 * Still confused? Too bad.
+	 * Some really ugly hack just to use one byte. Wow.
 	 */
 	public static char blockIsInBlockList(Block currentBlock) {
 		if (toggleXRay || toggleCaveFinder) {
@@ -175,9 +161,9 @@ public class UyjuliansXrayModMain {
 			String currentID;
 			for (i = 0; i < blockListLength; ++i) {
 				currentID = blockListBuffer[i];
-				if (currentID.equals(blockID)) { //You must use .equals(), not ==, that screwed me over e_e
+				if (currentID.equals(blockID)) { 
 					if (toggleCaveFinder) {	//Only display stone in cave finder mode, 
-						if (!(blockID.equals("minecraft:stone"))) {  //Ignore stone, use normal behavior (will be broken in 1.8)
+						if (!(blockID.equals("minecraft:stone"))) { 
 							return 'b'; //Don't display this side
 						}
 					}
@@ -186,7 +172,7 @@ public class UyjuliansXrayModMain {
 					}
 				}
 			}
-			if (!toggleCaveFinder) { //We want the normal behavior on cave finder (will be broken in 1.8)
+			if (!toggleCaveFinder) {
 				if (blockListLength != 0) { //Nothing in the list, young lads.
 					return 'a'; //Display if detected
 				}
@@ -195,12 +181,12 @@ public class UyjuliansXrayModMain {
 		return 'c'; //Normal behavior
 	}
 	
-	// Misc stuff
+	// Toolbox
 	
 	public static void printLineInLog(String lineToPrint) {
-		System.out.println("[UyjulianXray] " + lineToPrint);
+		System.out.println("[" + XrayModVersion.getShortName() + "] " + lineToPrint);
 	}
 	public static void putLineInChat(String lineToPrint) {
-		getModInstance().minecraftInstance.thePlayer.addChatMessage(new ChatComponentText("§l§o§6[UyjulianXray]§r " + lineToPrint));
+		getModInstance().minecraftInstance.thePlayer.addChatMessage(new ChatComponentText("§l§o§6[" + XrayModVersion.getShortName() + "]§r " + lineToPrint));
 	}
 }
