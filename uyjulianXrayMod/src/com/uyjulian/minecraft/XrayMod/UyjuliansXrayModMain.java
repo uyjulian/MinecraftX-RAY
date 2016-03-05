@@ -29,7 +29,9 @@ import com.mumfrey.liteloader.util.ModUtilities;
 import net.minecraft.block.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.IBlockAccess;
 
@@ -42,6 +44,7 @@ public class UyjuliansXrayModMain {
 	public static String currentBlocklistName = "DefaultBlockList";
 	public static boolean toggleXRay = false;
 	public static boolean toggleCaveFinder = false;
+	public static boolean toggleSpecialMode1 = false;
 	public static String currentVersion = XrayModVersion.getVersion();
 	private Boolean FirstTick = false;
 	public static boolean crashProtection = false;
@@ -61,6 +64,7 @@ public class UyjuliansXrayModMain {
 			// Keybinding setup
 			this.keyBinds.add(new KeyBinding("Toggle X-ray",Keyboard.KEY_X, XrayModVersion.getName()));
 			this.keyBinds.add(new KeyBinding("Toggle Cave Finder",Keyboard.KEY_V, XrayModVersion.getName()));
+			this.keyBinds.add(new KeyBinding("Toggle Special Mode 1",Keyboard.KEY_C, XrayModVersion.getName()));
 			for (KeyBinding currentKey : this.keyBinds) {
 				if (currentKey != null) {
 					LiteLoader.getInput().registerKeyBinding(currentKey);
@@ -123,6 +127,13 @@ public class UyjuliansXrayModMain {
 				// Now refresh the world...
 				minecraftInstance.renderGlobal.loadRenderers();
 			}
+			if (this.keyBinds.get(2).isPressed()) { //Special mode key
+				UyjuliansXrayModMain.printLineInLog("Toggle special mode");
+				toggleSpecialMode1 = !toggleSpecialMode1;
+				toggleXRay = false;
+				// Now refresh the world...
+				minecraftInstance.renderGlobal.loadRenderers();
+			}
 		}
 	}
 	
@@ -152,8 +163,8 @@ public class UyjuliansXrayModMain {
 	 * 
 	 * Some really ugly hack just to use one byte. Wow.
 	 */
-	public static char blockIsInBlockList(Block currentBlock) {
-		if (toggleXRay || toggleCaveFinder) {
+	public static char blockIsInBlockList(Block currentBlock, IBlockAccess iba, BlockPos bps, EnumFacing ef) {
+		if (toggleXRay || toggleCaveFinder || toggleSpecialMode1) {
 			String blockID = Block.blockRegistry.getNameForObject(currentBlock).toString();
 			String[] blockListBuffer = blockList;
 			int blockListLength = blockListBuffer.length;
@@ -170,6 +181,18 @@ public class UyjuliansXrayModMain {
 					else {
 						return 'b';//Don't display this side
 					}
+				}
+			}
+			if (toggleSpecialMode1) {
+				BlockPos north = bps.north();
+				BlockPos east = bps.east();
+				BlockPos south = bps.south();
+				BlockPos west = bps.west();
+				if (iba.isAirBlock(north) && iba.isAirBlock(east) && iba.isAirBlock(south) && iba.isAirBlock(west)) {
+					return 'a';//Don't display this side
+				}
+				else {
+					return 'b';
 				}
 			}
 			if (!toggleCaveFinder) {

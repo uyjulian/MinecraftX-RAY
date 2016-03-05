@@ -61,7 +61,7 @@ public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
 	public void onInitCompleted(Minecraft minecraft, LiteLoader loader) {}
 	
 	public static void renderSideProcessing(ReturnEventInfo<Block, Boolean> e, IBlockAccess arg1, BlockPos arg2, EnumFacing arg3) {
-		char currentBoolean = UyjuliansXrayModMain.blockIsInBlockList(e.getSource());
+		char currentBoolean = UyjuliansXrayModMain.blockIsInBlockList(e.getSource(), arg1, arg2, arg3);
 		if (currentBoolean != 'c') {
 			try {
 				e.setReturnValue(currentBoolean == 'a');
