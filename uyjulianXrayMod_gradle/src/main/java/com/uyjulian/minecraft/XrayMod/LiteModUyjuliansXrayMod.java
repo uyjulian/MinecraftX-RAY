@@ -36,12 +36,12 @@ public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
 	
 	@Override
 	public String getName() {
-		return XrayModVersion.getName();
+		return "uyjuliansXrayMod";
 	}
 
 	@Override
 	public String getVersion() {
-		return XrayModVersion.getVersion();
+		return "1.8.9-r1";
 	}
 
 	@Override

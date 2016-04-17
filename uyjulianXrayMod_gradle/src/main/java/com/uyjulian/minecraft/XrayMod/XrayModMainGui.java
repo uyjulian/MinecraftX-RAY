@@ -49,7 +49,7 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
 		if (chooseScreen == 0) { //default
 			this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 0 + 12,  "Select blocks to see in X-ray view"));
 			this.buttonList.add(new GuiButton(2, this.width / 2 - 100, this.height / 4 + 25 + 12, "Switch to the profile in the textbox"));
-			this.buttonList.add(new GuiButton(3, this.width / 2 - 100, this.height / 4 + 75 + 12, "Go to MCF topic for support, updates"));
+			this.buttonList.add(new GuiButton(3, this.width / 2 - 100, this.height / 4 + 75 + 12, "Go to MCF topic for support/updates"));
 			this.buttonList.add(new GuiButton(4, this.width / 2 - 100, this.height / 4 + 100 + 12,"Change settings"));
 			this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 125 + 12,"Return to the game"));
 			this.profileNameTextBox = new GuiTextField(0, this.fontRendererObj, this.width / 2 - 100, this.height / 4 + 50 + 12, 200, 20);
@@ -157,7 +157,7 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
 	public void drawScreen(int par1, int par2, float par3) {
 		drawDefaultBackground();
 		drawCenteredString(this.fontRendererObj, "X-Ray main menu", this.width / 2, this.height / 4 + (-25) + 12, 0xFFFFFF);
-		drawCenteredString(this.fontRendererObj, "Commit: " + XrayModVersion.getGitCommit(), this.width / 2, this.height / 4 + (-25) + 24, 0xFFFFFF);
+		drawCenteredString(this.fontRendererObj, "Commit data not implemented" , this.width / 2, this.height / 4 + (-25) + 24, 0xFFFFFF);
 		if (this.profileNameTextBox != null) {
 			this.profileNameTextBox.drawTextBox();
 		}

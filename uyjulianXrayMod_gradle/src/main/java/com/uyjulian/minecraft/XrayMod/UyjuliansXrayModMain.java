@@ -45,7 +45,7 @@ public class UyjuliansXrayModMain {
 	public static boolean toggleXRay = false;
 	public static boolean toggleCaveFinder = false;
 	public static boolean toggleSpecialMode1 = false;
-	public static String currentVersion = XrayModVersion.getVersion();
+	public static String currentVersion = "4";
 	private Boolean FirstTick = false;
 	public static boolean crashProtection = false;
 	
@@ -62,9 +62,9 @@ public class UyjuliansXrayModMain {
 			}
 			loadBlockList(currentBlocklistName);
 			// Keybinding setup
-			this.keyBinds.add(new KeyBinding("Toggle X-ray",Keyboard.KEY_X, XrayModVersion.getName()));
-			this.keyBinds.add(new KeyBinding("Toggle Cave Finder",Keyboard.KEY_V, XrayModVersion.getName()));
-			this.keyBinds.add(new KeyBinding("Toggle Special Mode 1",Keyboard.KEY_C, XrayModVersion.getName()));
+			this.keyBinds.add(new KeyBinding("Toggle X-ray",Keyboard.KEY_X, "Uyjulian's X-ray Mod"));
+			this.keyBinds.add(new KeyBinding("Toggle Cave Finder",Keyboard.KEY_V, "Uyjulian's X-ray Mod"));
+			this.keyBinds.add(new KeyBinding("Toggle Special Mode 1",Keyboard.KEY_C, "Uyjulian's X-ray Mod"));
 			for (KeyBinding currentKey : this.keyBinds) {
 				if (currentKey != null) {
 					LiteLoader.getInput().registerKeyBinding(currentKey);
@@ -207,9 +207,9 @@ public class UyjuliansXrayModMain {
 	// Toolbox
 	
 	public static void printLineInLog(String lineToPrint) {
-		System.out.println("[" + XrayModVersion.getShortName() + "] " + lineToPrint);
+		System.out.println("[" + "UjXr" + "] " + lineToPrint);
 	}
 	public static void putLineInChat(String lineToPrint) {
-		getModInstance().minecraftInstance.thePlayer.addChatMessage(new ChatComponentText("§l§o§6[" + XrayModVersion.getShortName() + "]§r " + lineToPrint));
+		getModInstance().minecraftInstance.thePlayer.addChatMessage(new ChatComponentText("§l§o§6[" + "UjXr" + "]§r " + lineToPrint));
 	}
 }

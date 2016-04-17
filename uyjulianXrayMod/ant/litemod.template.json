@@ -1,8 +1,0 @@
-{
-    "name": "${ant.project.name}",
-    "mcversion": "${litemodversion}",
-    "revision": "${git.revision}",
-    "author": "${author}",
-    "description": "${description}",
-    "classTransformerClasses": "${transformerClasses}"
-}

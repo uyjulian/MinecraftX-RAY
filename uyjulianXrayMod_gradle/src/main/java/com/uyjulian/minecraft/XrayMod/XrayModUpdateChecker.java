@@ -21,7 +21,7 @@ import java.io.OutputStream;
 import java.net.URL;
 
 public class XrayModUpdateChecker implements Runnable {
-	private final String UpdateURL = "http://pastebin.com/raw.php?i=TER4rRdZ";
+	private final String UpdateURL = "http://pastebin.com/raw.php?i=341fB8ZD";
 	private final String CurrentVersion = UyjuliansXrayModMain.currentVersion;
 	@Override
 	public void run() {
