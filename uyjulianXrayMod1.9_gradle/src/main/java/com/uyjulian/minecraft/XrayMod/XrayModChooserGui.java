@@ -26,7 +26,6 @@ import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -39,12 +38,12 @@ public class XrayModChooserGui extends GuiScreen {
 
 	public XrayModChooserGui() {
         @SuppressWarnings("unchecked")
-		Iterator<Block> blockIterator = Block.blockRegistry.iterator();
+		Iterator<Block> blockIterator = Block.REGISTRY.iterator();
 
         while (blockIterator.hasNext())
         {
         	Block currentBlock = blockIterator.next();
-        	this.idList.add(Block.blockRegistry.getNameForObject(currentBlock).toString());
+        	this.idList.add(Block.REGISTRY.getNameForObject(currentBlock).toString());
         }
 	}
 	

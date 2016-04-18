@@ -16,17 +16,17 @@ package com.uyjulian.minecraft.XrayMod;
 import com.mumfrey.liteloader.core.runtime.Obf;
 
 public class XrayModObfTable extends Obf {
-	//TODO: Minecraft 1.8.9
-	public static final XrayModObfTable Block = new XrayModObfTable("net/minecraft/block/Block", "afh");
+	//TODO: Minecraft 1.9
+	public static final XrayModObfTable Block = new XrayModObfTable("net/minecraft/block/Block", "ajt");
 	public static final XrayModObfTable Block_shouldSideBeRendered = new XrayModObfTable("func_176225_a", "a", "shouldSideBeRendered");
-	public static final XrayModObfTable BlockModelRenderer = new XrayModObfTable("net/minecraft/client/renderer/BlockModelRenderer", "bgf");
+	public static final XrayModObfTable BlockModelRenderer = new XrayModObfTable("net/minecraft/client/renderer/BlockModelRenderer", "boe");
 	public static final XrayModObfTable BlockModelRenderer_renderModel = new XrayModObfTable("func_178267_a", "a", "renderModel");
 	
-	public static final XrayModObfTable IBlockAccess = new XrayModObfTable("net/minecraft/world/IBlockAccess", "adq");
-	public static final XrayModObfTable IBakedModel = new XrayModObfTable("net/minecraft/client/resources/model/IBakedModel", "boq");
-	public static final XrayModObfTable IBlockState = new XrayModObfTable("net/minecraft/block/state/IBlockState", "alz");
-	public static final XrayModObfTable BlockPos = new XrayModObfTable("net/minecraft/util/BlockPos", "cj");
-	public static final XrayModObfTable WorldRenderer = new XrayModObfTable("net/minecraft/client/renderer/WorldRenderer", "bfd");
+	public static final XrayModObfTable IBlockAccess = new XrayModObfTable("net/minecraft/world/IBlockAccess", "ahx");
+	public static final XrayModObfTable IBakedModel = new XrayModObfTable("net/minecraft/client/renderer/block/model/IBakedModel", "bxo");
+	public static final XrayModObfTable IBlockState = new XrayModObfTable("net/minecraft/block/state/IBlockState", "arc");
+	public static final XrayModObfTable BlockPos = new XrayModObfTable("net/minecraft/util/math/BlockPos", "cj");
+	public static final XrayModObfTable VertexBuffer = new XrayModObfTable("net/minecraft/client/renderer/VertexBuffer", "bmz");
 	public static final XrayModObfTable EnumFacing = new XrayModObfTable("net/minecraft/util/EnumFacing", "cq");
 	
 	protected XrayModObfTable(String seargeName, String obfName) {

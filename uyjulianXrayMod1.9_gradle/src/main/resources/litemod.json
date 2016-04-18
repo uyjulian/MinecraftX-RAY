@@ -1,5 +1,5 @@
 {
     "name": "LitemodStub",
-    "mcversion": "1.8.9",
+    "mcversion": "1.9",
     "classTransformerClasses": "com.uyjulian.minecraft.XrayMod.XrayModEventTransformer"
 }

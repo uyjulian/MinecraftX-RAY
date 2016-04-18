@@ -17,10 +17,8 @@ import java.io.File;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelRenderer;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -41,7 +39,7 @@ public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
 
 	@Override
 	public String getVersion() {
-		return "1.8.9-r1";
+		return "1.9.0-r1";
 	}
 
 	@Override
@@ -60,7 +58,7 @@ public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener {
 	@Override
 	public void onInitCompleted(Minecraft minecraft, LiteLoader loader) {}
 	
-	public static void renderSideProcessing(ReturnEventInfo<Block, Boolean> e, IBlockAccess arg1, BlockPos arg2, EnumFacing arg3) {
+	public static void renderSideProcessing(ReturnEventInfo<Block, Boolean> e, IBlockState arg0, IBlockAccess arg1, BlockPos arg2, EnumFacing arg3) {
 		char currentBoolean = UyjuliansXrayModMain.blockIsInBlockList(e.getSource(), arg1, arg2, arg3);
 		if (currentBoolean != 'c') {
 			try {
