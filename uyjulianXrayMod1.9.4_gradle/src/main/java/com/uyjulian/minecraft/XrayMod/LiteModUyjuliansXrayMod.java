@@ -16,20 +16,10 @@ package com.uyjulian.minecraft.XrayMod;
 import java.io.File;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BlockModelRenderer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-
-import com.mumfrey.liteloader.InitCompleteListener;
 import com.mumfrey.liteloader.LiteMod;
 import com.mumfrey.liteloader.Tickable;
-import com.mumfrey.liteloader.core.LiteLoader;
-import com.mumfrey.liteloader.transformers.event.ReturnEventInfo;
 
-public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener, Tickable {
+public class LiteModUyjuliansXrayMod implements LiteMod, Tickable {
 	
 	public UyjuliansXrayModMain modInstance;
 	
@@ -55,21 +45,5 @@ public class LiteModUyjuliansXrayMod implements LiteMod, InitCompleteListener, T
 	public void onTick(Minecraft minecraft, float partialTicks, boolean inGame, boolean clock) {
 		modInstance.onTick(inGame);
 	}
-
-	@Override
-	public void onInitCompleted(Minecraft minecraft, LiteLoader loader) {}
-	
-	public static void renderSideProcessing(ReturnEventInfo<Block, Boolean> e, IBlockState arg0, IBlockAccess arg1, BlockPos arg2, EnumFacing arg3) {
-		char currentBoolean = UyjuliansXrayModMain.blockIsInBlockList(e.getSource(), arg1, arg2, arg3);
-		if (currentBoolean != 'c') {
-			try {
-				e.setReturnValue(currentBoolean == 'a');
-			} 
-			catch(Exception ex) {
-				
-			}
-		}
-	}
-
 
 }

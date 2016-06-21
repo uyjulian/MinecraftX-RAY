@@ -13,19 +13,12 @@
 
 package com.uyjulian.minecraft.XrayMod;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 
 import com.mumfrey.liteloader.core.LiteLoader;
-import com.mumfrey.liteloader.util.ModUtilities;
-
 import net.minecraft.block.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -61,10 +54,10 @@ public class UyjuliansXrayModMain {
 			}
 			loadBlockList(currentBlocklistName);
 			// Keybinding setup
-			this.keyBinds.add(new KeyBinding("Toggle X-ray",Keyboard.KEY_X, "Uyjulian's X-ray Mod"));
-			this.keyBinds.add(new KeyBinding("Toggle Cave Finder",Keyboard.KEY_V, "Uyjulian's X-ray Mod"));
-			this.keyBinds.add(new KeyBinding("Toggle Special Mode 1",Keyboard.KEY_C, "Uyjulian's X-ray Mod"));
-			for (KeyBinding currentKey : this.keyBinds) {
+			UyjuliansXrayModMain.keyBinds.add(new KeyBinding("Toggle X-ray",Keyboard.KEY_X, "Uyjulian's X-ray Mod"));
+			UyjuliansXrayModMain.keyBinds.add(new KeyBinding("Toggle Cave Finder",Keyboard.KEY_V, "Uyjulian's X-ray Mod"));
+			UyjuliansXrayModMain.keyBinds.add(new KeyBinding("Toggle Special Mode 1",Keyboard.KEY_C, "Uyjulian's X-ray Mod"));
+			for (KeyBinding currentKey : UyjuliansXrayModMain.keyBinds) {
 				if (currentKey != null) {
 					LiteLoader.getInput().registerKeyBinding(currentKey);
 				}
@@ -105,7 +98,7 @@ public class UyjuliansXrayModMain {
 					startUpdateChecker();
 				}
 			}
-			if (this.keyBinds.get(0).isPressed()) { //X-ray key
+			if (UyjuliansXrayModMain.keyBinds.get(0).isPressed()) { //X-ray key
 				if (!Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && !Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
 					UyjuliansXrayModMain.printLineInLog("Toggle X-ray");
 					toggleXRay = !toggleXRay;
@@ -119,14 +112,14 @@ public class UyjuliansXrayModMain {
 					minecraftInstance.displayGuiScreen(new XrayModMainGui(null, minecraftInstance.gameSettings));
 				}
 			}
-			if (this.keyBinds.get(1).isPressed()) { //Cave finder key
+			if (UyjuliansXrayModMain.keyBinds.get(1).isPressed()) { //Cave finder key
 				UyjuliansXrayModMain.printLineInLog("Toggle cave finder");
 				toggleCaveFinder = !toggleCaveFinder;
 				toggleXRay = false;
 				// Now refresh the world...
 				minecraftInstance.renderGlobal.loadRenderers();
 			}
-			if (this.keyBinds.get(2).isPressed()) { //Special mode key
+			if (UyjuliansXrayModMain.keyBinds.get(2).isPressed()) { //Special mode key
 				UyjuliansXrayModMain.printLineInLog("Toggle special mode");
 				toggleSpecialMode1 = !toggleSpecialMode1;
 				toggleXRay = false;
