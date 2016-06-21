@@ -24,7 +24,6 @@ import net.minecraft.client.gui.GuiConfirmOpenLink;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.GuiYesNoCallback;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 
 public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
@@ -39,7 +38,6 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
 		this.parentScreen = parentScreen;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initGui() {
 		Keyboard.enableRepeatEvents(true);
@@ -55,8 +53,9 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
 			this.profileNameTextBox = new GuiTextField(0, this.fontRendererObj, this.width / 2 - 100, this.height / 4 + 50 + 12, 200, 20);
 			this.profileNameTextBox.setMaxStringLength(32);
 			this.profileNameTextBox.setFocused(true);
-			this.profileNameTextBox.setText(UyjuliansXrayModMain.getModInstance().currentBlocklistName);
-			((GuiButton)this.buttonList.get(2)).enabled = ((this.profileNameTextBox.getText().length() > 0));
+			UyjuliansXrayModMain.getModInstance();
+			this.profileNameTextBox.setText(UyjuliansXrayModMain.currentBlocklistName);
+			this.buttonList.get(2).enabled = ((this.profileNameTextBox.getText().length() > 0));
 		}
 		else if (chooseScreen == 1) { //option chooser
 			this.configKeyTextBox = new GuiTextField(0, this.fontRendererObj, this.width / 2 - 100, this.height / 4 + 00 + 12, 200, 20);
@@ -136,7 +135,7 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
 	protected void keyTyped(char par1, int par2) {
 		if (this.profileNameTextBox != null) {
 			this.profileNameTextBox.textboxKeyTyped(par1, par2);
-			((GuiButton)this.buttonList.get(2)).enabled = ((this.profileNameTextBox.getText().length() > 0));
+			this.buttonList.get(2).enabled = ((this.profileNameTextBox.getText().length() > 0));
 		}
 		if (this.configKeyTextBox != null) {
 			this.configKeyTextBox.textboxKeyTyped(par1, par2);
