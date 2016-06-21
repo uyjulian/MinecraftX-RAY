@@ -37,7 +37,7 @@ minecraft {
 sourceSets {
     main {
         // Refmap declaration must match the refmap name specified in the json config
-        refMap = "mixins.example.refmap.json"
+        refMap = "mixins.uyjuliansXrayMod.refmap.json"
     }
 }
 
@@ -49,8 +49,7 @@ litemod {
     json {
         name = "uyjuliansXrayMod"
         mcversion = "1.8.9"
-        classTransformerClasses = ["com.uyjulian.minecraft.XrayMod.XrayModEventTransformer"]
-        // mixinConfigs += "mixins.example.json"
+        mixinConfigs += "mixins.uyjuliansXrayMod.json"
     }
 }
 

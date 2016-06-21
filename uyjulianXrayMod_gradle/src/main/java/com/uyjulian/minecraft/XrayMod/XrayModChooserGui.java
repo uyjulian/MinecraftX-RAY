@@ -22,11 +22,8 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.input.Keyboard;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSlab;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -38,8 +35,7 @@ public class XrayModChooserGui extends GuiScreen {
 	int listPos = 0;
 
 	public XrayModChooserGui() {
-        @SuppressWarnings("unchecked")
-		Iterator<Block> blockIterator = Block.blockRegistry.iterator();
+        Iterator<Block> blockIterator = Block.blockRegistry.iterator();
 
         while (blockIterator.hasNext())
         {
@@ -52,7 +48,7 @@ public class XrayModChooserGui extends GuiScreen {
 	public void initGui() {
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		String[] blockListCache = modInstance.blockList;
+		String[] blockListCache = UyjuliansXrayModMain.blockList;
 		for (int i = 0; i < blockListCache.length; ++i) {
 			this.invisibleIdList.add(blockListCache[i]);
 		}
@@ -135,8 +131,8 @@ public class XrayModChooserGui extends GuiScreen {
 		for (int i = 0; i < this.invisibleIdList.size(); ++i) {
 			blockListCache[i] = this.invisibleIdList.get(i);
 		}
-		modInstance.blockList = blockListCache;
-		modInstance.saveBlockList(modInstance.currentBlocklistName);
+		UyjuliansXrayModMain.blockList = blockListCache;
+		modInstance.saveBlockList(UyjuliansXrayModMain.currentBlocklistName);
 	}
 	
 	@Override
