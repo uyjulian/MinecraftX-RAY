@@ -14,15 +14,18 @@ buildscript {
             name = 'sponge'
             url = 'http://repo.spongepowered.org/maven'
         }
+        jcenter()
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
         classpath 'org.spongepowered:mixingradle:0.4-SNAPSHOT'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
     }
 }
 
 apply plugin: 'net.minecraftforge.gradle.liteloader'
 apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'com.jfrog.bintray'
 
 version = "1.8.9-r1"
 group = "com.uyjulian.minecraft.XrayMod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -32,6 +35,23 @@ minecraft {
     version = "1.8.9"
     mappings = "stable_22"
     runDir = "run"
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    filesSpec {
+        from 'build/libs'
+        into '.'
+    }
+    pkg {
+        repo = 'MinecraftMods'
+        name = 'MinecraftX-RAY'
+        version {
+            name = project.version
+            released = new Date()
+        }
+    }
 }
 
 sourceSets {
@@ -48,8 +68,11 @@ mixin {
 litemod {
     json {
         name = "uyjuliansXrayMod"
+        displayName = "uyjulian's X-ray Mod"
+        author = "uyjulian"
         mcversion = "1.8.9"
         mixinConfigs += "mixins.uyjuliansXrayMod.json"
+        version = project.version
     }
 }
 
