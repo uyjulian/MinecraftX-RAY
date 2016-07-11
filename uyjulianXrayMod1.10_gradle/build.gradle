@@ -27,7 +27,7 @@ apply plugin: 'net.minecraftforge.gradle.liteloader'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.jfrog.bintray'
 
-version = "1.10-r1"
+version = "1.10-r2"
 group = "com.uyjulian.minecraft.XrayMod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "uyjuliansXrayMod"
 
@@ -70,7 +70,7 @@ litemod {
         name = "uyjuliansXrayMod"
         displayName = "uyjulian's X-ray Mod"
         author = "uyjulian"
-        mcversion = "1.10"
+        mcversion = "1.10.r1"
         mixinConfigs += "mixins.uyjuliansXrayMod.json"
         version = project.version
     }
