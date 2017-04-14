@@ -35,12 +35,12 @@ public class XrayModChooserGui extends GuiScreen {
 	int listPos = 0;
 
 	public XrayModChooserGui() {
-        Iterator<Block> blockIterator = Block.blockRegistry.iterator();
+        Iterator<Block> blockIterator = Block.REGISTRY.iterator();
 
         while (blockIterator.hasNext())
         {
         	Block currentBlock = blockIterator.next();
-        	this.idList.add(Block.blockRegistry.getNameForObject(currentBlock).toString());
+        	this.idList.add(Block.REGISTRY.getNameForObject(currentBlock).toString());
         }
 	}
 	
@@ -158,7 +158,7 @@ public class XrayModChooserGui extends GuiScreen {
 				if (currentBlockName == null) {
 					currentBlockName = "No Name";
 				}
-				drawCenteredString(this.fontRendererObj, currentBlockName, this.width / 2, heightCalc - 60 + 7 + i * 24, 0xFFFFFF);
+				drawCenteredString(this.fontRenderer, currentBlockName, this.width / 2, heightCalc - 60 + 7 + i * 24, 0xFFFFFF);
 
 
 			}

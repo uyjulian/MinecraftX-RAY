@@ -50,7 +50,7 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
 			this.buttonList.add(new GuiButton(3, this.width / 2 - 100, this.height / 4 + 75 + 12, "Go to MCF topic for support/updates"));
 			this.buttonList.add(new GuiButton(4, this.width / 2 - 100, this.height / 4 + 100 + 12,"Change settings"));
 			this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 125 + 12,"Return to the game"));
-			this.profileNameTextBox = new GuiTextField(0, this.fontRendererObj, this.width / 2 - 100, this.height / 4 + 50 + 12, 200, 20);
+			this.profileNameTextBox = new GuiTextField(0, this.fontRenderer, this.width / 2 - 100, this.height / 4 + 50 + 12, 200, 20);
 			this.profileNameTextBox.setMaxStringLength(32);
 			this.profileNameTextBox.setFocused(true);
 			UyjuliansXrayModMain.getModInstance();
@@ -58,8 +58,8 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
 			this.buttonList.get(2).enabled = ((this.profileNameTextBox.getText().length() > 0));
 		}
 		else if (chooseScreen == 1) { //option chooser
-			this.configKeyTextBox = new GuiTextField(0, this.fontRendererObj, this.width / 2 - 100, this.height / 4 + 00 + 12, 200, 20);
-			this.configValueTextBox = new GuiTextField(0, this.fontRendererObj, this.width / 2 - 100, this.height / 4 + 25 + 12, 200, 20);
+			this.configKeyTextBox = new GuiTextField(0, this.fontRenderer, this.width / 2 - 100, this.height / 4 + 00 + 12, 200, 20);
+			this.configValueTextBox = new GuiTextField(0, this.fontRenderer, this.width / 2 - 100, this.height / 4 + 25 + 12, 200, 20);
 			this.configKeyTextBox.setMaxStringLength(32);
 			this.configValueTextBox.setMaxStringLength(32);
 			this.buttonList.add(new GuiButton(5, this.width / 2 - 100, this.height / 4 + 50 + 12, "Set option"));
@@ -155,8 +155,8 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
 	@Override
 	public void drawScreen(int par1, int par2, float par3) {
 		drawDefaultBackground();
-		drawCenteredString(this.fontRendererObj, "X-Ray main menu", this.width / 2, this.height / 4 + (-25) + 12, 0xFFFFFF);
-		drawCenteredString(this.fontRendererObj, "Commit data not implemented" , this.width / 2, this.height / 4 + (-25) + 24, 0xFFFFFF);
+		drawCenteredString(this.fontRenderer, "X-Ray main menu", this.width / 2, this.height / 4 + (-25) + 12, 0xFFFFFF);
+		drawCenteredString(this.fontRenderer, "Commit data not implemented" , this.width / 2, this.height / 4 + (-25) + 24, 0xFFFFFF);
 		if (this.profileNameTextBox != null) {
 			this.profileNameTextBox.drawTextBox();
 		}

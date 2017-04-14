@@ -157,7 +157,7 @@ public class UyjuliansXrayModMain {
 	 */
 	public static char blockIsInBlockList(Block currentBlock, IBlockAccess iba, BlockPos bps, EnumFacing ef) {
 		if (toggleXRay || toggleCaveFinder || toggleSpecialMode1) {
-			String blockID = Block.blockRegistry.getNameForObject(currentBlock).toString();
+			String blockID = Block.REGISTRY.getNameForObject(currentBlock).toString();
 			String[] blockListBuffer = blockList;
 			int blockListLength = blockListBuffer.length;
 			int i; 
@@ -202,6 +202,6 @@ public class UyjuliansXrayModMain {
 		System.out.println("[" + "UjXr" + "] " + lineToPrint);
 	}
 	public static void putLineInChat(String lineToPrint) {
-		getModInstance().minecraftInstance.thePlayer.addChatMessage(new ChatComponentText("§l§o§6[" + "UjXr" + "]§r " + lineToPrint));
+		getModInstance().minecraftInstance.ingameGUI.getChatGUI().printChatMessage(new ChatComponentText("§l§o§6[" + "UjXr" + "]§r " + lineToPrint));
 	}
 }

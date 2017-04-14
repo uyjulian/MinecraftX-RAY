@@ -158,7 +158,7 @@ public class XrayModChooserGui extends GuiScreen {
 				if (currentBlockName == null) {
 					currentBlockName = "No Name";
 				}
-				drawCenteredString(this.fontRendererObj, currentBlockName, this.width / 2, heightCalc - 60 + 7 + i * 24, 0xFFFFFF);
+				drawCenteredString(this.fontRenderer, currentBlockName, this.width / 2, heightCalc - 60 + 7 + i * 24, 0xFFFFFF);
 
 
 			}

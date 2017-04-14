@@ -202,6 +202,6 @@ public class UyjuliansXrayModMain {
 		System.out.println("[" + "UjXr" + "] " + lineToPrint);
 	}
 	public static void putLineInChat(String lineToPrint) {
-		getModInstance().minecraftInstance.player.addChatMessage(new TextComponentString("§l§o§6[" + "UjXr" + "]§r " + lineToPrint));
+		getModInstance().minecraftInstance.ingameGUI.getChatGUI().printChatMessage(new TextComponentString("§l§o§6[" + "UjXr" + "]§r " + lineToPrint));
 	}
 }
