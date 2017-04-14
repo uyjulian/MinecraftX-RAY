@@ -1,1 +1,1 @@
-include 'mcxray1.8.9', 'mcxray1.9', 'mcxray1.9.4', 'mcxray1.10.2', 'mcxray1.11', 'mcxray1.11.2'
+include 'mcxray1.8.9', 'mcxray1.9', 'mcxray1.9.4', 'mcxray1.10.2', 'mcxray1.11', 'mcxray1.11.2', 'mcxrayshare'

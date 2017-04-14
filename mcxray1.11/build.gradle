@@ -37,6 +37,21 @@ minecraft {
     runDir = "run"
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir project(':mcxray1.9').file("src/main/java")
+            srcDir project(':mcxrayshare').file("src/main/java")
+        }
+        resources {
+            srcDir project(':mcxray1.9').file("src/main/resources")
+            srcDir project(':mcxrayshare').file("src/main/resources")
+        }
+        // Refmap declaration must match the refmap name specified in the json config
+        refMap = "mixins.uyjuliansXrayMod.refmap.json"
+    }
+}
+
 bintray {
     user = System.getenv('BINTRAY_USER')
     key = System.getenv('BINTRAY_KEY')
@@ -51,13 +66,6 @@ bintray {
             name = project.version
             released = new Date()
         }
-    }
-}
-
-sourceSets {
-    main {
-        // Refmap declaration must match the refmap name specified in the json config
-        refMap = "mixins.uyjuliansXrayMod.refmap.json"
     }
 }
 
