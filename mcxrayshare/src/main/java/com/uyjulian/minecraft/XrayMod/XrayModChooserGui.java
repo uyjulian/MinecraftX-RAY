@@ -1,4 +1,4 @@
-/* Copyright (c) 2014, Julian Uy
+/* Copyright (c) 2014-2017, Julian Uy
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -14,9 +14,7 @@
 package com.uyjulian.minecraft.XrayMod;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.input.Keyboard;
@@ -27,7 +25,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-
 public class XrayModChooserGui extends GuiScreen {
 	UyjuliansXrayModMain modInstance = UyjuliansXrayModMain.getModInstance();
 	List<String> idList = new ArrayList<String>();
@@ -35,23 +32,17 @@ public class XrayModChooserGui extends GuiScreen {
 	int listPos = 0;
 
 	public XrayModChooserGui() {
-        Iterator<Block> blockIterator = Block.REGISTRY.iterator();
-
-        while (blockIterator.hasNext())
-        {
-        	Block currentBlock = blockIterator.next();
-        	this.idList.add(Block.REGISTRY.getNameForObject(currentBlock).toString());
-        }
+		for (Block currentBlock : Block.REGISTRY) {
+			this.idList.add(Block.REGISTRY.getNameForObject(currentBlock).toString());
+		}
 	}
 	
 	@Override
 	public void initGui() {
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		String[] blockListCache = UyjuliansXrayModMain.blockList;
-		for (int i = 0; i < blockListCache.length; ++i) {
-			this.invisibleIdList.add(blockListCache[i]);
-		}
+		String[] blockListCache = UyjuliansXrayModMain.blockList.toArray(new String[0]);
+		Collections.addAll(this.invisibleIdList, blockListCache);
 	}
 	
 	@Override
@@ -131,7 +122,7 @@ public class XrayModChooserGui extends GuiScreen {
 		for (int i = 0; i < this.invisibleIdList.size(); ++i) {
 			blockListCache[i] = this.invisibleIdList.get(i);
 		}
-		UyjuliansXrayModMain.blockList = blockListCache;
+		UyjuliansXrayModMain.blockList = Arrays.asList(blockListCache);
 		modInstance.saveBlockList(UyjuliansXrayModMain.currentBlocklistName);
 	}
 	

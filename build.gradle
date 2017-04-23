@@ -1,0 +1,32 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'co.riiid:gradle-github-plugin:0.4.2'
+    }
+}
+
+apply plugin: 'co.riiid.gradle'
+
+version = '1.0.0'
+group = 'com.uyjulian.minecraft.XrayMod'
+
+github {
+    owner = 'uyjulian'
+    repo = 'MinecraftX-RAY'
+    token = System.getenv('GRADLE_GITHUB_API_TOKEN')
+    tagName = project.version
+    targetCommitish = 'master'
+    name = 'v' + project.version
+    prerelease = true
+    draft = true
+    assets = [
+        'mcxray1.8.9/build/libs/mod-mcxray1.8.9-' + project.version + '-mc1.8.9.litemod',
+        'mcxray1.9/build/libs/mod-mcxray1.9-' + project.version + '-mc1.9.litemod',
+        'mcxray1.9.4/build/libs/mod-mcxray1.9.4-' + project.version + '-mc1.9.4.litemod',
+        'mcxray1.10.2/build/libs/mod-mcxray1.10.2-' + project.version + '-mc1.10.2.litemod',
+        'mcxray1.11/build/libs/mod-mcxray1.11-' + project.version + '-mc1.11.litemod',
+        'mcxray1.11.2/build/libs/mod-mcxray1.11.2-' + project.version + '-mc1.11.2.litemod'
+    ]
+}

@@ -1,4 +1,4 @@
-/* Copyright (c) 2014, Julian Uy
+/* Copyright (c) 2014-2017, Julian Uy
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -13,37 +13,45 @@
 
 package com.uyjulian.minecraft.XrayMod;
 
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class XrayModUpdateChecker implements Runnable {
-	private final String UpdateURL = "http://pastebin.com/raw.php?i=341fB8ZD";
+	private final String UpdateURL = "https://api.github.com/repos/uyjulian/MinecraftX-RAY/releases/latest";
 	private final String CurrentVersion = UyjuliansXrayModMain.currentVersion;
 	@Override
 	public void run() {
 		Boolean foundNewVersion = false;
-		while (foundNewVersion == false) {
+		while (!foundNewVersion) {
 			InputStream currentInputStream = null;
-			ByteArrayOutputStream currentByteArrayOutputStream = null;
+			ByteArrayOutputStream currentByteArrayOutputStream;
 			try {
 				URL currentURL = new URL(UpdateURL);
 				currentInputStream = currentURL.openStream();
 				currentByteArrayOutputStream = new ByteArrayOutputStream();
 				copy(currentInputStream, currentByteArrayOutputStream);
-				String NewVersion = new String(currentByteArrayOutputStream.toByteArray()).trim();
+				Pattern pattern = Pattern.compile("\"tag_name\":\"(.+?)\"");
+				String NewVersionJSON = new String(currentByteArrayOutputStream.toByteArray());
+
+				Matcher matcher = pattern.matcher(NewVersionJSON);
+				matcher.find();
+				String NewVersion = matcher.group(1);
+
 				if (!(NewVersion.equals(CurrentVersion)) && (NewVersion.length() <= 100)) {
-					UyjuliansXrayModMain.putLineInChat("§c§lUpdate available§r");
+					XrayModVersionUtils.putLineInChat("§c§lUpdate available§r");
 					foundNewVersion = true;
-					
 				}
 				Thread.sleep((1000 * 60) * 2);
 			}
 			catch (Exception currentException) {
 				currentException.printStackTrace();
+				try {
+					Thread.sleep((1000 * 60) * 2);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 			finally {
 				closeQuietly(currentInputStream);
@@ -55,7 +63,7 @@ public class XrayModUpdateChecker implements Runnable {
 	{
 		byte[] arrayOfByte = new byte[4096];
 		long l = 0L;
-		int i = 0;
+		int i;
 		while ((i = paramInputStream.read(arrayOfByte)) != -1)
 		{
 			paramOutputStream.write(arrayOfByte, 0, i);

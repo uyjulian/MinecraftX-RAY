@@ -1,4 +1,4 @@
-/* Copyright (c) 2014, Julian Uy
+/* Copyright (c) 2014-2017, Julian Uy
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -45,9 +45,9 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
 		
 		this.buttonList.clear();
 		if (chooseScreen == 0) { //default
-			this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 0 + 12,  "Select blocks to see in X-ray view"));
-			this.buttonList.add(new GuiButton(2, this.width / 2 - 100, this.height / 4 + 25 + 12, "Switch to the profile in the textbox"));
-			this.buttonList.add(new GuiButton(3, this.width / 2 - 100, this.height / 4 + 75 + 12, "Go to MCF topic for support/updates"));
+			this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 +   0 + 12,"Select blocks to see in X-ray view"));
+			this.buttonList.add(new GuiButton(2, this.width / 2 - 100, this.height / 4 +  25 + 12,"Switch to the profile in the textbox"));
+			this.buttonList.add(new GuiButton(3, this.width / 2 - 100, this.height / 4 +  75 + 12,"Go to MCF topic for support/updates"));
 			this.buttonList.add(new GuiButton(4, this.width / 2 - 100, this.height / 4 + 100 + 12,"Change settings"));
 			this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 125 + 12,"Return to the game"));
 			this.profileNameTextBox = new GuiTextField(0, this.fontRenderer, this.width / 2 - 100, this.height / 4 + 50 + 12, 200, 20);
@@ -58,7 +58,7 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
 			this.buttonList.get(2).enabled = ((this.profileNameTextBox.getText().length() > 0));
 		}
 		else if (chooseScreen == 1) { //option chooser
-			this.configKeyTextBox = new GuiTextField(0, this.fontRenderer, this.width / 2 - 100, this.height / 4 + 00 + 12, 200, 20);
+			this.configKeyTextBox = new GuiTextField(0, this.fontRenderer, this.width / 2 - 100, this.height / 4 + 0 + 12, 200, 20);
 			this.configValueTextBox = new GuiTextField(0, this.fontRenderer, this.width / 2 - 100, this.height / 4 + 25 + 12, 200, 20);
 			this.configKeyTextBox.setMaxStringLength(32);
 			this.configValueTextBox.setMaxStringLength(32);
@@ -156,7 +156,6 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
 	public void drawScreen(int par1, int par2, float par3) {
 		drawDefaultBackground();
 		drawCenteredString(this.fontRenderer, "X-Ray main menu", this.width / 2, this.height / 4 + (-25) + 12, 0xFFFFFF);
-		drawCenteredString(this.fontRenderer, "Commit data not implemented" , this.width / 2, this.height / 4 + (-25) + 24, 0xFFFFFF);
 		if (this.profileNameTextBox != null) {
 			this.profileNameTextBox.drawTextBox();
 		}
@@ -195,12 +194,10 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
         try
         {
             Class<?> var2 = Class.forName("java.awt.Desktop");
-            Object var3 = var2.getMethod("getDesktop", new Class[0]).invoke((Object)null, new Object[0]);
-            var2.getMethod("browse", new Class[] {URI.class}).invoke(var3, new Object[] {uri});
+            Object var3 = var2.getMethod("getDesktop", new Class[0]).invoke(null);
+            var2.getMethod("browse", new Class[] {URI.class}).invoke(var3, uri);
         }
-        catch (Throwable var4)
-        {}
+        catch (Throwable var4) {}
     }
-
 
 }
