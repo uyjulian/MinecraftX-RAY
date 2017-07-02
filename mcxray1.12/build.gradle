@@ -1,0 +1,66 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = 'sponge'
+            url = 'http://repo.spongepowered.org/maven'
+        }
+        jcenter()
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'org.spongepowered:mixingradle:0.4-SNAPSHOT'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle.liteloader'
+apply plugin: 'org.spongepowered.mixin'
+
+version = rootProject.version
+group = rootProject.group
+
+minecraft {
+    version = "1.12"
+    mappings = "snapshot_20170609"
+    runDir = "run"
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir project(':mcxray1.12').file("src/main/java")
+            srcDir project(':mcxrayshare').file("src/main/java")
+        }
+        resources {
+            srcDir project(':mcxray1.12').file("src/main/resources")
+            srcDir project(':mcxrayshare').file("src/main/resources")
+        }
+    }
+}
+
+mixin {
+    defaultObfuscationEnv notch
+}
+
+litemod {
+    json {
+        displayName = "uyjulian's X-ray Mod"
+        author = "uyjulian"
+        mcversion = "1.12"
+        mixinConfigs += "mixins.uyjuliansXrayMod.json"
+        version = project.version
+    }
+}
+
+jar {
+    from litemod.outputs
+}
