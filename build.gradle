@@ -11,7 +11,7 @@ ext.author = 'uyjulian'
 github {
     owner = 'uyjulian'
     repo = 'MinecraftX-RAY'
-    token = System.getenv('GRADLE_GITHUB_API_TOKEN') || 'null'
+    token = System.getenv('GRADLE_GITHUB_API_TOKEN') ?: ''
     tagName = project.version
     targetCommitish = 'master'
     name = 'v' + project.version
