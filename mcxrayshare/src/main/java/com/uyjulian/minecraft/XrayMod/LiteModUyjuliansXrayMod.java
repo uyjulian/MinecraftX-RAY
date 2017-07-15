@@ -30,7 +30,7 @@ public class LiteModUyjuliansXrayMod implements LiteMod, Tickable {
 	}
 
 	@Override
-	public String getVersion() { return "1.0.0"; }
+	public String getVersion() { return "1.0.1"; }
 
 	@Override
 	public void init(File configPath) {

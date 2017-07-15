@@ -32,7 +32,7 @@ public class UyjuliansXrayModMain {
 	public static List<KeyBinding> keyBinds = new ArrayList<KeyBinding>();
 	public static String currentBlocklistName = "DefaultBlockList";
 	public static boolean toggleXRay = false;
-	public static String currentVersion = "1.0.0";
+	public static String currentVersion = "1.0.1";
 	private Boolean FirstTick = false;
 
 	public UyjuliansXrayModMain() {
