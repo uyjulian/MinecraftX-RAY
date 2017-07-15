@@ -1,21 +1,17 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'co.riiid:gradle-github-plugin:0.4.2'
-    }
+plugins {
+    id "co.riiid.gradle" version "0.4.2"
 }
 
-apply plugin: 'co.riiid.gradle'
-
-version = '1.0.0'
+version = '1.0.1'
 group = 'com.uyjulian.minecraft.XrayMod'
+
+ext.displayName = 'uyjulian\'s X-ray Mod'
+ext.author = 'uyjulian'
 
 github {
     owner = 'uyjulian'
     repo = 'MinecraftX-RAY'
-    token = System.getenv('GRADLE_GITHUB_API_TOKEN')
+    token = System.getenv('GRADLE_GITHUB_API_TOKEN') || 'null'
     tagName = project.version
     targetCommitish = 'master'
     name = 'v' + project.version

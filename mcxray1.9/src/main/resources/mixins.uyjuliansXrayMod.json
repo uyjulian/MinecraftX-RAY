@@ -1,11 +1,10 @@
 {
     "required": true,
-    "minVersion": "0.6.10",
+    "minVersion": "0.5.3",
     "package": "com.uyjulian.minecraft.XrayMod.mixin",
-    "refmap": "mixin.refmap.json",
+    "refmap": "mixins.uyjuliansXrayMod.refmap.json",
     "mixins": [
-        "MixinBlockModelRenderer",
-        "MixinCompiledChunk"
+        "MixinStateImplementation"
     ],
     "injectors": {
         "defaultRequire": 1

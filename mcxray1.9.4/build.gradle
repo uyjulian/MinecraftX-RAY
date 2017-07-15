@@ -30,7 +30,7 @@ group = rootProject.group
 
 minecraft {
     version = "1.9.4"
-    mappings = "snapshot_20170409"
+    mappings = "snapshot_20170708"
     runDir = "run"
 }
 
@@ -49,12 +49,13 @@ sourceSets {
 
 mixin {
     defaultObfuscationEnv notch
+    add sourceSets.main, "mixins.uyjuliansXrayMod.refmap.json"
 }
 
 litemod {
     json {
-        displayName = "uyjulian's X-ray Mod"
-        author = "uyjulian"
+        displayName = project.property('displayName')
+        author = project.property('author')
         mcversion = "1.9.4"
         mixinConfigs += "mixins.uyjuliansXrayMod.json"
         version = project.version
