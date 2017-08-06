@@ -74,14 +74,14 @@ public class UyjuliansXrayModMain {
 		if ((minecraftInstance.inGameHasFocus) && (inGame)) {
 			if (!FirstTick) {
 				FirstTick = true;
-				boolean dontcheckupdate = false;
+				boolean checkUpdate = true;
 				String updatenotify = XrayModConfiguration.getProperty("updatenotify");
 				if (updatenotify != null) {
 					if (updatenotify.equals("false")) {
-						dontcheckupdate = true;
+						checkUpdate = false;
 					}
 				}
-				if (!dontcheckupdate) {
+				if (checkUpdate) {
 					startUpdateChecker();
 				}
 			}
