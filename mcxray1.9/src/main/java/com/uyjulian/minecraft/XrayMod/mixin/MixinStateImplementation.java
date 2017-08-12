@@ -15,6 +15,7 @@ package com.uyjulian.minecraft.XrayMod.mixin;
 
 import com.uyjulian.minecraft.XrayMod.UyjuliansXrayModMain;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -28,41 +29,50 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(targets = "net/minecraft/block/state/BlockStateContainer$StateImplementation")
 public abstract class MixinStateImplementation {
     @Shadow
-    public Block getBlock() {return null;}
+    public Block getBlock() { return null; }
 
     @Inject(method="getAmbientOcclusionLightValue()F", at=@At("HEAD"), cancellable=true)
     private void onGetAmbientOcclusionLightValue(CallbackInfoReturnable<Float> ci) {
-        if (UyjuliansXrayModMain.xrayEnabled()) {
+        if (UyjuliansXrayModMain.enabled()) {
             ci.setReturnValue(1.0f);
         }
     }
 
     @Inject(method="getPackedLightmapCoords(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)I", at=@At("HEAD"), cancellable=true)
     private void onGetPackedLightmapCoords(IBlockAccess source, BlockPos pos, CallbackInfoReturnable<Integer> ci) {
-        if (UyjuliansXrayModMain.xrayEnabled()) {
+        if (UyjuliansXrayModMain.enabled()) {
             ci.setReturnValue(15 << 20 | 15 << 4);
         }
     }
 
     @Inject(method="getRenderType()Lnet/minecraft/util/EnumBlockRenderType;", at=@At("HEAD"), cancellable=true)
     private void onGetRenderType(CallbackInfoReturnable<EnumBlockRenderType> ci) {
-        if (UyjuliansXrayModMain.xrayEnabled()) {
-            if (UyjuliansXrayModMain.checkBlockList(this.getBlock())) {
-                ci.setReturnValue(EnumBlockRenderType.INVISIBLE);
-            }
+        if (UyjuliansXrayModMain.enabled() && UyjuliansXrayModMain.checkBlockList(this.getBlock())) {
+            ci.setReturnValue(EnumBlockRenderType.INVISIBLE);
         }
     }
 
     @Inject(method="shouldSideBeRendered(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z", at=@At("HEAD"), cancellable=true)
     private void onShouldSideBeRendered(IBlockAccess blockAccess, BlockPos pos, EnumFacing facing, CallbackInfoReturnable<Boolean> ci) {
         if (UyjuliansXrayModMain.xrayEnabled()) {
+            ci.setReturnValue((!UyjuliansXrayModMain.checkBlockList(this.getBlock())) && UyjuliansXrayModMain.checkBlockList(blockAccess.getBlockState(pos.offset(facing)).getBlock()));
+        }
+        else if (UyjuliansXrayModMain.caveFinderEnabled()) {
+            ci.setReturnValue((!UyjuliansXrayModMain.checkBlockList(this.getBlock())) && blockAccess.isAirBlock(pos.offset(facing)));
+        }
+        else if (UyjuliansXrayModMain.specialMode1Enabled()) {
             if (!UyjuliansXrayModMain.checkBlockList(this.getBlock())) {
-                if (UyjuliansXrayModMain.checkBlockList(blockAccess.getBlockState(pos.offset(facing)).getBlock())) {
-                    ci.setReturnValue(true);
+                boolean shouldRender = true;
+                for (EnumFacing facing1 : new EnumFacing[]{EnumFacing.NORTH, EnumFacing.EAST, EnumFacing.SOUTH, EnumFacing.WEST}) {
+                    if (blockAccess.isAirBlock(pos.offset(facing1))) {
+                        shouldRender = true;
+                    }
+                    else {
+                        shouldRender = false;
+                        break;
+                    }
                 }
-                else {
-                    ci.setReturnValue(false);
-                }
+                ci.setReturnValue(shouldRender);
             } else {
                 ci.setReturnValue(false);
             }

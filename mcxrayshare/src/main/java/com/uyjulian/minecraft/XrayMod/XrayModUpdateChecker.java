@@ -13,22 +13,24 @@
 
 package com.uyjulian.minecraft.XrayMod;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+
 import java.io.*;
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class XrayModUpdateChecker implements Runnable {
-	private final String UpdateURL = "https://api.github.com/repos/uyjulian/MinecraftX-RAY/releases/latest";
-	private final String CurrentVersion = UyjuliansXrayModMain.currentVersion;
+	public static String newVersion = "";
 	@Override
 	public void run() {
-		Boolean foundNewVersion = false;
-		while (!foundNewVersion) {
+		while (newVersion.equals("")) {
 			InputStream currentInputStream = null;
 			ByteArrayOutputStream currentByteArrayOutputStream;
 			try {
-				URL currentURL = new URL(UpdateURL);
+				String updateURL = "https://api.github.com/repos/uyjulian/MinecraftX-RAY/releases/latest";
+				URL currentURL = new URL(updateURL);
 				currentInputStream = currentURL.openStream();
 				currentByteArrayOutputStream = new ByteArrayOutputStream();
 				copy(currentInputStream, currentByteArrayOutputStream);
@@ -39,37 +41,34 @@ public class XrayModUpdateChecker implements Runnable {
 				matcher.find();
 				String NewVersion = matcher.group(1);
 
-				if (!(NewVersion.equals(CurrentVersion)) && (NewVersion.length() <= 100)) {
-					XrayModVersionUtils.putLineInChat("§c§lUpdate available§r");
-					foundNewVersion = true;
+				if (!(NewVersion.equals(UyjuliansXrayModMain.currentVersion)) && (NewVersion.length() <= 100)) {
+					newVersion = NewVersion;
+				} else {
+					Thread.sleep((1000 * 60) * 2);
 				}
-				Thread.sleep((1000 * 60) * 2);
 			}
 			catch (Exception currentException) {
 				currentException.printStackTrace();
 				try {
 					Thread.sleep((1000 * 60) * 2);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				} catch (InterruptedException ignored) {}
 			}
 			finally {
 				closeQuietly(currentInputStream);
 			}
 		}
+		UyjuliansXrayModMain.waitForPlayer();
+		XrayModVersionUtils.putLineInChat("§c§lUpdate available§r: " + newVersion);
 	}
 	
-	private static long copy(InputStream paramInputStream, OutputStream paramOutputStream) throws IOException
+	private static void copy(InputStream paramInputStream, OutputStream paramOutputStream) throws IOException
 	{
 		byte[] arrayOfByte = new byte[4096];
-		long l = 0L;
 		int i;
 		while ((i = paramInputStream.read(arrayOfByte)) != -1)
 		{
 			paramOutputStream.write(arrayOfByte, 0, i);
-			l += i;
 		}
-		return l;
 	}
 
 	private static void closeQuietly(Closeable paramCloseable)
@@ -79,7 +78,7 @@ public class XrayModUpdateChecker implements Runnable {
 			if (paramCloseable != null)
 				paramCloseable.close();
 		}
-		catch (Exception currentException){}
+		catch (Exception ignored){}
 	}
 
 }

@@ -26,12 +26,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class XrayModChooserGui extends GuiScreen {
-	UyjuliansXrayModMain modInstance = UyjuliansXrayModMain.getModInstance();
-	List<String> idList = new ArrayList<String>();
-	List<String> invisibleIdList = new ArrayList<String>();
-	int listPos = 0;
+	private UyjuliansXrayModMain modInstance = UyjuliansXrayModMain.getModInstance();
+	private List<String> idList = new ArrayList<String>();
+	private List<String> invisibleIdList = new ArrayList<String>();
+	private int listPos = 0;
 
-	public XrayModChooserGui() {
+	XrayModChooserGui() {
 		for (Block currentBlock : Block.REGISTRY) {
 			this.idList.add(Block.REGISTRY.getNameForObject(currentBlock).toString());
 		}
@@ -46,26 +46,16 @@ public class XrayModChooserGui extends GuiScreen {
 	}
 	
 	@Override
-	protected void actionPerformed(GuiButton par1GuiButton) {
-		try {
-			super.actionPerformed(par1GuiButton);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	protected void actionPerformed(GuiButton par1GuiButton) throws IOException {
+		super.actionPerformed(par1GuiButton);
 		if (par1GuiButton.id != 0) {
 			this.invisibleIdList.add(this.idList.get(par1GuiButton.id));
 		}
 	}
 	
 	@Override
-	public void handleMouseInput() {
-		try {
-			super.handleMouseInput();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void handleMouseInput() throws IOException {
+		super.handleMouseInput();
 		int mouseScrollWheelStatus = Mouse.getEventDWheel();
 		int mouseButtonStatus = Mouse.getEventButton();
 		boolean mouseButtonState = Mouse.getEventButtonState();
@@ -86,19 +76,14 @@ public class XrayModChooserGui extends GuiScreen {
 	}
 	
 	@Override
-	protected void keyTyped(char par1, int par2) {
-		try {
-			super.keyTyped(par1, par2);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	protected void keyTyped(char par1, int par2) throws IOException {
+		super.keyTyped(par1, par2);
 		if (par2 != 1 && par2 != 14 && par2 != 29 && par2 != 157) {
 			if (((par2 == 200) || (par1 == 'w') || (par1 == 'W')) && (this.listPos > 0)) {
-				--this.listPos;
+				this.listPos -= 1;
 			}
 			else if (((par2 == 208) || (par1 == 's') || (par1 == 'S')) && (this.listPos < this.idList.size() - 1)) {
-				++this.listPos;
+				this.listPos += 1;
 			}
 			else if (par2 == 28) {
 				if ((this.invisibleIdList.indexOf(this.idList.get(this.listPos)) >= 0)) {
@@ -150,8 +135,6 @@ public class XrayModChooserGui extends GuiScreen {
 					currentBlockName = "No Name";
 				}
 				drawCenteredString(this.fontRenderer, currentBlockName, this.width / 2, heightCalc - 60 + 7 + i * 24, 0xFFFFFF);
-
-
 			}
 			++renderPosition;
 		}

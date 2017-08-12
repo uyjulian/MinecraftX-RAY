@@ -16,7 +16,7 @@ package com.uyjulian.minecraft.XrayMod;
 import net.minecraft.util.text.TextComponentString;
 
 public class XrayModVersionUtils {
-    public static void putLineInChat(String lineToPrint) {
+    static void putLineInChat(String lineToPrint) {
         UyjuliansXrayModMain.getModInstance().minecraftInstance.ingameGUI.getChatGUI().printChatMessage(new TextComponentString("§l§o§6[" + "UjXr" + "]§r " + lineToPrint));
     }
 }

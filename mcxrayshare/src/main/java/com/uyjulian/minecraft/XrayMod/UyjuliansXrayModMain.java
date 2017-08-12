@@ -18,24 +18,31 @@ import com.mumfrey.liteloader.util.log.LiteLoaderLogger;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.Entity;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 public class UyjuliansXrayModMain {
-	public static UyjuliansXrayModMain currentModInstance;
-	public Minecraft minecraftInstance;
-	public static List<String> blockList = Arrays.asList("minecraft:air", "minecraft:stone", "minecraft:grass", "minecraft:dirt", "minecraft:cobblestone", "minecraft:bedrock", "minecraft:sand", "minecraft:gravel", "minecraft:sandstone", "minecraft:netherrack", "minecraft:flowing_water", "minecraft:water", "minecraft:snow_layer", "minecraft:ice", "minecraft:snow");
-	public static List<KeyBinding> keyBinds = new ArrayList<KeyBinding>();
-	public static String currentBlocklistName = "DefaultBlockList";
-	public static boolean toggleXRay = false;
-	public static String currentVersion = "1.0.1";
-	private Boolean FirstTick = false;
+	private static UyjuliansXrayModMain currentModInstance;
+	Minecraft minecraftInstance;
+	static List<String> blockList = Arrays.asList("minecraft:air", "minecraft:stone", "minecraft:grass", "minecraft:dirt", "minecraft:cobblestone", "minecraft:bedrock", "minecraft:sand", "minecraft:gravel", "minecraft:sandstone", "minecraft:netherrack", "minecraft:flowing_water", "minecraft:water", "minecraft:snow_layer", "minecraft:ice", "minecraft:snow");
+	private static List<KeyBinding> keyBinds = new ArrayList<KeyBinding>();
+	static String currentBlocklistName = "DefaultBlockList";
+	static String currentVersion = "1.0.2";
 
-	public UyjuliansXrayModMain() {
+	enum XrayMode {
+		disabled,
+		xray,
+		cavefinder,
+		specialmode_1;
+	}
+
+	private static XrayMode xrayMode = XrayMode.disabled;
+
+	private UyjuliansXrayModMain() {
 		if (currentModInstance == null) {
 			currentModInstance = this;
 			minecraftInstance = Minecraft.getMinecraft();
@@ -43,11 +50,22 @@ public class UyjuliansXrayModMain {
 
 			loadBlockList(currentBlocklistName);
 			// Keybinding setup
-			UyjuliansXrayModMain.keyBinds.add(new KeyBinding("Toggle X-ray",Keyboard.KEY_X, "Uyjulian's X-ray Mod"));
+			UyjuliansXrayModMain.keyBinds.add(new KeyBinding("Toggle X-ray", Keyboard.KEY_X, "Uyjulian's X-ray Mod"));
+			UyjuliansXrayModMain.keyBinds.add(new KeyBinding("Toggle Cave Finder", Keyboard.KEY_V, "Uyjulian's X-ray Mod"));
+			UyjuliansXrayModMain.keyBinds.add(new KeyBinding("Toggle Special Mode 1", Keyboard.KEY_C, "Uyjulian's X-ray Mod"));
 			for (KeyBinding currentKey : UyjuliansXrayModMain.keyBinds) {
-				if (currentKey != null) {
-					LiteLoader.getInput().registerKeyBinding(currentKey);
+				LiteLoader.getInput().registerKeyBinding(currentKey);
+			}
+			// Update notifier setup
+			boolean checkUpdate = true;
+			String updatenotify = XrayModConfiguration.getProperty("updatenotify");
+			if (updatenotify != null) {
+				if (updatenotify.equals("false")) {
+					checkUpdate = false;
 				}
+			}
+			if (checkUpdate) {
+				startUpdateChecker();
 			}
 		}
 		else {
@@ -55,7 +73,7 @@ public class UyjuliansXrayModMain {
 		}
 	}
 	
-	public static UyjuliansXrayModMain getModInstance() {
+	static UyjuliansXrayModMain getModInstance() {
 		if (currentModInstance == null) {
 			return new UyjuliansXrayModMain();
 		}
@@ -70,26 +88,14 @@ public class UyjuliansXrayModMain {
 	
 	// Ticking/keys
 	
-	public void onTick(boolean inGame) {
-		if ((minecraftInstance.inGameHasFocus) && (inGame)) {
-			if (!FirstTick) {
-				FirstTick = true;
-				boolean checkUpdate = true;
-				String updatenotify = XrayModConfiguration.getProperty("updatenotify");
-				if (updatenotify != null) {
-					if (updatenotify.equals("false")) {
-						checkUpdate = false;
-					}
-				}
-				if (checkUpdate) {
-					startUpdateChecker();
-				}
-			}
-			if (UyjuliansXrayModMain.keyBinds.get(0).isPressed()) { //X-ray key
+	void onTick(boolean inGame) {
+		Entity renderViewEntity = minecraftInstance.getRenderViewEntity();
+		if (minecraftInstance.inGameHasFocus && renderViewEntity != null && renderViewEntity.world != null) {
+			if (UyjuliansXrayModMain.keyBinds.get(0).isPressed()) {
 				if (!Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && !Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
 					UyjuliansXrayModMain.printLineInLog("Toggle X-ray");
-					toggleXRay = !toggleXRay;
-					// Now refresh the world...
+					xrayMode = (xrayMode == XrayMode.xray) ? XrayMode.disabled : XrayMode.xray;
+					// Refresh the world rendering
 					minecraftInstance.renderGlobal.loadRenderers();
 				}
 				else {
@@ -98,25 +104,42 @@ public class UyjuliansXrayModMain {
 					minecraftInstance.displayGuiScreen(new XrayModMainGui(null, minecraftInstance.gameSettings));
 				}
 			}
+			else if (UyjuliansXrayModMain.keyBinds.get(1).isPressed()) {
+				UyjuliansXrayModMain.printLineInLog("Toggle Cave Finder");
+				xrayMode = (xrayMode == XrayMode.cavefinder) ? XrayMode.disabled : XrayMode.cavefinder;
+				// Refresh the world rendering
+				minecraftInstance.renderGlobal.loadRenderers();
+			}
+			else if (UyjuliansXrayModMain.keyBinds.get(2).isPressed()) {
+				UyjuliansXrayModMain.printLineInLog("Toggle Special Mode 1");
+				xrayMode = (xrayMode == XrayMode.specialmode_1) ? XrayMode.disabled : XrayMode.specialmode_1;
+				// Refresh the world rendering
+				minecraftInstance.renderGlobal.loadRenderers();
+			}
 		}
 	}
 
+	public static boolean enabled() { return xrayMode != XrayMode.disabled; }
 	public static boolean xrayEnabled() {
-		return toggleXRay;
+		return xrayMode == XrayMode.xray;
 	}
+	public static boolean caveFinderEnabled() {
+		return xrayMode == XrayMode.cavefinder;
+	}
+	public static boolean specialMode1Enabled() { return xrayMode == XrayMode.specialmode_1; }
 	
 	// Input/Output code
 	
-	public void loadBlockList(String blockListName) {
+	void loadBlockList(String blockListName) {
 		UyjuliansXrayModMain.printLineInLog("Loading Block List name: " + blockListName);
 		String[] tempBlockList = XrayModConfiguration.getBlockList(blockListName);
-		if (!(tempBlockList == null)) {
+		if (tempBlockList != null) {
 			blockList = Arrays.asList(tempBlockList);
 		}
 		//Otherwise, just leave the existing block list contents
 	}
 	
-	public void saveBlockList(String blockListName) {
+	void saveBlockList(String blockListName) {
 		UyjuliansXrayModMain.printLineInLog("Saving block list name: " + blockListName);
 		XrayModConfiguration.setBlockList(blockListName, blockList.toArray(new String[0]));
 	}
@@ -127,8 +150,18 @@ public class UyjuliansXrayModMain {
 
 	// Toolbox
 	
-	public static void printLineInLog(String lineToPrint) {
+	static void printLineInLog(String lineToPrint) {
 		LiteLoaderLogger.debug("[UjXr] %s", lineToPrint);
+	}
+
+	static void waitForPlayer() {
+		Entity rve = Minecraft.getMinecraft().getRenderViewEntity();
+		while (rve == null || rve.world == null) {
+			rve = Minecraft.getMinecraft().getRenderViewEntity();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException ignored) {}
+		}
 	}
 
 }

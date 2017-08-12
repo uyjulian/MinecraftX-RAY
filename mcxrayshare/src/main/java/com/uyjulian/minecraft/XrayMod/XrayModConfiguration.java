@@ -21,12 +21,12 @@ import java.io.FileWriter;
 import java.util.Properties;
 
 public class XrayModConfiguration {
-	public Properties properties;
-	public static XrayModConfiguration instance;
-	public String dataPath;
-	public String filePath;
-	public static final String blockListIdentify = "XRBL";
-	public static void init(String mcDataPath) {
+	private Properties properties;
+	private static XrayModConfiguration instance;
+	private String dataPath;
+	private String filePath;
+	private static final String blockListIdentify = "XRBL";
+	static void init(String mcDataPath) {
 		instance = new XrayModConfiguration();
 		instance.properties = new Properties();
 		instance.dataPath = mcDataPath;
@@ -34,16 +34,16 @@ public class XrayModConfiguration {
 		instance.loadProperties();
 	}
 	
-	public static String getProperty(String key) {
+	static String getProperty(String key) {
 		return instance.properties.getProperty(key);
 	}
 	
-	public static void setProperty(String key, String value) {
+	static void setProperty(String key, String value) {
 		instance.properties.setProperty(key, value);
 		instance.saveProperties();
 	}
 	
-	public static String[] getBlockList(String blockListName) {
+	static String[] getBlockList(String blockListName) {
 		String currentProperty = getProperty(blockListIdentify + blockListName);
 		if (!(currentProperty == null)) {
 			return currentProperty.split("[\\r\\n]+");
@@ -51,18 +51,16 @@ public class XrayModConfiguration {
 		return null;
 	}
 	
-	public static void setBlockList(String blockListName, String[] blockListToSave) {
+	static void setBlockList(String blockListName, String[] blockListToSave) {
 		StringBuilder currentStringBuilder = new StringBuilder();
-		int blockListLength = blockListToSave.length;
 		for (String aBlockListToSave : blockListToSave) {
 			currentStringBuilder.append(aBlockListToSave).append("\r\n");
 		}
 		setProperty(blockListIdentify + blockListName, currentStringBuilder.toString());
 	}
 	
-	public boolean loadProperties() {
+	private void loadProperties() {
 		UyjuliansXrayModMain.printLineInLog("Attempting to read properties file...");
-		boolean err = false;
 		try {
 			File blockListFile = new File(filePath);
 			if (blockListFile.exists()) {
@@ -79,14 +77,11 @@ public class XrayModConfiguration {
 		catch (Exception currentException) {
 			UyjuliansXrayModMain.printLineInLog("There was an error loading the config file.");
 			currentException.printStackTrace();
-			err = true;
 		}
-		return err;
 	}
 	
-	public boolean saveProperties() {
+	private void saveProperties() {
 		UyjuliansXrayModMain.printLineInLog("Attempting to write properties file...");
-		boolean err = false;
 		try {
 			File configFolder = new File(instance.dataPath, "config");
 			boolean canMakeConfigFolder = configFolder.mkdir() || configFolder.exists();
@@ -105,7 +100,6 @@ public class XrayModConfiguration {
 			UyjuliansXrayModMain.printLineInLog("There was an error saving the config file.");
 			currentException.printStackTrace();
 		}
-		return err;
 	}
 	
 	

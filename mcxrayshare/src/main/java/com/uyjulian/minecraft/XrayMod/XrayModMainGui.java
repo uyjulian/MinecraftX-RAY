@@ -32,17 +32,16 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
 	private GuiTextField configKeyTextBox;
 	private GuiTextField configValueTextBox;
 	private URI clickedURI;
-	public int chooseScreen = 0;
+	private int chooseScreen = 0;
 
-	public XrayModMainGui(GuiScreen parentScreen, GameSettings currentGameSettings) {
+	XrayModMainGui(GuiScreen parentScreen, GameSettings currentGameSettings) {
 		this.parentScreen = parentScreen;
 	}
 	
 	@Override
 	public void initGui() {
 		Keyboard.enableRepeatEvents(true);
-		
-		
+
 		this.buttonList.clear();
 		if (chooseScreen == 0) { //default
 			this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 +   0 + 12,"Select blocks to see in X-ray view"));
@@ -82,11 +81,11 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
 			}
 			if (currentButton.id == 3) {
 				try {
-					URI currentURI = new URI("http://bit.ly/x-ray-mod");
+					URI currentURI = new URI("http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1287646-q");
 	                if (this.mc.gameSettings.chatLinksPrompt)
 	                {
 	                    this.clickedURI = currentURI;
-	                    this.mc.displayGuiScreen(new GuiConfirmOpenLink(this, "http://bit.ly/x-ray-mod", 0, false));
+	                    this.mc.displayGuiScreen(new GuiConfirmOpenLink(this, "http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1287646-q", 0, false));
 	                }
 	                else
 	                {
@@ -113,7 +112,7 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
 	}
 	
 	@Override
-	protected void mouseClicked(int par1, int par2, int par3) {
+	protected void mouseClicked(int par1, int par2, int par3) throws IOException {
 		if (this.profileNameTextBox != null) {
 			this.profileNameTextBox.mouseClicked(par1, par2, par3);
 		}
@@ -123,16 +122,11 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
 		if (this.configValueTextBox != null) {
 			this.configValueTextBox.mouseClicked(par1, par2, par3);
 		}
-		try {
-			super.mouseClicked(par1, par2, par3);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		super.mouseClicked(par1, par2, par3);
 	}
 	
 	@Override
-	protected void keyTyped(char par1, int par2) {
+	protected void keyTyped(char par1, int par2) throws IOException {
 		if (this.profileNameTextBox != null) {
 			this.profileNameTextBox.textboxKeyTyped(par1, par2);
 			this.buttonList.get(2).enabled = ((this.profileNameTextBox.getText().length() > 0));
@@ -143,13 +137,7 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
 		if (this.configValueTextBox != null) {
 			this.configValueTextBox.textboxKeyTyped(par1, par2);
 		}
-		try {
-			super.keyTyped(par1, par2);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		super.keyTyped(par1, par2);
 	}
 	
 	@Override
@@ -197,7 +185,7 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
             Object var3 = var2.getMethod("getDesktop", new Class[0]).invoke(null);
             var2.getMethod("browse", new Class[] {URI.class}).invoke(var3, uri);
         }
-        catch (Throwable var4) {}
+        catch (Throwable ignored) {}
     }
 
 }

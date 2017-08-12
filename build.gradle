@@ -2,7 +2,7 @@ plugins {
     id "co.riiid.gradle" version "0.4.2"
 }
 
-version = '1.0.1'
+version = '1.0.2'
 group = 'com.uyjulian.minecraft.XrayMod'
 
 ext.displayName = 'uyjulian\'s X-ray Mod'
@@ -11,7 +11,7 @@ ext.author = 'uyjulian'
 github {
     owner = 'uyjulian'
     repo = 'MinecraftX-RAY'
-    token = System.getenv('GRADLE_GITHUB_API_TOKEN') ?: ''
+    token = System.getenv('GRADLE_GITHUB_API_TOKEN') ?: ' '
     tagName = project.version
     targetCommitish = 'master'
     name = 'v' + project.version
