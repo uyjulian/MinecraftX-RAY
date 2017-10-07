@@ -2,7 +2,7 @@ plugins {
     id "co.riiid.gradle" version "0.4.2"
 }
 
-version = '1.0.2'
+version = '1.0.3'
 group = 'com.uyjulian.minecraft.XrayMod'
 
 ext.displayName = 'uyjulian\'s X-ray Mod'
@@ -25,6 +25,6 @@ github {
         'mcxray1.11/build/libs/mod-mcxray1.11-' + project.version + '-mc1.11.litemod',
         'mcxray1.11.2/build/libs/mod-mcxray1.11.2-' + project.version + '-mc1.11.2.litemod',
         'mcxray1.12/build/libs/mod-mcxray1.12-' + project.version + '-mc1.12.litemod',
-        'mcxray1.12.1/build/libs/mod-mcxray1.12.1-' + project.version + '-mc1.12.1.litemod'
+        'mcxray1.12.2/build/libs/mod-mcxray1.12.2-' + project.version + '-mc1.12.2.litemod'
     ]
 }

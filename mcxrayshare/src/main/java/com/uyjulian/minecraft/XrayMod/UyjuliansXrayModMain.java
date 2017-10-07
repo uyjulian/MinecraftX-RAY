@@ -31,7 +31,7 @@ public class UyjuliansXrayModMain {
 	static List<String> blockList = Arrays.asList("minecraft:air", "minecraft:stone", "minecraft:grass", "minecraft:dirt", "minecraft:cobblestone", "minecraft:bedrock", "minecraft:sand", "minecraft:gravel", "minecraft:sandstone", "minecraft:netherrack", "minecraft:flowing_water", "minecraft:water", "minecraft:snow_layer", "minecraft:ice", "minecraft:snow");
 	private static List<KeyBinding> keyBinds = new ArrayList<KeyBinding>();
 	static String currentBlocklistName = "DefaultBlockList";
-	static String currentVersion = "1.0.2";
+	static String currentVersion = "1.0.3";
 
 	enum XrayMode {
 		disabled,
