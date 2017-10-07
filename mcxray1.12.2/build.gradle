@@ -56,7 +56,7 @@ litemod {
     json {
         displayName = project.property('displayName')
         author = project.property('author')
-        mcversion = "1.12.r1"
+        mcversion = "1.12.r2"
         mixinConfigs += "mixins.uyjuliansXrayMod.json"
         version = project.version
     }

@@ -2,7 +2,7 @@ plugins {
     id "co.riiid.gradle" version "0.4.2"
 }
 
-version = '1.0.3'
+version = '1.0.4'
 group = 'com.uyjulian.minecraft.XrayMod'
 
 ext.displayName = 'uyjulian\'s X-ray Mod'
