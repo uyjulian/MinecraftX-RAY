@@ -30,7 +30,7 @@ group = rootProject.group
 
 minecraft {
     version = "1.9.4"
-    mappings = "snapshot_20170708"
+    mappings = "snapshot_20180314"
     runDir = "run"
 }
 

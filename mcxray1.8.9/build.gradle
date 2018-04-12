@@ -31,7 +31,7 @@ group = rootProject.group
 minecraft {
     suppressVersionTest = true
     version = "1.8.9"
-    mappings = "snapshot_20170708"
+    mappings = "snapshot_20180314"
     runDir = "run"
 }
 
