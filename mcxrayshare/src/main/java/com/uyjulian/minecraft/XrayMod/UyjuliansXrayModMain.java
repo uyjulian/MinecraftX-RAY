@@ -96,6 +96,7 @@ public class UyjuliansXrayModMain {
 					UyjuliansXrayModMain.printLineInLog("Toggle X-ray");
 					xrayMode = (xrayMode == XrayMode.xray) ? XrayMode.disabled : XrayMode.xray;
 					// Refresh the world rendering
+					minecraftInstance.renderChunksMany = xrayMode == XrayMode.disabled;
 					minecraftInstance.renderGlobal.loadRenderers();
 				}
 				else {
@@ -108,12 +109,14 @@ public class UyjuliansXrayModMain {
 				UyjuliansXrayModMain.printLineInLog("Toggle Cave Finder");
 				xrayMode = (xrayMode == XrayMode.cavefinder) ? XrayMode.disabled : XrayMode.cavefinder;
 				// Refresh the world rendering
+				minecraftInstance.renderChunksMany = xrayMode == XrayMode.disabled;
 				minecraftInstance.renderGlobal.loadRenderers();
 			}
 			else if (UyjuliansXrayModMain.keyBinds.get(2).isPressed()) {
 				UyjuliansXrayModMain.printLineInLog("Toggle Special Mode 1");
 				xrayMode = (xrayMode == XrayMode.specialmode_1) ? XrayMode.disabled : XrayMode.specialmode_1;
 				// Refresh the world rendering
+				minecraftInstance.renderChunksMany = xrayMode == XrayMode.disabled;
 				minecraftInstance.renderGlobal.loadRenderers();
 			}
 		}
