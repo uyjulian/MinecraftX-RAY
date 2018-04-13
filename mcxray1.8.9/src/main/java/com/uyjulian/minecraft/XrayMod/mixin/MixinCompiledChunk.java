@@ -23,7 +23,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(CompiledChunk.class)
 public abstract class MixinCompiledChunk {
-
     @Inject(method = "isVisible", at=@At("HEAD"), cancellable = true)
     private void onIsVisible(EnumFacing facing, EnumFacing facing2, CallbackInfoReturnable<Boolean> ci) {
         if (UyjuliansXrayModMain.xrayEnabled()) {

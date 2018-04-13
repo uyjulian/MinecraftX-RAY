@@ -21,8 +21,7 @@ import com.mumfrey.liteloader.LiteMod;
 import com.mumfrey.liteloader.Tickable;
 
 public class LiteModUyjuliansXrayMod implements LiteMod, Tickable {
-	
-	public UyjuliansXrayModMain modInstance;
+	private UyjuliansXrayModMain modInstance;
 	
 	@Override
 	public String getName() {
@@ -42,5 +41,4 @@ public class LiteModUyjuliansXrayMod implements LiteMod, Tickable {
 
 	@Override
 	public void onTick(Minecraft minecraft, float partialTicks, boolean inGame, boolean clock) { modInstance.onTick(inGame); }
-
 }

@@ -166,5 +166,4 @@ public class UyjuliansXrayModMain {
 			} catch (InterruptedException ignored) {}
 		}
 	}
-
 }

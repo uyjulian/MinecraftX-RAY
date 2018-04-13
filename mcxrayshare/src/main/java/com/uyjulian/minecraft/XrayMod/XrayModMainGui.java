@@ -187,5 +187,4 @@ public class XrayModMainGui extends GuiScreen implements GuiYesNoCallback {
         }
         catch (Throwable ignored) {}
     }
-
 }

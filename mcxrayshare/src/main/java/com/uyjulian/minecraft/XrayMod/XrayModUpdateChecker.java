@@ -13,16 +13,13 @@
 
 package com.uyjulian.minecraft.XrayMod;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-
 import java.io.*;
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class XrayModUpdateChecker implements Runnable {
-	public static String newVersion = "";
+	private static String newVersion = "";
 	@Override
 	public void run() {
 		while (newVersion.equals("")) {
@@ -80,5 +77,4 @@ public class XrayModUpdateChecker implements Runnable {
 		}
 		catch (Exception ignored){}
 	}
-
 }

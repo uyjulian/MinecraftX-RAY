@@ -20,12 +20,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Properties;
 
-public class XrayModConfiguration {
+class XrayModConfiguration {
 	private Properties properties;
 	private static XrayModConfiguration instance;
 	private String dataPath;
 	private String filePath;
 	private static final String blockListIdentify = "XRBL";
+
 	static void init(String mcDataPath) {
 		instance = new XrayModConfiguration();
 		instance.properties = new Properties();
@@ -101,8 +102,4 @@ public class XrayModConfiguration {
 			currentException.printStackTrace();
 		}
 	}
-	
-	
-	
-
 }

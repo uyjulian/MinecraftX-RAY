@@ -140,5 +140,4 @@ public class XrayModChooserGui extends GuiScreen {
 		}
 		super.drawScreen(par1, par2, par3);
 	}
-
 }

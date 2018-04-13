@@ -37,7 +37,6 @@ import java.util.List;
 
 @Mixin(BlockModelRenderer.class)
 public abstract class MixinBlockModelRenderer {
-
     @Shadow
     private void func_178260_a(IBlockAccess blockAccessIn, Block blockIn, BlockPos posIn, EnumFacing enumFacingIn, int brightnessIn, boolean ownBrightness, WorldRenderer worldRendererIn, List<BakedQuad> list, BitSet bitSet) {}
 
