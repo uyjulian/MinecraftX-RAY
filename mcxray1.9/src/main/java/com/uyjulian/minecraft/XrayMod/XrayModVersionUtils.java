@@ -13,10 +13,11 @@
 
 package com.uyjulian.minecraft.XrayMod;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextComponentString;
 
-public class XrayModVersionUtils {
+class XrayModVersionUtils {
     static void putLineInChat(String lineToPrint) {
-        UyjuliansXrayModMain.getModInstance().minecraftInstance.ingameGUI.getChatGUI().printChatMessage(new TextComponentString("§l§o§6[" + "UjXr" + "]§r " + lineToPrint));
+        Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentString("§l§o§6[" + "UjXr" + "]§r " + lineToPrint));
     }
 }
